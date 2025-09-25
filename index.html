@@ -48,6 +48,28 @@
       transform: scale(1.03);
       box-shadow: 0 0 25px rgba(255,215,0,0.6);
     }
+    /* Sistema de Abas para os Jogos */
+    .game-tabs {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+    .tab {
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        border: 2px solid #FFD700;
+        border-radius: 5px;
+        background: transparent;
+        color: #FFD700;
+        font-weight: bold;
+        transition: background 0.2s, color 0.2s;
+    }
+    .tab:hover, .tab.active {
+        background: #FFD700;
+        color: #000;
+    }
     iframe {
       width: 100%;
       height: 300px;
@@ -123,6 +145,11 @@
   </div>
 
   <main>
+    <div class="game-tabs">
+        <div class="tab active" onclick="switchGame('pacman', this)">Pac-Man</div>
+        <div class="tab" onclick="switchGame('sonic', this)">Sonic</div>
+    </div>
+
     <div class="game-card">
       <h2 id="game-title">Pac-Man</h2>
       <iframe id="game-frame" src="https://funhtml5games.com?embed=pacman" allowfullscreen></iframe>
@@ -141,55 +168,54 @@
 
   <script>
     const iframe = document.getElementById('game-frame');
-    const gameCard = document.querySelector('.game-card'); // Selecionamos o card do jogo
+    const gameTitle = document.getElementById('game-title');
 
+    // Banco de dados de jogos
+    const games = {
+        pacman: {
+            title: 'Pac-Man',
+            src: 'https://funhtml5games.com?embed=pacman'
+        },
+        sonic: {
+            title: 'Sonic HTML5',
+            src: 'https://funhtml5games.com?embed=sonic'
+        }
+    };
+
+    // Função para trocar de jogo
+    function switchGame(gameKey, tabElement) {
+        const selectedGame = games[gameKey];
+        if (selectedGame) {
+            iframe.src = selectedGame.src;
+            gameTitle.textContent = selectedGame.title;
+
+            // Atualiza a aba ativa
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            tabElement.classList.add('active');
+        }
+    }
+
+    // Função de Tela Cheia
     function toggleFullscreen() {
-      // Verifica se já não está em tela cheia (para o caso do usuário usar ESC para sair)
       const isFullscreen = document.fullscreenElement || document.webkitFullscreenElement;
-
       if (!isFullscreen) {
-        // Usa o elemento PAI do iframe para a requisição de tela cheia
-        // Isso dá mais controle sobre o conteúdo
-        if (gameCard.requestFullscreen) {
-          gameCard.requestFullscreen();
-        } else if (gameCard.webkitRequestFullscreen) { /* Safari */
-          gameCard.webkitRequestFullscreen();
-        } else if (gameCard.msRequestFullscreen) { /* IE11 */
-          gameCard.msRequestFullscreen();
-        }
+        const gameCard = document.querySelector('.game-card');
+        if (gameCard.requestFullscreen) gameCard.requestFullscreen();
+        else if (gameCard.webkitRequestFullscreen) gameCard.webkitRequestFullscreen();
       } else {
-        if (document.exitFullscreen) {
-          document.exitFullscreen();
-        } else if (document.webkitExitFullscreen) { /* Safari */
-          document.webkitExitFullscreen();
-        } else if (document.msExitFullscreen) { /* IE11 */
-          document.msExitFullscreen();
-        }
+        if (document.exitFullscreen) document.exitFullscreen();
+        else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
       }
     }
 
-    // Ouve por mudanças no estado da tela cheia
     document.addEventListener('fullscreenchange', () => {
         const isFullscreen = !!document.fullscreenElement;
-        if (isFullscreen) {
-            // Em tela cheia, força o iframe a ocupar 100% da altura da tela
-            iframe.style.height = '100vh';
-        } else {
-            // Ao sair, volta para a altura original
-            iframe.style.height = '300px';
-        }
+        iframe.style.height = isFullscreen ? '100vh' : '300px';
     });
-
-    // Listener para o navegador Safari (usa 'webkit')
-     document.addEventListener('webkitfullscreenchange', () => {
+    document.addEventListener('webkitfullscreenchange', () => {
         const isFullscreen = !!document.webkitFullscreenElement;
-        if (isFullscreen) {
-            iframe.style.height = '100vh';
-        } else {
-            iframe.style.height = '300px';
-        }
+        iframe.style.height = isFullscreen ? '100vh' : '300px';
     });
-
   </script>
 </body>
 </html>
