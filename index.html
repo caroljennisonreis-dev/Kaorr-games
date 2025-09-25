@@ -41,19 +41,40 @@
       box-shadow: 0 0 15px rgba(0,0,0,0.8);
       width: 100%;
       max-width: 600px;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
       margin-bottom: 10px;
     }
-    .game-card:hover {
-      transform: scale(1.03);
-      box-shadow: 0 0 25px rgba(255,215,0,0.6);
+    .game-tabs {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+    .tab {
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        border: 2px solid #FFD700;
+        border-radius: 5px;
+        background: transparent;
+        color: #FFD700;
+        font-weight: bold;
+        transition: background 0.2s, color 0.2s;
+    }
+    .tab:hover, .tab.active {
+        background: #FFD700;
+        color: #000;
+    }
+    .iframe-container {
+        width: 100%;
+        height: 300px;
+        border-radius: 10px;
+        background-color: #000;
     }
     iframe {
       width: 100%;
-      height: 300px;
-      border-radius: 10px;
+      height: 100%;
       border: none;
-      background-color: #000;
+      border-radius: 10px;
     }
     button {
       margin-top: 10px;
@@ -65,10 +86,6 @@
       background: #FFD700;
       color: #000;
       font-weight: bold;
-      transition: background 0.2s ease;
-    }
-    button:hover {
-      background: #FFC700;
     }
     h2 {
       margin: 10px 0;
@@ -96,6 +113,39 @@
       max-width: 300px;
       height: 250px;
     }
+    /* Estilos da Nova Tela Cheia (Modal) */
+    #fullscreen-modal {
+        display: none; /* Começa escondido */
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.9);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+    }
+    #fullscreen-modal .iframe-wrapper {
+        width: 95%;
+        height: 95%;
+        position: relative;
+    }
+    #close-fullscreen {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 24px;
+        color: #000;
+        background-color: #FFD700;
+        border: none;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        cursor: pointer;
+        z-index: 1001;
+        font-weight: bold;
+    }
     footer {
       padding: 15px;
       background: rgba(0,0,0,0.8);
@@ -106,9 +156,6 @@
     a {
       color: #FFD700;
       text-decoration: none;
-    }
-    a:hover {
-      text-decoration: underline;
     }
   </style>
 </head>
@@ -123,16 +170,29 @@
   </div>
 
   <main>
+    <div class="game-tabs">
+        <div class="tab active" onclick="switchGame('pacman', this)">Pac-Man</div>
+        <div class="tab" onclick="switchGame('flappybird', this)">Flappy Bird</div>
+    </div>
+
     <div class="game-card">
       <h2 id="game-title">Pac-Man</h2>
-      <iframe id="game-frame" src="https://funhtml5games.com?embed=pacman" allowfullscreen></iframe>
-      <button id="fullscreen-btn" onclick="toggleFullscreen()">Tela Cheia</button>
+      <div class="iframe-container" id="iframe-original-container">
+          <iframe id="game-frame" src="https://funhtml5games.com?embed=pacman" allowfullscreen></iframe>
+      </div>
+      <button onclick="openFullscreen()">Tela Cheia</button>
     </div>
 
     <div class="ad-placeholder" id="ad-bottom-banner">
       Espaço para Anúncio (300x250)
     </div>
   </main>
+
+  <div id="fullscreen-modal">
+      <button id="close-fullscreen" onclick="closeFullscreen()">X</button>
+      <div id="fullscreen-iframe-wrapper" class="iframe-wrapper">
+          </div>
+  </div>
 
   <footer>
     © 2025 Jogos do Kaorr | Feito com ❤️ para diversão <br>
@@ -141,55 +201,44 @@
 
   <script>
     const iframe = document.getElementById('game-frame');
-    const gameCard = document.querySelector('.game-card'); // Selecionamos o card do jogo
+    const gameTitle = document.getElementById('game-title');
+    const modal = document.getElementById('fullscreen-modal');
+    const iframeOriginalContainer = document.getElementById('iframe-original-container');
+    const fullscreenIframeWrapper = document.getElementById('fullscreen-iframe-wrapper');
 
-    function toggleFullscreen() {
-      // Verifica se já não está em tela cheia (para o caso do usuário usar ESC para sair)
-      const isFullscreen = document.fullscreenElement || document.webkitFullscreenElement;
+    const games = {
+        pacman: {
+            title: 'Pac-Man',
+            src: 'https://funhtml5games.com?embed=pacman'
+        },
+        flappybird: {
+            title: 'Flappy Bird',
+            src: 'https://funhtml5games.com/?embed=flappybird'
+        }
+    };
 
-      if (!isFullscreen) {
-        // Usa o elemento PAI do iframe para a requisição de tela cheia
-        // Isso dá mais controle sobre o conteúdo
-        if (gameCard.requestFullscreen) {
-          gameCard.requestFullscreen();
-        } else if (gameCard.webkitRequestFullscreen) { /* Safari */
-          gameCard.webkitRequestFullscreen();
-        } else if (gameCard.msRequestFullscreen) { /* IE11 */
-          gameCard.msRequestFullscreen();
+    function switchGame(gameKey, tabElement) {
+        if (games[gameKey]) {
+            iframe.src = games[gameKey].src;
+            gameTitle.textContent = games[gameKey].title;
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            tabElement.classList.add('active');
         }
-      } else {
-        if (document.exitFullscreen) {
-          document.exitFullscreen();
-        } else if (document.webkitExitFullscreen) { /* Safari */
-          document.webkitExitFullscreen();
-        } else if (document.msExitFullscreen) { /* IE11 */
-          document.msExitFullscreen();
-        }
-      }
     }
 
-    // Ouve por mudanças no estado da tela cheia
-    document.addEventListener('fullscreenchange', () => {
-        const isFullscreen = !!document.fullscreenElement;
-        if (isFullscreen) {
-            // Em tela cheia, força o iframe a ocupar 100% da altura da tela
-            iframe.style.height = '100vh';
-        } else {
-            // Ao sair, volta para a altura original
-            iframe.style.height = '300px';
-        }
-    });
+    function openFullscreen() {
+        // Move o iframe para o modal
+        fullscreenIframeWrapper.appendChild(iframe);
+        // Mostra o modal
+        modal.style.display = 'flex';
+    }
 
-    // Listener para o navegador Safari (usa 'webkit')
-     document.addEventListener('webkitfullscreenchange', () => {
-        const isFullscreen = !!document.webkitFullscreenElement;
-        if (isFullscreen) {
-            iframe.style.height = '100vh';
-        } else {
-            iframe.style.height = '300px';
-        }
-    });
-
+    function closeFullscreen() {
+        // Devolve o iframe para seu lugar original
+        iframeOriginalContainer.appendChild(iframe);
+        // Esconde o modal
+        modal.style.display = 'none';
+    }
   </script>
 </body>
 </html>
