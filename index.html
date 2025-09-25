@@ -41,12 +41,7 @@
       box-shadow: 0 0 15px rgba(0,0,0,0.8);
       width: 100%;
       max-width: 600px;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
       margin-bottom: 10px;
-    }
-    .game-card:hover {
-      transform: scale(1.03);
-      box-shadow: 0 0 25px rgba(255,215,0,0.6);
     }
     .game-tabs {
         display: flex;
@@ -69,25 +64,13 @@
         background: #FFD700;
         color: #000;
     }
-    .iframe-container {
-        width: 100%;
-        height: 300px;
-        overflow: hidden; /* Esconde qualquer parte do jogo que saia do container */
-        border-radius: 10px;
-        background-color: #000;
-    }
     iframe {
       width: 100%;
-      height: 100%;
+      height: 300px; /* Altura padrão */
       border-radius: 10px;
       border: none;
-    }
-    /* Classe para redimensionar o Sonic */
-    iframe.scaled {
-        width: 100%; /* A largura base é 100% */
-        height: 480px; /* Altura original do jogo Sonic */
-        transform-origin: top left; /* Ponto de origem para o zoom */
-        transform: scale(0.625); /* Fator de zoom (300px / 480px = 0.625) */
+      background-color: #000;
+      transition: height 0.3s ease; /* Animação suave da altura */
     }
     button {
       margin-top: 10px;
@@ -99,10 +82,6 @@
       background: #FFD700;
       color: #000;
       font-weight: bold;
-      transition: background 0.2s ease;
-    }
-    button:hover {
-      background: #FFC700;
     }
     h2 {
       margin: 10px 0;
@@ -141,9 +120,6 @@
       color: #FFD700;
       text-decoration: none;
     }
-    a:hover {
-      text-decoration: underline;
-    }
   </style>
 </head>
 <body>
@@ -164,9 +140,7 @@
 
     <div class="game-card">
       <h2 id="game-title">Pac-Man</h2>
-      <div class="iframe-container">
-        <iframe id="game-frame" src="https://funhtml5games.com?embed=pacman" allowfullscreen></iframe>
-      </div>
+      <iframe id="game-frame" src="https://funhtml5games.com?embed=pacman" allowfullscreen></iframe>
       <button id="fullscreen-btn" onclick="toggleFullscreen()">Tela Cheia</button>
     </div>
 
@@ -183,18 +157,18 @@
   <script>
     const iframe = document.getElementById('game-frame');
     const gameTitle = document.getElementById('game-title');
-    const iframeContainer = document.querySelector('.iframe-container');
+    let fullscreen = false;
 
     const games = {
         pacman: {
             title: 'Pac-Man',
             src: 'https://funhtml5games.com?embed=pacman',
-            scaled: false
+            height: '300px' // Altura Padrão
         },
         sonic: {
             title: 'Sonic HTML5',
             src: 'https://funhtml5games.com?embed=sonic',
-            scaled: true
+            height: '480px' // Altura Maior para o Sonic caber
         }
     };
 
@@ -203,13 +177,7 @@
         if (selectedGame) {
             iframe.src = selectedGame.src;
             gameTitle.textContent = selectedGame.title;
-
-            // Adiciona ou remove a classe de redimensionamento
-            if (selectedGame.scaled) {
-                iframe.classList.add('scaled');
-            } else {
-                iframe.classList.remove('scaled');
-            }
+            iframe.style.height = selectedGame.height; // Ajusta a altura
 
             document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
             tabElement.classList.add('active');
@@ -217,30 +185,31 @@
     }
 
     function toggleFullscreen() {
-        if (!document.fullscreenElement) {
-            iframeContainer.requestFullscreen();
-        } else {
-            document.exitFullscreen();
+      if (!fullscreen) {
+        iframe.style.height = '500px';
+        if (iframe.requestFullscreen) {
+          iframe.requestFullscreen();
+        } else if (iframe.webkitRequestFullscreen) {
+          iframe.webkitRequestFullscreen();
+        } else if (iframe.msRequestFullscreen) {
+          iframe.msRequestFullscreen();
         }
+        fullscreen = true;
+      } else {
+        // Ao sair da tela cheia, volta para a altura correta do jogo atual
+        const currentGameKey = Object.keys(games).find(key => games[key].title === gameTitle.textContent);
+        iframe.style.height = games[currentGameKey].height;
+        
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+          document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) {
+          document.msExitFullscreen();
+        }
+        fullscreen = false;
+      }
     }
-
-    document.addEventListener('fullscreenchange', () => {
-        const isFullscreen = !!document.fullscreenElement;
-        if (isFullscreen) {
-            // Em tela cheia, remove o scaling para o jogo preencher a tela
-            iframe.classList.remove('scaled');
-            iframe.style.width = '100vw';
-            iframe.style.height = '100vh';
-        } else {
-            // Ao sair, verifica se precisa readicionar o scaling
-            const currentGameKey = Object.keys(games).find(key => games[key].src === iframe.src);
-            if (currentGameKey && games[currentGameKey].scaled) {
-                iframe.classList.add('scaled');
-            }
-            iframe.style.width = '100%';
-            iframe.style.height = '100%'; // Volta a altura normal do container
-        }
-    });
   </script>
 </body>
 </html>
