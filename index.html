@@ -64,13 +64,24 @@
         background: #FFD700;
         color: #000;
     }
+    .iframe-container {
+        width: 100%;
+        height: 300px; /* Altura fixa do container */
+        overflow: hidden; /* Esconde o que sobrar */
+        border-radius: 10px;
+        background: #000;
+    }
     iframe {
       width: 100%;
-      height: 300px; /* Altura padrão */
-      border-radius: 10px;
+      height: 100%;
       border: none;
-      background-color: #000;
-      transition: height 0.3s ease; /* Animação suave da altura */
+    }
+    /* Classe de zoom para o Sonic */
+    iframe.scaled {
+      height: 480px; /* Altura original do jogo */
+      width: 160%; /* Largura ajustada para o zoom (100% / 0.625) */
+      transform: scale(0.625);
+      transform-origin: top left;
     }
     button {
       margin-top: 10px;
@@ -140,7 +151,9 @@
 
     <div class="game-card">
       <h2 id="game-title">Pac-Man</h2>
-      <iframe id="game-frame" src="https://funhtml5games.com?embed=pacman" allowfullscreen></iframe>
+      <div class="iframe-container" id="game-container">
+          <iframe id="game-frame" src="https://funhtml5games.com?embed=pacman" allowfullscreen></iframe>
+      </div>
       <button id="fullscreen-btn" onclick="toggleFullscreen()">Tela Cheia</button>
     </div>
 
@@ -157,18 +170,18 @@
   <script>
     const iframe = document.getElementById('game-frame');
     const gameTitle = document.getElementById('game-title');
-    let fullscreen = false;
+    const gameContainer = document.getElementById('game-container');
 
     const games = {
         pacman: {
             title: 'Pac-Man',
             src: 'https://funhtml5games.com?embed=pacman',
-            height: '300px' // Altura Padrão
+            scaled: false
         },
         sonic: {
             title: 'Sonic HTML5',
             src: 'https://funhtml5games.com?embed=sonic',
-            height: '480px' // Altura Maior para o Sonic caber
+            scaled: true
         }
     };
 
@@ -177,7 +190,12 @@
         if (selectedGame) {
             iframe.src = selectedGame.src;
             gameTitle.textContent = selectedGame.title;
-            iframe.style.height = selectedGame.height; // Ajusta a altura
+
+            if (selectedGame.scaled) {
+                iframe.classList.add('scaled');
+            } else {
+                iframe.classList.remove('scaled');
+            }
 
             document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
             tabElement.classList.add('active');
@@ -185,31 +203,24 @@
     }
 
     function toggleFullscreen() {
-      if (!fullscreen) {
-        iframe.style.height = '500px';
-        if (iframe.requestFullscreen) {
-          iframe.requestFullscreen();
-        } else if (iframe.webkitRequestFullscreen) {
-          iframe.webkitRequestFullscreen();
-        } else if (iframe.msRequestFullscreen) {
-          iframe.msRequestFullscreen();
+        if (!document.fullscreenElement) {
+            gameContainer.requestFullscreen();
+        } else {
+            document.exitFullscreen();
         }
-        fullscreen = true;
-      } else {
-        // Ao sair da tela cheia, volta para a altura correta do jogo atual
-        const currentGameKey = Object.keys(games).find(key => games[key].title === gameTitle.textContent);
-        iframe.style.height = games[currentGameKey].height;
-        
-        if (document.exitFullscreen) {
-          document.exitFullscreen();
-        } else if (document.webkitExitFullscreen) {
-          document.webkitExitFullscreen();
-        } else if (document.msExitFullscreen) {
-          document.msExitFullscreen();
-        }
-        fullscreen = false;
-      }
     }
+
+    document.addEventListener('fullscreenchange', () => {
+        const isFullscreen = !!document.fullscreenElement;
+        if (isFullscreen) {
+            iframe.classList.remove('scaled');
+        } else {
+            const currentGameKey = Object.keys(games).find(key => gameTitle.textContent === games[key].title);
+            if (currentGameKey && games[currentGameKey].scaled) {
+                iframe.classList.add('scaled');
+            }
+        }
+    });
   </script>
 </body>
 </html>
