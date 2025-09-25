@@ -48,7 +48,6 @@
       transform: scale(1.03);
       box-shadow: 0 0 25px rgba(255,215,0,0.6);
     }
-    /* Sistema de Abas para os Jogos */
     .game-tabs {
         display: flex;
         justify-content: center;
@@ -72,10 +71,16 @@
     }
     iframe {
       width: 100%;
-      height: 300px;
+      height: 300px; /* Altura padrão para Pac-Man */
       border-radius: 10px;
       border: none;
       background-color: #000;
+      /* Transição para a altura quando o jogo muda */
+      transition: height 0.5s ease-in-out; 
+    }
+    /* Nova classe para o Sonic, com altura maior */
+    iframe.sonic-height {
+      height: 400px; /* Altura ajustada para o Sonic */
     }
     button {
       margin-top: 10px;
@@ -174,11 +179,13 @@
     const games = {
         pacman: {
             title: 'Pac-Man',
-            src: 'https://funhtml5games.com?embed=pacman'
+            src: 'https://funhtml5games.com?embed=pacman',
+            heightClass: '' // Nenhuma classe especial, usa a altura padrão
         },
         sonic: {
             title: 'Sonic HTML5',
-            src: 'https://funhtml5games.com?embed=sonic'
+            src: 'https://funhtml5games.com?embed=sonic',
+            heightClass: 'sonic-height' // Usa a classe para altura maior
         }
     };
 
@@ -188,6 +195,12 @@
         if (selectedGame) {
             iframe.src = selectedGame.src;
             gameTitle.textContent = selectedGame.title;
+
+            // Remove todas as classes de altura e adiciona a correta
+            iframe.classList.remove('sonic-height'); // Remove classes existentes
+            if (selectedGame.heightClass) {
+                iframe.classList.add(selectedGame.heightClass);
+            }
 
             // Atualiza a aba ativa
             document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
@@ -208,13 +221,51 @@
       }
     }
 
+    // Ouve por mudanças no estado da tela cheia para ajustar o iframe
     document.addEventListener('fullscreenchange', () => {
         const isFullscreen = !!document.fullscreenElement;
-        iframe.style.height = isFullscreen ? '100vh' : '300px';
+        if (isFullscreen) {
+            iframe.style.height = '100vh'; // Em tela cheia, ocupa 100% da viewport
+            iframe.style.width = '100vw'; // Em tela cheia, ocupa 100% da largura da viewport
+        } else {
+            // Ao sair, retorna à altura definida pelo CSS normal ou pela classe específica
+            const currentGameKey = Object.keys(games).find(key => games[key].src === iframe.src);
+            if (currentGameKey) {
+                const selectedGame = games[currentGameKey];
+                iframe.classList.remove('sonic-height'); // Garante que a classe é removida
+                if (selectedGame.heightClass) {
+                    iframe.classList.add(selectedGame.heightClass);
+                } else {
+                    iframe.style.height = '300px'; // Altura padrão do CSS
+                }
+            } else {
+                 iframe.style.height = '300px'; // Fallback
+            }
+            iframe.style.width = '100%';
+        }
     });
+
+    // Para navegadores Webkit (como Safari)
     document.addEventListener('webkitfullscreenchange', () => {
         const isFullscreen = !!document.webkitFullscreenElement;
-        iframe.style.height = isFullscreen ? '100vh' : '300px';
+        if (isFullscreen) {
+            iframe.style.height = '100vh';
+            iframe.style.width = '100vw';
+        } else {
+            const currentGameKey = Object.keys(games).find(key => games[key].src === iframe.src);
+            if (currentGameKey) {
+                const selectedGame = games[currentGameKey];
+                iframe.classList.remove('sonic-height');
+                if (selectedGame.heightClass) {
+                    iframe.classList.add(selectedGame.heightClass);
+                } else {
+                    iframe.style.height = '300px';
+                }
+            } else {
+                 iframe.style.height = '300px';
+            }
+            iframe.style.width = '100%';
+        }
     });
   </script>
 </body>
