@@ -50,36 +50,11 @@
     }
     iframe {
       width: 100%;
-      height: 300px; /* Altura normal */
+      height: 300px;
       border-radius: 10px;
       border: none;
-      transition: height 0.3s ease;
       background-color: #000;
     }
-    /* Estilo para o iframe em tela cheia */
-    iframe:fullscreen {
-        height: 100vh !important; /* Ocupa 100% da altura da viewport em tela cheia */
-        width: 100vw !important; /* Ocupa 100% da largura da viewport em tela cheia */
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: 9999;
-        background-color: #000; /* Garante fundo preto */
-    }
-    iframe:-webkit-full-screen { /* Para navegadores WebKit */
-        height: 100vh !important;
-        width: 100vw !important;
-    }
-    iframe:-moz-full-screen { /* Para navegadores Mozilla */
-        height: 100vh !important;
-        width: 100vw !important;
-    }
-    iframe:-ms-fullscreen { /* Para navegadores Microsoft */
-        height: 100vh !important;
-        width: 100vw !important;
-    }
-
-
     button {
       margin-top: 10px;
       padding: 10px 20px;
@@ -165,54 +140,56 @@
   </footer>
 
   <script>
-    let fullscreen = false;
     const iframe = document.getElementById('game-frame');
+    const gameCard = document.querySelector('.game-card'); // Selecionamos o card do jogo
 
     function toggleFullscreen() {
-      if (!fullscreen) {
-        // Quando entra em tela cheia, remove a altura fixa para o CSS fullscreen agir
-        iframe.style.height = ''; 
-        if (iframe.requestFullscreen) {
-          iframe.requestFullscreen();
-        } else if (iframe.webkitRequestFullscreen) {
-          iframe.webkitRequestFullscreen();
-        } else if (iframe.msRequestFullscreen) {
-          iframe.msRequestFullscreen();
+      // Verifica se já não está em tela cheia (para o caso do usuário usar ESC para sair)
+      const isFullscreen = document.fullscreenElement || document.webkitFullscreenElement;
+
+      if (!isFullscreen) {
+        // Usa o elemento PAI do iframe para a requisição de tela cheia
+        // Isso dá mais controle sobre o conteúdo
+        if (gameCard.requestFullscreen) {
+          gameCard.requestFullscreen();
+        } else if (gameCard.webkitRequestFullscreen) { /* Safari */
+          gameCard.webkitRequestFullscreen();
+        } else if (gameCard.msRequestFullscreen) { /* IE11 */
+          gameCard.msRequestFullscreen();
         }
-        fullscreen = true;
       } else {
-        // Ao sair da tela cheia, volta para a altura original
-        iframe.style.height = '300px'; 
         if (document.exitFullscreen) {
           document.exitFullscreen();
-        } else if (document.webkitExitFullscreen) {
+        } else if (document.webkitExitFullscreen) { /* Safari */
           document.webkitExitFullscreen();
-        } else if (document.msExitFullscreen) {
+        } else if (document.msExitFullscreen) { /* IE11 */
           document.msExitFullscreen();
         }
-        fullscreen = false;
       }
     }
 
-    // Listener para o evento de tela cheia ser alterada (ex: usuário apertou ESC)
-    document.addEventListener('fullscreenchange', (event) => {
-        if (!document.fullscreenElement) {
-            fullscreen = false;
-            iframe.style.height = '300px'; // Retorna à altura normal se sair da tela cheia de outra forma
-        }
-    });
-    document.addEventListener('webkitfullscreenchange', (event) => {
-        if (!document.webkitFullscreenElement) {
-            fullscreen = false;
+    // Ouve por mudanças no estado da tela cheia
+    document.addEventListener('fullscreenchange', () => {
+        const isFullscreen = !!document.fullscreenElement;
+        if (isFullscreen) {
+            // Em tela cheia, força o iframe a ocupar 100% da altura da tela
+            iframe.style.height = '100vh';
+        } else {
+            // Ao sair, volta para a altura original
             iframe.style.height = '300px';
         }
     });
-    document.addEventListener('msfullscreenchange', (event) => {
-        if (!document.msFullscreenElement) {
-            fullscreen = false;
+
+    // Listener para o navegador Safari (usa 'webkit')
+     document.addEventListener('webkitfullscreenchange', () => {
+        const isFullscreen = !!document.webkitFullscreenElement;
+        if (isFullscreen) {
+            iframe.style.height = '100vh';
+        } else {
             iframe.style.height = '300px';
         }
     });
+
   </script>
 </body>
 </html>
