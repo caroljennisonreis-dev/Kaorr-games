@@ -50,12 +50,36 @@
     }
     iframe {
       width: 100%;
-      height: 300px;
+      height: 300px; /* Altura normal */
       border-radius: 10px;
       border: none;
       transition: height 0.3s ease;
       background-color: #000;
     }
+    /* Estilo para o iframe em tela cheia */
+    iframe:fullscreen {
+        height: 100vh !important; /* Ocupa 100% da altura da viewport em tela cheia */
+        width: 100vw !important; /* Ocupa 100% da largura da viewport em tela cheia */
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 9999;
+        background-color: #000; /* Garante fundo preto */
+    }
+    iframe:-webkit-full-screen { /* Para navegadores WebKit */
+        height: 100vh !important;
+        width: 100vw !important;
+    }
+    iframe:-moz-full-screen { /* Para navegadores Mozilla */
+        height: 100vh !important;
+        width: 100vw !important;
+    }
+    iframe:-ms-fullscreen { /* Para navegadores Microsoft */
+        height: 100vh !important;
+        width: 100vw !important;
+    }
+
+
     button {
       margin-top: 10px;
       padding: 10px 20px;
@@ -146,7 +170,8 @@
 
     function toggleFullscreen() {
       if (!fullscreen) {
-        iframe.style.height = '500px';
+        // Quando entra em tela cheia, remove a altura fixa para o CSS fullscreen agir
+        iframe.style.height = ''; 
         if (iframe.requestFullscreen) {
           iframe.requestFullscreen();
         } else if (iframe.webkitRequestFullscreen) {
@@ -156,7 +181,8 @@
         }
         fullscreen = true;
       } else {
-        iframe.style.height = '300px';
+        // Ao sair da tela cheia, volta para a altura original
+        iframe.style.height = '300px'; 
         if (document.exitFullscreen) {
           document.exitFullscreen();
         } else if (document.webkitExitFullscreen) {
@@ -167,6 +193,26 @@
         fullscreen = false;
       }
     }
+
+    // Listener para o evento de tela cheia ser alterada (ex: usuário apertou ESC)
+    document.addEventListener('fullscreenchange', (event) => {
+        if (!document.fullscreenElement) {
+            fullscreen = false;
+            iframe.style.height = '300px'; // Retorna à altura normal se sair da tela cheia de outra forma
+        }
+    });
+    document.addEventListener('webkitfullscreenchange', (event) => {
+        if (!document.webkitFullscreenElement) {
+            fullscreen = false;
+            iframe.style.height = '300px';
+        }
+    });
+    document.addEventListener('msfullscreenchange', (event) => {
+        if (!document.msFullscreenElement) {
+            fullscreen = false;
+            iframe.style.height = '300px';
+        }
+    });
   </script>
 </body>
 </html>
