@@ -189,6 +189,7 @@
         <div class="tab locked" id="vip-tab-westernsniper" onclick="tryUnlockVipGame('westernsniper')">Sniper 🔒</div>
         <div class="tab locked" id="vip-tab-outcome" onclick="tryUnlockVipGame('outcome')">Outcome 🔒</div>
         <div class="tab locked" id="vip-tab-speedmaster" onclick="tryUnlockVipGame('speedmaster')">SpeedMaster 🔒</div>
+        <div class="tab locked" id="vip-tab-gunspin" onclick="tryUnlockVipGame('gunspin')">Gun Spin 🔒</div>
     </div>
 
     <div class="game-card">
@@ -218,23 +219,25 @@
     const iframe = document.getElementById('game-frame');
     const gameTitle = document.getElementById('game-title');
     const vipModal = document.getElementById('vip-modal-overlay');
-    const adLink = 'https://otieu.com/4/9935573'; // Link do anúncio
+    const adLink = 'https://otieu.com/4/9935573';
     let currentGameToUnlock = null;
 
     const vipUnlockStatus = {
         westernsniper: false,
         outcome: false,
-        speedmaster: false
+        speedmaster: false,
+        gunspin: false
     };
 
     const games = {
         pacman: { title: 'Pac-Man', src: 'https://funhtml5games.com?embed=pacman', isVip: false },
         mazeblox: { title: 'Mazeblox', src: 'https://funhtml5games.com?embed=mazeblox', isVip: false },
         omnomrun: { title: 'Om Nom Run', src: 'https://play.famobi.com/om-nom-run', isVip: false },
-        giantrush: { title: 'Giant Rush', src: 'https://play.famobi.com/giant-rush', isVip: false },
+        giantrush: { title: 'Giant Rush', src: 'https://play.famobi.com/giantrush', isVip: false },
         westernsniper: { title: 'Western Sniper', src: 'https://play.famobi.com/western-sniper', isVip: true },
         outcome: { title: 'Outcome', src: 'https://play.famobi.com/outcome', isVip: true },
-        speedmaster: { title: 'Speed Master', src: 'https://play.famobi.com/speed-master', isVip: true }
+        speedmaster: { title: 'Speed Master', src: 'https://play.famobi.com/speed-master', isVip: true },
+        gunspin: { title: 'Gun Spin', src: 'https://play.famobi.com/gun-spin', isVip: true }
     };
 
     function switchGame(gameKey, tabElement) {
@@ -291,9 +294,4 @@
     function openFullscreen() {
         const elem = document.getElementById("game-frame");
         if (elem.requestFullscreen) { elem.requestFullscreen(); } 
-        else if (elem.webkitRequestFullscreen) { elem.webkitRequestFullscreen(); } 
-        else if (elem.msRequestFullscreen) { elem.msRequestFullscreen(); }
-    }
-  </script>
-</body>
-</html>
+        else if (elem.webkitRequestFullscreen) { elem.webkitRequestFullscreen(); }
