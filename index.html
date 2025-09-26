@@ -45,12 +45,29 @@
       box-shadow: 0 0 15px rgba(0,0,0,0.8);
       width: 100%;
       max-width: 600px;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
       margin-bottom: 10px;
     }
-    .game-card:hover {
-      transform: scale(1.03);
-      box-shadow: 0 0 25px rgba(255,215,0,0.6);
+    .game-tabs {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 15px;
+        flex-wrap: wrap; /* Para telas pequenas */
+    }
+    .tab {
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        border: 2px solid #FFD700;
+        border-radius: 5px;
+        background: transparent;
+        color: #FFD700;
+        font-weight: bold;
+        transition: background 0.2s, color 0.2s;
+    }
+    .tab:hover, .tab.active {
+        background: #FFD700;
+        color: #000;
     }
     .iframe-container {
         width: 100%;
@@ -74,10 +91,6 @@
       background: #FFD700;
       color: #000;
       font-weight: bold;
-      transition: background 0.2s ease;
-    }
-    button:hover {
-      background: #FFC700;
     }
     h2 {
       margin: 10px 0;
@@ -127,9 +140,6 @@
       color: #FFD700;
       text-decoration: none;
     }
-    a:hover {
-      text-decoration: underline;
-    }
   </style>
 </head>
 <body>
@@ -141,10 +151,16 @@
   </header>
 
   <main>
+    <div class="game-tabs">
+        <div class="tab active" onclick="switchGame('blockpuzzle', this)">Block Puzzle</div>
+        <div class="tab" onclick="switchGame('bubbleshooter', this)">Bubble Shooter</div>
+        <div class="tab" onclick="switchGame('snake', this)">Snake</div>
+    </div>
+
     <div class="game-card">
-      <h2 id="game-title">Pac-Man</h2>
+      <h2 id="game-title">Block Puzzle</h2>
       <div class="iframe-container" id="iframe-original-container">
-        <iframe id="game-frame" src="https://funhtml5games.com?embed=pacman" allowfullscreen></iframe>
+          <iframe id="game-frame" src="https://cdn.html5games.com/BlockPuzzle/index.html" allowfullscreen></iframe>
       </div>
       <button onclick="openFullscreen()">Tela Cheia</button>
     </div>
@@ -156,7 +172,6 @@
       </div>
   </div>
 
-
   <footer>
     © 2025 Jogos do Kaorr | Feito com ❤️ para diversão <br>
     <a href="#">Apoie o site</a>
@@ -164,9 +179,34 @@
 
   <script>
     const iframe = document.getElementById('game-frame');
+    const gameTitle = document.getElementById('game-title');
     const modal = document.getElementById('fullscreen-modal');
     const iframeOriginalContainer = document.getElementById('iframe-original-container');
     const fullscreenIframeWrapper = document.getElementById('fullscreen-iframe-wrapper');
+
+    const games = {
+        blockpuzzle: {
+            title: 'Block Puzzle',
+            src: 'https://cdn.html5games.com/BlockPuzzle/index.html'
+        },
+        bubbleshooter: {
+            title: 'Bubble Shooter',
+            src: 'https://cdn.html5games.com/BubbleShooter/index.html'
+        },
+        snake: {
+            title: 'Snake',
+            src: 'https://cdn.html5games.com/Snake/index.html'
+        }
+    };
+
+    function switchGame(gameKey, tabElement) {
+        if (games[gameKey]) {
+            iframe.src = games[gameKey].src;
+            gameTitle.textContent = games[gameKey].title;
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            tabElement.classList.add('active');
+        }
+    }
 
     function openFullscreen() {
         fullscreenIframeWrapper.appendChild(iframe);
