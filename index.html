@@ -186,9 +186,9 @@
         <div class="tab" onclick="switchGame('mazeblox', this)">Mazeblox</div>
         <div class="tab" onclick="switchGame('omnomrun', this)">Om Nom Run</div>
         <div class="tab" onclick="switchGame('giantrush', this)">Giant Rush</div>
-        <div class="tab locked" id="vip-tab-westernsniper" onclick="tryUnlockVipGame('westernsniper')">Sniper 🔒</div>
+        <div class="tab locked" id="vip-tab-westernsniper" onclick="tryUnlockVipGame('westernsniper')">Western Sniper 🔒</div>
         <div class="tab locked" id="vip-tab-outcome" onclick="tryUnlockVipGame('outcome')">Outcome 🔒</div>
-        <div class="tab locked" id="vip-tab-speedmaster" onclick="tryUnlockVipGame('speedmaster')">SpeedMaster 🔒</div>
+        <div class="tab locked" id="vip-tab-speedmaster" onclick="tryUnlockVipGame('speedmaster')">Speed Master 🔒</div>
         <div class="tab locked" id="vip-tab-gunspin" onclick="tryUnlockVipGame('gunspin')">Gun Spin 🔒</div>
     </div>
 
@@ -242,9 +242,7 @@
 
     function switchGame(gameKey, tabElement) {
         if (games[gameKey]) {
-            if (!games[gameKey].isVip) {
-                resetAllVipStatus();
-            }
+            if (!games[gameKey].isVip) resetAllVipStatus();
             iframe.src = games[gameKey].src;
             gameTitle.textContent = games[gameKey].title;
             document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
@@ -261,21 +259,16 @@
         }
     }
 
-    function closeVipModal() {
-        vipModal.style.display = 'none';
-    }
+    function closeVipModal() { vipModal.style.display = 'none'; }
 
     function unlockVipGame() {
         if (currentGameToUnlock) {
             window.open(adLink, '_blank');
-            
             vipUnlockStatus[currentGameToUnlock] = true;
             closeVipModal();
-            
             const vipTab = document.getElementById('vip-tab-' + currentGameToUnlock);
             vipTab.classList.remove('locked');
-            vipTab.innerHTML = games[currentGameToUnlock].title.split(' ')[0] + ' 👑';
-            
+            vipTab.innerHTML = games[currentGameToUnlock].title + ' 👑';
             switchGame(currentGameToUnlock, vipTab);
         }
     }
@@ -286,12 +279,17 @@
             const vipTab = document.getElementById('vip-tab-' + gameKey);
             if (vipTab) {
                 vipTab.classList.add('locked');
-                vipTab.innerHTML = games[gameKey].title.split(' ')[0] + ' 🔒';
+                vipTab.innerHTML = games[gameKey].title + ' 🔒';
             }
         }
     }
 
     function openFullscreen() {
         const elem = document.getElementById("game-frame");
-        if (elem.requestFullscreen) { elem.requestFullscreen(); } 
-        else if (elem.webkitRequestFullscreen) { elem.webkitRequestFullscreen(); }
+        if (elem.requestFullscreen) elem.requestFullscreen();
+        else if (elem.webkitRequestFullscreen) elem.webkitRequestFullscreen();
+        else if (elem.msRequestFullscreen) elem.msRequestFullscreen();
+    }
+  </script>
+</body>
+</html>
