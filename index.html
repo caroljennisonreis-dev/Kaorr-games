@@ -85,26 +85,6 @@
       color: #FFD700;
       text-shadow: 2px 2px 5px rgba(0,0,0,0.8);
     }
-    .ad-placeholder {
-      background-color: #cccccc;
-      color: #555555;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-      border-radius: 5px;
-      margin: 15px auto;
-    }
-    #ad-top-banner {
-      width: 90%;
-      max-width: 728px;
-      height: 90px;
-    }
-    #ad-bottom-banner {
-      width: 90%;
-      max-width: 300px;
-      height: 250px;
-    }
     #fullscreen-modal {
         display: none;
         position: fixed;
@@ -154,25 +134,19 @@
 </head>
 <body>
 
+  <script>(function(s){s.dataset.zone='9932995',s.src='https://groleegni.net/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+
   <header>
     🎮 Jogos do Kaorr
   </header>
 
   <main>
-    <div class="ad-placeholder" id="ad-top-banner">
-      Espaço para Anúncio (728x90)
-    </div>
-
     <div class="game-card">
       <h2 id="game-title">Pac-Man</h2>
       <div class="iframe-container" id="iframe-original-container">
         <iframe id="game-frame" src="https://funhtml5games.com?embed=pacman" allowfullscreen></iframe>
       </div>
       <button onclick="openFullscreen()">Tela Cheia</button>
-    </div>
-
-    <div class="ad-placeholder" id="ad-bottom-banner">
-      Espaço para Anúncio (300x250)
     </div>
   </main>
 
