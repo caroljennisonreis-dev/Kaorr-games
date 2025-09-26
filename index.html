@@ -1,1 +1,299 @@
-https://play.famobi.com/speed-master
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="monetag" content="83997c58f066c15d03add13b60a406e8">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎮</text></svg>">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  
+  <title>🎮 Jogos do Kaorr</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #1a1a2e;
+      background-image: linear-gradient(to bottom, #16222A, #3A6073);
+      background-attachment: fixed;
+      background-size: cover;
+      color: #fff;
+      text-align: center;
+      position: relative;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      padding: 20px;
+      background: rgba(0,0,0,0.8);
+      font-size: 22px;
+      font-family: 'Press Start 2P', cursive;
+      border-bottom: 2px solid #FFD700;
+    }
+    main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      justify-content: center;
+      min-height: calc(100vh - 155px);
+      box-sizing: border-box;
+    }
+    .game-card {
+      background: rgba(0,0,0,0.7);
+      border-radius: 15px;
+      padding: 15px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.8);
+      width: 100%;
+      max-width: 600px;
+    }
+    .game-tabs {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 15px;
+        flex-wrap: wrap;
+    }
+    .tab {
+        padding: 10px 15px;
+        font-size: 16px;
+        cursor: pointer;
+        border: 2px solid #FFD700;
+        border-radius: 5px;
+        background: transparent;
+        color: #FFD700;
+        font-weight: bold;
+        transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+    }
+    .tab:hover, .tab.active {
+        background: #FFD700;
+        color: #000;
+        box-shadow: 0 0 15px #FFD700;
+    }
+    .tab.locked {
+        background-color: #4a4a4a;
+        color: #999;
+        border-color: #777;
+        cursor: pointer;
+    }
+    .tab.locked:hover {
+        background-color: #5a5a5a;
+        box-shadow: 0 0 15px #999;
+    }
+
+    .iframe-container {
+        width: 100%;
+        height: 300px;
+        border-radius: 10px;
+        background-color: #000;
+    }
+    iframe {
+      width: 100%;
+      height: 100%;
+      border-radius: 10px;
+      border: none;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      background: #FFD700;
+      color: #000;
+      font-weight: bold;
+      transition: background 0.2s, box-shadow 0.2s;
+    }
+    button:hover {
+      background: #FFC700;
+      box-shadow: 0 0 15px #FFD700;
+    }
+    h2 {
+      margin: 10px 0;
+      font-size: 24px;
+      color: #FFD700;
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.8);
+      font-family: 'Press Start 2P', cursive;
+    }
+    footer {
+      padding: 15px;
+      background: rgba(0,0,0,0.8);
+      font-size: 14px;
+      border-top: 2px solid #FFD700;
+    }
+    a { color: #FFD700; text-decoration: none; }
+    
+    #vip-modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.8);
+        z-index: 2000;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+    #vip-modal-content {
+        background: #16222A;
+        padding: 30px;
+        border-radius: 15px;
+        border: 2px solid #FFD700;
+        max-width: 400px;
+        width: 100%;
+        box-shadow: 0 0 25px #FFD700;
+    }
+    #vip-modal-content h3 {
+        font-family: 'Press Start 2P', cursive;
+        margin-top: 0;
+    }
+    #unlock-button {
+        background: #007bff;
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        font-size: 18px;
+        border-radius: 5px;
+        font-weight: bold;
+        margin-top: 15px;
+        transition: background 0.2s;
+        margin-right: 10px;
+        cursor: pointer;
+    }
+    #unlock-button:hover { background: #0056b3; }
+    #close-modal { background: #6c757d; color: white; }
+    #close-modal:hover { background: #5a6268; }
+
+  </style>
+</head>
+<body>
+
+  <script>(function(s){s.dataset.zone='9932995',s.src='https://groleegni.net/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+
+  <header> 🎮 Jogos do Kaorr </header>
+
+  <main>
+    <div class="game-tabs">
+        <div class="tab active" onclick="switchGame('pacman', this)">Pac-Man</div>
+        <div class="tab" onclick="switchGame('mazeblox', this)">Mazeblox</div>
+        <div class="tab" onclick="switchGame('omnomrun', this)">Om Nom Run</div>
+        <div class="tab" onclick="switchGame('giantrush', this)">Giant Rush</div>
+        <div class="tab locked" id="vip-tab-westernsniper" onclick="tryUnlockVipGame('westernsniper')">Sniper 🔒</div>
+        <div class="tab locked" id="vip-tab-outcome" onclick="tryUnlockVipGame('outcome')">Outcome 🔒</div>
+        <div class="tab locked" id="vip-tab-speedmaster" onclick="tryUnlockVipGame('speedmaster')">SpeedMaster 🔒</div>
+    </div>
+
+    <div class="game-card">
+      <h2 id="game-title">Pac-Man</h2>
+      <div class="iframe-container" id="iframe-original-container">
+          <iframe id="game-frame" src="https://funhtml5games.com?embed=pacman" allowfullscreen></iframe>
+      </div>
+      <button onclick="openFullscreen()">Tela Cheia</button>
+    </div>
+  </main>
+
+  <div id="vip-modal-overlay">
+    <div id="vip-modal-content">
+        <h3>👑 Desbloquear Jogo VIP 👑</h3>
+        <p>Assista a um anúncio rápido para nos apoiar e liberar este jogo agora!</p>
+        <button id="unlock-button" onclick="unlockVipGame()">Desbloquear!</button>
+        <button id="close-modal" onclick="closeVipModal()">Agora não</button>
+    </div>
+  </div>
+
+  <footer>
+    © 2025 Jogos do Kaorr | Feito com ❤️ para diversão <br>
+    <a href="#">Apoie o site</a>
+  </footer>
+
+  <script>
+    const iframe = document.getElementById('game-frame');
+    const gameTitle = document.getElementById('game-title');
+    const vipModal = document.getElementById('vip-modal-overlay');
+    const adLink = 'https://otieu.com/4/9935573'; // Link do anúncio
+    let currentGameToUnlock = null;
+
+    const vipUnlockStatus = {
+        westernsniper: false,
+        outcome: false,
+        speedmaster: false
+    };
+
+    const games = {
+        pacman: { title: 'Pac-Man', src: 'https://funhtml5games.com?embed=pacman', isVip: false },
+        mazeblox: { title: 'Mazeblox', src: 'https://funhtml5games.com?embed=mazeblox', isVip: false },
+        omnomrun: { title: 'Om Nom Run', src: 'https://play.famobi.com/om-nom-run', isVip: false },
+        giantrush: { title: 'Giant Rush', src: 'https://play.famobi.com/giant-rush', isVip: false },
+        westernsniper: { title: 'Western Sniper', src: 'https://play.famobi.com/western-sniper', isVip: true },
+        outcome: { title: 'Outcome', src: 'https://play.famobi.com/outcome', isVip: true },
+        speedmaster: { title: 'Speed Master', src: 'https://play.famobi.com/speed-master', isVip: true }
+    };
+
+    function switchGame(gameKey, tabElement) {
+        if (games[gameKey]) {
+            if (!games[gameKey].isVip) {
+                resetAllVipStatus();
+            }
+            iframe.src = games[gameKey].src;
+            gameTitle.textContent = games[gameKey].title;
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            tabElement.classList.add('active');
+        }
+    }
+
+    function tryUnlockVipGame(gameKey) {
+        if (vipUnlockStatus[gameKey]) {
+            switchGame(gameKey, document.getElementById('vip-tab-' + gameKey));
+        } else {
+            currentGameToUnlock = gameKey;
+            vipModal.style.display = 'flex';
+        }
+    }
+
+    function closeVipModal() {
+        vipModal.style.display = 'none';
+    }
+
+    function unlockVipGame() {
+        if (currentGameToUnlock) {
+            window.open(adLink, '_blank');
+            
+            vipUnlockStatus[currentGameToUnlock] = true;
+            closeVipModal();
+            
+            const vipTab = document.getElementById('vip-tab-' + currentGameToUnlock);
+            vipTab.classList.remove('locked');
+            vipTab.innerHTML = games[currentGameToUnlock].title.split(' ')[0] + ' 👑';
+            
+            switchGame(currentGameToUnlock, vipTab);
+        }
+    }
+
+    function resetAllVipStatus() {
+        for (const gameKey in vipUnlockStatus) {
+            vipUnlockStatus[gameKey] = false;
+            const vipTab = document.getElementById('vip-tab-' + gameKey);
+            if (vipTab) {
+                vipTab.classList.add('locked');
+                vipTab.innerHTML = games[gameKey].title.split(' ')[0] + ' 🔒';
+            }
+        }
+    }
+
+    function openFullscreen() {
+        const elem = document.getElementById("game-frame");
+        if (elem.requestFullscreen) { elem.requestFullscreen(); } 
+        else if (elem.webkitRequestFullscreen) { elem.webkitRequestFullscreen(); } 
+        else if (elem.msRequestFullscreen) { elem.msRequestFullscreen(); }
+    }
+  </script>
+</body>
+</html>
