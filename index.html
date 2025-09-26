@@ -59,7 +59,7 @@
         flex-wrap: wrap;
     }
     .tab {
-        padding: 10px 20px;
+        padding: 10px 15px; /* Diminuído um pouco para caber mais jogos */
         font-size: 16px;
         cursor: pointer;
         border: 2px solid #FFD700;
@@ -155,9 +155,10 @@
         margin-top: 0;
     }
     #unlock-button {
-        background: #007bff; color: white; text-decoration: none; padding: 12px 25px;
-        font-size: 18px; border-radius: 5px; font-weight: bold; display: inline-block;
+        background: #007bff; color: white; border: none; padding: 12px 25px;
+        font-size: 18px; border-radius: 5px; font-weight: bold;
         margin-top: 15px; transition: background 0.2s; margin-right: 10px;
+        cursor: pointer;
     }
     #unlock-button:hover { background: #0056b3; }
     #close-modal { background: #6c757d; color: white; }
@@ -177,7 +178,8 @@
         <div class="tab" onclick="switchGame('mazeblox', this)">Mazeblox</div>
         <div class="tab" onclick="switchGame('omnomrun', this)">Om Nom Run</div>
         <div class="tab" onclick="switchGame('giantrush', this)">Giant Rush</div>
-        <div class="tab locked" id="vip-tab" onclick="tryUnlockVipGame()">Sniper 🔒</div>
+        <div class="tab locked" id="vip-tab-westernsniper" onclick="tryUnlockVipGame('westernsniper')">Sniper 🔒</div>
+        <div class="tab locked" id="vip-tab-outcome" onclick="tryUnlockVipGame('outcome')">Outcome 🔒</div>
     </div>
 
     <div class="game-card">
@@ -193,7 +195,7 @@
     <div id="vip-modal-content">
         <h3>👑 Desbloquear Jogo VIP 👑</h3>
         <p>Assista a um anúncio rápido para nos apoiar e liberar este jogo agora!</p>
-        <a href="https://otieu.com/4/9935573" target="_blank" id="unlock-button" onclick="unlockVipGame()">Desbloquear!</a>
+        <button id="unlock-button" onclick="unlockVipGame()">Desbloquear!</button>
         <button id="close-modal" onclick="closeVipModal()">Agora não</button>
     </div>
   </div>
@@ -206,25 +208,31 @@
   <script>
     const iframe = document.getElementById('game-frame');
     const gameTitle = document.getElementById('game-title');
-    // Variáveis do sistema VIP
+    // --- LÓGICA DO SISTEMA VIP (ATUALIZADA) ---
     const vipModal = document.getElementById('vip-modal-overlay');
-    const vipTab = document.getElementById('vip-tab');
-    const vipGameKey = 'westernsniper';
-    let isVipUnlocked = false;
+    const adLink = 'https://otieu.com/4/9935573'; // Link do anúncio
+    let currentGameToUnlock = null; // Guarda qual jogo VIP estamos tentando desbloquear
+    
+    // Objeto para controlar o status de desbloqueio de cada jogo VIP
+    const vipUnlockStatus = {
+        westernsniper: false,
+        outcome: false
+    };
 
     const games = {
-        pacman: { title: 'Pac-Man', src: 'https://funhtml5games.com?embed=pacman' },
-        mazeblox: { title: 'Mazeblox', src: 'https://funhtml5games.com?embed=mazeblox' },
-        omnomrun: { title: 'Om Nom Run', src: 'https://play.famobi.com/om-nom-run' },
-        giantrush: { title: 'Giant Rush', src: 'https://play.famobi.com/giant-rush' },
-        westernsniper: { title: 'Western Sniper', src: 'https://play.famobi.com/western-sniper' }
+        pacman: { title: 'Pac-Man', src: 'https://funhtml5games.com?embed=pacman', isVip: false },
+        mazeblox: { title: 'Mazeblox', src: 'https://funhtml5games.com?embed=mazeblox', isVip: false },
+        omnomrun: { title: 'Om Nom Run', src: 'https://play.famobi.com/om-nom-run', isVip: false },
+        giantrush: { title: 'Giant Rush', src: 'https://play.famobi.com/giant-rush', isVip: false },
+        westernsniper: { title: 'Western Sniper', src: 'https://play.famobi.com/western-sniper', isVip: true },
+        outcome: { title: 'Outcome', src: 'https://play.famobi.com/outcome', isVip: true }
     };
 
     function switchGame(gameKey, tabElement) {
         if (games[gameKey]) {
-            // Se o jogador trocar para um jogo normal, bloqueia o VIP novamente
-            if (gameKey !== vipGameKey) {
-                resetVipStatus();
+            // Se o jogador trocar para um jogo normal, bloqueia TODOS os VIPs novamente
+            if (!games[gameKey].isVip) {
+                resetAllVipStatus();
             }
             iframe.src = games[gameKey].src;
             gameTitle.textContent = games[gameKey].title;
@@ -233,12 +241,11 @@
         }
     }
 
-    // --- NOVA LÓGICA PARA O JOGO VIP ---
-
-    function tryUnlockVipGame() {
-        if (isVipUnlocked) {
-            switchGame(vipGameKey, vipTab);
+    function tryUnlockVipGame(gameKey) {
+        if (vipUnlockStatus[gameKey]) {
+            switchGame(gameKey, document.getElementById('vip-tab-' + gameKey));
         } else {
+            currentGameToUnlock = gameKey; // Define qual jogo estamos tentando desbloquear
             vipModal.style.display = 'flex';
         }
     }
@@ -248,35 +255,37 @@
     }
 
     function unlockVipGame() {
-        // Esta função é chamada quando o jogador clica no botão de desbloqueio
-        isVipUnlocked = true;
-        closeVipModal();
-        vipTab.classList.remove('locked');
-        vipTab.innerHTML = 'Sniper 👑'; // Muda o ícone para coroa
-        
-        // Carrega o jogo VIP imediatamente
-        switchGame(vipGameKey, vipTab);
-    }
-
-    function resetVipStatus() {
-        isVipUnlocked = false;
-        vipTab.classList.add('locked');
-        vipTab.innerHTML = 'Sniper 🔒'; // Volta para o cadeado
-    }
-
-    // --- LÓGICA DE TELA CHEIA ---
-
-    function openFullscreen() {
-        const elem = document.getElementById("game-frame");
-        if (elem.requestFullscreen) {
-            elem.requestFullscreen();
-        } else if (elem.webkitRequestFullscreen) { /* Safari */
-            elem.webkitRequestFullscreen();
-        } else if (elem.msRequestFullscreen) { /* IE11 */
-            elem.msRequestFullscreen();
+        if (currentGameToUnlock) {
+            window.open(adLink, '_blank'); // Abre o anúncio
+            
+            vipUnlockStatus[currentGameToUnlock] = true; // Desbloqueia o jogo específico
+            closeVipModal();
+            
+            const vipTab = document.getElementById('vip-tab-' + currentGameToUnlock);
+            vipTab.classList.remove('locked');
+            vipTab.innerHTML = games[currentGameToUnlock].title.split(' ')[0] + ' 👑';
+            
+            switchGame(currentGameToUnlock, vipTab); // Carrega o jogo VIP imediatamente
         }
     }
 
+    function resetAllVipStatus() {
+        for (const gameKey in vipUnlockStatus) {
+            vipUnlockStatus[gameKey] = false;
+            const vipTab = document.getElementById('vip-tab-' + gameKey);
+            if (vipTab) {
+                vipTab.classList.add('locked');
+                vipTab.innerHTML = games[gameKey].title.split(' ')[0] + ' 🔒';
+            }
+        }
+    }
+
+    function openFullscreen() {
+        const elem = document.getElementById("game-frame");
+        if (elem.requestFullscreen) { elem.requestFullscreen(); } 
+        else if (elem.webkitRequestFullscreen) { elem.webkitRequestFullscreen(); } 
+        else if (elem.msRequestFullscreen) { elem.msRequestFullscreen(); }
+    }
   </script>
 </body>
 </html>
