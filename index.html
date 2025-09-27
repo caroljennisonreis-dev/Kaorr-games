@@ -12,27 +12,27 @@
   
   <title>🎮 Jogos do Kaorr</title>
   <style>
+    :root {
+      --primary-color: #FFD700;
+      --background-dark: #16222A;
+      --background-light: #3A6073;
+      --text-color: #fff;
+      --dark-grey: #4a4a4a;
+    }
     body {
       margin: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #1a1a2e;
-      background-image: linear-gradient(to bottom, #16222A, #3A6073);
+      background-image: linear-gradient(to bottom, var(--background-dark), var(--background-light));
       background-attachment: fixed;
-      background-size: cover;
-      color: #fff;
+      color: var(--text-color);
       text-align: center;
-      position: relative;
     }
     header {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 15px;
       padding: 20px;
       background: rgba(0,0,0,0.8);
-      font-size: 22px;
+      font-size: clamp(18px, 4vw, 22px); /* Responsive font size */
       font-family: 'Press Start 2P', cursive;
-      border-bottom: 2px solid #FFD700;
+      border-bottom: 2px solid var(--primary-color);
     }
     main {
       display: flex;
@@ -57,44 +57,49 @@
         gap: 10px;
         margin-bottom: 15px;
         flex-wrap: wrap;
+        min-height: 45px;
     }
     .tab {
         padding: 10px 15px;
         font-size: 16px;
         cursor: pointer;
-        border: 2px solid #FFD700;
+        border: 2px solid var(--primary-color);
         border-radius: 5px;
         background: transparent;
-        color: #FFD700;
+        color: var(--primary-color);
         font-weight: bold;
-        transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+        transition: all 0.2s ease-in-out; /* Transição suave */
     }
     .tab:hover, .tab.active {
-        background: #FFD700;
+        background: var(--primary-color);
         color: #000;
-        box-shadow: 0 0 15px #FFD700;
+        box-shadow: 0 0 15px var(--primary-color);
+        transform: translateY(-2px); /* Efeito de elevação */
     }
     .tab.locked {
-        background-color: #4a4a4a;
+        background-color: var(--dark-grey);
         color: #999;
         border-color: #777;
-        cursor: pointer;
     }
     .tab.locked:hover {
         background-color: #5a5a5a;
         box-shadow: 0 0 15px #999;
+        transform: translateY(-2px);
     }
-
     .iframe-container {
         width: 100%;
-        height: 300px;
+        padding-top: 56.25%; /* Proporção 16:9 para responsividade */
+        position: relative;
         border-radius: 10px;
         background-color: #000;
+        overflow: hidden;
     }
     iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
-      border-radius: 10px;
       border: none;
     }
     button {
@@ -104,19 +109,19 @@
       cursor: pointer;
       border: none;
       border-radius: 5px;
-      background: #FFD700;
+      background: var(--primary-color);
       color: #000;
       font-weight: bold;
-      transition: background 0.2s, box-shadow 0.2s;
+      transition: all 0.2s ease-in-out;
     }
     button:hover {
       background: #FFC700;
-      box-shadow: 0 0 15px #FFD700;
+      box-shadow: 0 0 15px var(--primary-color);
     }
     h2 {
       margin: 10px 0;
-      font-size: 24px;
-      color: #FFD700;
+      font-size: clamp(20px, 5vw, 24px); /* Responsive font size */
+      color: var(--primary-color);
       text-shadow: 2px 2px 5px rgba(0,0,0,0.8);
       font-family: 'Press Start 2P', cursive;
     }
@@ -124,54 +129,45 @@
       padding: 15px;
       background: rgba(0,0,0,0.8);
       font-size: 14px;
-      border-top: 2px solid #FFD700;
+      border-top: 2px solid var(--primary-color);
     }
-    a { color: #FFD700; text-decoration: none; }
+    a { color: var(--primary-color); text-decoration: none; }
     
-    #vip-modal-overlay {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0,0,0,0.8);
-        z-index: 2000;
-        justify-content: center;
+    .pagination {
+        display: flex;
         align-items: center;
-        padding: 20px;
-        box-sizing: border-box;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 20px;
+    }
+    .pagination button:disabled {
+        background-color: var(--dark-grey);
+        color: #999;
+        cursor: not-allowed;
+        box-shadow: none;
+        transform: none;
+    }
+    .pagination span {
+        font-size: 18px;
+        font-weight: bold;
+        color: var(--primary-color);
+        font-family: 'Press Start 2P', cursive;
+    }
+    #vip-modal-overlay {
+        display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background-color: rgba(0,0,0,0.8); z-index: 2000; justify-content: center;
+        align-items: center; padding: 20px; box-sizing: border-box;
     }
     #vip-modal-content {
-        background: #16222A;
-        padding: 30px;
-        border-radius: 15px;
-        border: 2px solid #FFD700;
-        max-width: 400px;
-        width: 100%;
-        box-shadow: 0 0 25px #FFD700;
+        background: var(--background-dark); padding: 30px; border-radius: 15px;
+        border: 2px solid var(--primary-color); max-width: 400px; width: 100%;
+        box-shadow: 0 0 25px var(--primary-color);
     }
-    #vip-modal-content h3 {
-        font-family: 'Press Start 2P', cursive;
-        margin-top: 0;
-    }
-    #unlock-button {
-        background: #007bff;
-        color: white;
-        border: none;
-        padding: 12px 25px;
-        font-size: 18px;
-        border-radius: 5px;
-        font-weight: bold;
-        margin-top: 15px;
-        transition: background 0.2s;
-        margin-right: 10px;
-        cursor: pointer;
-    }
+    #vip-modal-content h3 { font-family: 'Press Start 2P', cursive; margin-top: 0; }
+    #unlock-button { background: #007bff; color: white; margin-right: 10px; }
     #unlock-button:hover { background: #0056b3; }
     #close-modal { background: #6c757d; color: white; }
     #close-modal:hover { background: #5a6268; }
-
   </style>
 </head>
 <body>
@@ -181,22 +177,18 @@
   <header> 🎮 Jogos do Kaorr </header>
 
   <main>
-    <div class="game-tabs">
-        <div class="tab active" onclick="switchGame('pacman', this)">Pac-Man</div>
-        <div class="tab" onclick="switchGame('mazeblox', this)">Mazeblox</div>
-        <div class="tab" onclick="switchGame('omnomrun', this)">Om Nom Run</div>
-        <div class="tab" onclick="switchGame('giantrush', this)">Giant Rush</div>
-        <div class="tab locked" id="vip-tab-westernsniper" onclick="tryUnlockVipGame('westernsniper')">Sniper 🔒</div>
-        <div class="tab locked" id="vip-tab-outcome" onclick="tryUnlockVipGame('outcome')">Outcome 🔒</div>
-        <div class="tab locked" id="vip-tab-speedmaster" onclick="tryUnlockVipGame('speedmaster')">SpeedMaster 🔒</div>
-    </div>
-
+    <div class="game-tabs" id="game-tabs-container"></div>
     <div class="game-card">
-      <h2 id="game-title">Pac-Man</h2>
-      <div class="iframe-container" id="iframe-original-container">
-          <iframe id="game-frame" src="https://funhtml5games.com?embed=pacman" allowfullscreen></iframe>
+      <h2 id="game-title">Carregando...</h2>
+      <div class="iframe-container">
+          <iframe id="game-frame" src="" allowfullscreen></iframe>
       </div>
-      <button onclick="openFullscreen()">Tela Cheia</button>
+      <button id="fullscreen-btn">Tela Cheia</button>
+    </div>
+    <div class="pagination">
+        <button id="prev-page-btn">Anterior</button>
+        <span id="page-indicator"></span>
+        <button id="next-page-btn">Próxima</button>
     </div>
   </main>
 
@@ -204,8 +196,8 @@
     <div id="vip-modal-content">
         <h3>👑 Desbloquear Jogo VIP 👑</h3>
         <p>Assista a um anúncio rápido para nos apoiar e liberar este jogo agora!</p>
-        <button id="unlock-button" onclick="unlockVipGame()">Desbloquear!</button>
-        <button id="close-modal" onclick="closeVipModal()">Agora não</button>
+        <button id="unlock-button">Desbloquear!</button>
+        <button id="close-modal">Agora não</button>
     </div>
   </div>
 
@@ -215,19 +207,12 @@
   </footer>
 
   <script>
-    const iframe = document.getElementById('game-frame');
-    const gameTitle = document.getElementById('game-title');
-    const vipModal = document.getElementById('vip-modal-overlay');
-    const adLink = 'https://otieu.com/4/9935573'; // Link do anúncio
-    let currentGameToUnlock = null;
-
-    const vipUnlockStatus = {
-        westernsniper: false,
-        outcome: false,
-        speedmaster: false
-    };
-
-    const games = {
+    // ===================================================================================
+    // ÁREA DE CONFIGURAÇÃO - PARA ADICIONAR JOGOS, EDITE APENAS AQUI
+    // ===================================================================================
+    const GAMES_PER_PAGE = 4;
+    const AD_LINK = 'https://otieu.com/4/9935573';
+    const ALL_GAMES = {
         pacman: { title: 'Pac-Man', src: 'https://funhtml5games.com?embed=pacman', isVip: false },
         mazeblox: { title: 'Mazeblox', src: 'https://funhtml5games.com?embed=mazeblox', isVip: false },
         omnomrun: { title: 'Om Nom Run', src: 'https://play.famobi.com/om-nom-run', isVip: false },
@@ -235,65 +220,183 @@
         westernsniper: { title: 'Western Sniper', src: 'https://play.famobi.com/western-sniper', isVip: true },
         outcome: { title: 'Outcome', src: 'https://play.famobi.com/outcome', isVip: true },
         speedmaster: { title: 'Speed Master', src: 'https://play.famobi.com/speed-master', isVip: true }
+        // Para adicionar um novo jogo, coloque uma vírgula na linha de cima e adicione-o aqui.
+        // Exemplo:
+        // ,flappybird: { title: 'Flappy Bird', src: 'https://link-do-jogo.com', isVip: false }
+    };
+    // ===================================================================================
+
+    // --- Gerenciamento de Estado da Aplicação ---
+    const state = {
+      currentPage: 1,
+      gameKeys: Object.keys(ALL_GAMES),
+      totalPages: Math.ceil(Object.keys(ALL_GAMES).length / GAMES_PER_PAGE),
+      vipUnlockStatus: {},
+      currentGameToUnlock: null,
     };
 
-    function switchGame(gameKey, tabElement) {
-        if (games[gameKey]) {
-            if (!games[gameKey].isVip) {
-                resetAllVipStatus();
-            }
-            iframe.src = games[gameKey].src;
-            gameTitle.textContent = games[gameKey].title;
-            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-            tabElement.classList.add('active');
-        }
-    }
+    // --- Referências aos Elementos do DOM (HTML) ---
+    const dom = {
+      gameFrame: document.getElementById('game-frame'),
+      gameTitle: document.getElementById('game-title'),
+      gameTabsContainer: document.getElementById('game-tabs-container'),
+      pageIndicator: document.getElementById('page-indicator'),
+      prevBtn: document.getElementById('prev-page-btn'),
+      nextBtn: document.getElementById('next-page-btn'),
+      fullscreenBtn: document.getElementById('fullscreen-btn'),
+      vipModal: document.getElementById('vip-modal-overlay'),
+      unlockVipBtn: document.getElementById('unlock-button'),
+      closeModalBtn: document.getElementById('close-modal'),
+    };
 
-    function tryUnlockVipGame(gameKey) {
-        if (vipUnlockStatus[gameKey]) {
-            switchGame(gameKey, document.getElementById('vip-tab-' + gameKey));
+    // --- Funções de Renderização (desenham as coisas na tela) ---
+    
+    /**
+     * Renderiza as abas dos jogos para a página atual.
+     */
+    function renderGameTabs() {
+      dom.gameTabsContainer.innerHTML = '';
+      const startIndex = (state.currentPage - 1) * GAMES_PER_PAGE;
+      const gamesForCurrentPage = state.gameKeys.slice(startIndex, startIndex + GAMES_PER_PAGE);
+
+      if (gamesForCurrentPage.length === 0) {
+        dom.gameTabsContainer.innerHTML = '<p>Nenhum jogo encontrado.</p>';
+        return;
+      }
+      
+      gamesForCurrentPage.forEach(gameKey => {
+        const game = ALL_GAMES[gameKey];
+        const tab = document.createElement('div');
+        tab.className = 'tab';
+        tab.dataset.gameKey = gameKey;
+        
+        if (game.isVip) {
+          tab.id = `vip-tab-${gameKey}`;
+          if (state.vipUnlockStatus[gameKey]) {
+            tab.innerHTML = `${game.title.split(' ')[0]} 👑`;
+          } else {
+            tab.classList.add('locked');
+            tab.innerHTML = `${game.title.split(' ')[0]} 🔒`;
+          }
+          tab.addEventListener('click', () => handleVipGameClick(gameKey));
         } else {
-            currentGameToUnlock = gameKey;
-            vipModal.style.display = 'flex';
+          tab.innerHTML = game.title;
+          tab.addEventListener('click', () => switchGame(gameKey));
         }
+        dom.gameTabsContainer.appendChild(tab);
+      });
+      
+      // Carrega o primeiro jogo da página
+      switchGame(gamesForCurrentPage[0]);
     }
 
-    function closeVipModal() {
-        vipModal.style.display = 'none';
+    /**
+     * Renderiza os controles de paginação (botões e indicador de página).
+     */
+    function renderPagination() {
+      dom.pageIndicator.textContent = `Página ${state.currentPage} / ${state.totalPages || 1}`;
+      dom.prevBtn.disabled = state.currentPage === 1;
+      dom.nextBtn.disabled = state.currentPage === state.totalPages;
+    }
+
+    // --- Funções de Lógica e Ações ---
+
+    /**
+     * Troca o jogo exibido no iframe.
+     * @param {string} gameKey - A chave do jogo a ser carregado.
+     */
+    function switchGame(gameKey) {
+      if (!ALL_GAMES[gameKey]) return;
+
+      const game = ALL_GAMES[gameKey];
+      if (!game.isVip) resetAllVipStatus();
+      
+      dom.gameFrame.src = game.src;
+      dom.gameTitle.textContent = game.title;
+
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      const activeTab = document.querySelector(`.tab[data-game-key='${gameKey}']`);
+      if (activeTab) activeTab.classList.add('active');
+    }
+    
+    function handleVipGameClick(gameKey) {
+      if (state.vipUnlockStatus[gameKey]) {
+        switchGame(gameKey);
+      } else {
+        state.currentGameToUnlock = gameKey;
+        dom.vipModal.style.display = 'flex';
+      }
     }
 
     function unlockVipGame() {
-        if (currentGameToUnlock) {
-            window.open(adLink, '_blank');
-            
-            vipUnlockStatus[currentGameToUnlock] = true;
-            closeVipModal();
-            
-            const vipTab = document.getElementById('vip-tab-' + currentGameToUnlock);
-            vipTab.classList.remove('locked');
-            vipTab.innerHTML = games[currentGameToUnlock].title.split(' ')[0] + ' 👑';
-            
-            switchGame(currentGameToUnlock, vipTab);
-        }
+      if (state.currentGameToUnlock) {
+        window.open(AD_LINK, '_blank');
+        state.vipUnlockStatus[state.currentGameToUnlock] = true;
+        closeVipModal();
+        renderGameTabs(); // Re-renderiza para mostrar o cadeado aberto
+        switchGame(state.currentGameToUnlock);
+      }
+    }
+    
+    function closeVipModal() {
+      dom.vipModal.style.display = 'none';
+      state.currentGameToUnlock = null;
     }
 
     function resetAllVipStatus() {
-        for (const gameKey in vipUnlockStatus) {
-            vipUnlockStatus[gameKey] = false;
-            const vipTab = document.getElementById('vip-tab-' + gameKey);
-            if (vipTab) {
-                vipTab.classList.add('locked');
-                vipTab.innerHTML = games[gameKey].title.split(' ')[0] + ' 🔒';
-            }
+      let statusChanged = false;
+      for (const key in state.vipUnlockStatus) {
+        if (state.vipUnlockStatus[key]) {
+          state.vipUnlockStatus[key] = false;
+          statusChanged = true;
         }
+      }
+      if (statusChanged) renderGameTabs(); // Re-renderiza as abas se algum VIP foi resetado
     }
 
     function openFullscreen() {
-        const elem = document.getElementById("game-frame");
-        if (elem.requestFullscreen) { elem.requestFullscreen(); } 
-        else if (elem.webkitRequestFullscreen) { elem.webkitRequestFullscreen(); } 
-        else if (elem.msRequestFullscreen) { elem.msRequestFullscreen(); }
+      if (dom.gameFrame.requestFullscreen) dom.gameFrame.requestFullscreen();
+      else if (dom.gameFrame.webkitRequestFullscreen) dom.gameFrame.webkitRequestFullscreen();
+      else if (dom.gameFrame.msRequestFullscreen) dom.gameFrame.msRequestFullscreen();
     }
+
+    // --- Inicialização da Aplicação ---
+
+    /**
+     * Função principal que inicializa a aplicação.
+     */
+    function init() {
+      // Prepara o estado inicial do VIP
+      state.gameKeys.forEach(key => {
+        if (ALL_GAMES[key].isVip) state.vipUnlockStatus[key] = false;
+      });
+      
+      // Adiciona os listeners de eventos
+      dom.prevBtn.addEventListener('click', () => {
+        if (state.currentPage > 1) {
+          state.currentPage--;
+          renderGameTabs();
+          renderPagination();
+        }
+      });
+      dom.nextBtn.addEventListener('click', () => {
+        if (state.currentPage < state.totalPages) {
+          state.currentPage++;
+          renderGameTabs();
+          renderPagination();
+        }
+      });
+      dom.fullscreenBtn.addEventListener('click', openFullscreen);
+      dom.unlockVipBtn.addEventListener('click', unlockVipGame);
+      dom.closeModalBtn.addEventListener('click', closeVipModal);
+      
+      // Renderiza o estado inicial da página
+      renderGameTabs();
+      renderPagination();
+    }
+
+    // Dispara a inicialização quando o DOM estiver pronto
+    document.addEventListener('DOMContentLoaded', init);
   </script>
 </body>
 </html>
