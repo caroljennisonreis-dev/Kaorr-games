@@ -7,7 +7,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎮</text></svg>">
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   
   <title>🎮 Jogos do Kaorr</title>
@@ -220,13 +220,9 @@
         westernsniper: { title: 'Western Sniper', src: 'https://play.famobi.com/western-sniper', isVip: true },
         outcome: { title: 'Outcome', src: 'https://play.famobi.com/outcome', isVip: true },
         speedmaster: { title: 'Speed Master', src: 'https://play.famobi.com/speed-master', isVip: true }
-        // Para adicionar um novo jogo, coloque uma vírgula na linha de cima e adicione-o aqui.
-        // Exemplo:
-        // ,flappybird: { title: 'Flappy Bird', src: 'https://link-do-jogo.com', isVip: false }
     };
     // ===================================================================================
 
-    // --- Gerenciamento de Estado da Aplicação ---
     const state = {
       currentPage: 1,
       gameKeys: Object.keys(ALL_GAMES),
@@ -235,7 +231,6 @@
       currentGameToUnlock: null,
     };
 
-    // --- Referências aos Elementos do DOM (HTML) ---
     const dom = {
       gameFrame: document.getElementById('game-frame'),
       gameTitle: document.getElementById('game-title'),
@@ -249,8 +244,6 @@
       closeModalBtn: document.getElementById('close-modal'),
     };
 
-    // --- Funções de Renderização (desenham as coisas na tela) ---
-    
     /**
      * Renderiza as abas dos jogos para a página atual.
      */
@@ -286,25 +279,37 @@
         dom.gameTabsContainer.appendChild(tab);
       });
       
-      // Carrega o primeiro jogo da página
-      switchGame(gamesForCurrentPage[0]);
+      // >>>>> INÍCIO DA CORREÇÃO DO BUG <<<<<
+      // Carrega o primeiro jogo da página, respeitando o status VIP
+      if (gamesForCurrentPage.length > 0) {
+          const firstGameKey = gamesForCurrentPage[0];
+          const firstGame = ALL_GAMES[firstGameKey];
+
+          // Marca a aba como ativa visualmente
+          document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+          const activeTab = document.querySelector(`.tab[data-game-key='${firstGameKey}']`);
+          if (activeTab) activeTab.classList.add('active');
+
+          if (firstGame.isVip && !state.vipUnlockStatus[firstGameKey]) {
+              // Se o primeiro jogo for VIP e estiver BLOQUEADO:
+              // 1. Apenas mostre o título.
+              // 2. Limpe o iframe para não mostrar o jogo anterior.
+              dom.gameTitle.textContent = firstGame.title;
+              dom.gameFrame.src = 'about:blank'; // 'about:blank' é uma página em branco segura
+          } else {
+              // Se for um jogo grátis ou um VIP já desbloqueado, carregue normalmente
+              switchGame(firstGameKey);
+          }
+      }
+      // >>>>> FIM DA CORREÇÃO DO BUG <<<<<
     }
 
-    /**
-     * Renderiza os controles de paginação (botões e indicador de página).
-     */
     function renderPagination() {
       dom.pageIndicator.textContent = `Página ${state.currentPage} / ${state.totalPages || 1}`;
       dom.prevBtn.disabled = state.currentPage === 1;
       dom.nextBtn.disabled = state.currentPage === state.totalPages;
     }
 
-    // --- Funções de Lógica e Ações ---
-
-    /**
-     * Troca o jogo exibido no iframe.
-     * @param {string} gameKey - A chave do jogo a ser carregado.
-     */
     function switchGame(gameKey) {
       if (!ALL_GAMES[gameKey]) return;
 
@@ -333,7 +338,7 @@
         window.open(AD_LINK, '_blank');
         state.vipUnlockStatus[state.currentGameToUnlock] = true;
         closeVipModal();
-        renderGameTabs(); // Re-renderiza para mostrar o cadeado aberto
+        renderGameTabs();
         switchGame(state.currentGameToUnlock);
       }
     }
@@ -351,7 +356,7 @@
           statusChanged = true;
         }
       }
-      if (statusChanged) renderGameTabs(); // Re-renderiza as abas se algum VIP foi resetado
+      if (statusChanged) renderGameTabs();
     }
 
     function openFullscreen() {
@@ -360,18 +365,11 @@
       else if (dom.gameFrame.msRequestFullscreen) dom.gameFrame.msRequestFullscreen();
     }
 
-    // --- Inicialização da Aplicação ---
-
-    /**
-     * Função principal que inicializa a aplicação.
-     */
     function init() {
-      // Prepara o estado inicial do VIP
       state.gameKeys.forEach(key => {
         if (ALL_GAMES[key].isVip) state.vipUnlockStatus[key] = false;
       });
       
-      // Adiciona os listeners de eventos
       dom.prevBtn.addEventListener('click', () => {
         if (state.currentPage > 1) {
           state.currentPage--;
@@ -390,12 +388,10 @@
       dom.unlockVipBtn.addEventListener('click', unlockVipGame);
       dom.closeModalBtn.addEventListener('click', closeVipModal);
       
-      // Renderiza o estado inicial da página
       renderGameTabs();
       renderPagination();
     }
 
-    // Dispara a inicialização quando o DOM estiver pronto
     document.addEventListener('DOMContentLoaded', init);
   </script>
 </body>
