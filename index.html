@@ -245,7 +245,7 @@
             dom.dailyVipButton.textContent = `VIP Ativo: ${formatTime(remaining)}`;
             dom.dailyVipButton.disabled = true;
         } else {
-            if(state.isVipPassActive) { // Se o VIP acabou de expirar, atualiza a tela
+            if(state.isVipPassActive) {
                 state.isVipPassActive = false;
                 renderGameTabs();
             }
@@ -256,8 +256,10 @@
             } else {
                 dom.dailyVipButton.textContent = '🎁 Resgatar VIP Diário!';
                 dom.dailyVipButton.disabled = false;
-                clearInterval(state.countdownInterval);
-                state.countdownInterval = null;
+                if (state.countdownInterval) {
+                  clearInterval(state.countdownInterval);
+                  state.countdownInterval = null;
+                }
             }
         }
     }
@@ -290,6 +292,12 @@
     function handleGameSelection(gameKey) {
         if (!CONFIG.ALL_GAMES[gameKey]) return;
         const game = CONFIG.ALL_GAMES[gameKey];
+        
+        // >>>>> CORREÇÃO DO BUG ANTERIOR (MOVIDA PARA CÁ) <<<<<
+        if (!game.isVip) {
+          resetAllVipStatus();
+        }
+
         dom.gameTitle.textContent = game.title;
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
         const activeTab = document.querySelector(`.tab[data-game-key='${gameKey}']`);
@@ -304,7 +312,6 @@
             dom.vipPlaceholder.classList.remove('show');
             dom.gameFrame.style.display = 'block';
             dom.gameFrame.src = game.src;
-            if(!game.isVip) resetAllVipStatus();
         }
     }
 
@@ -326,7 +333,9 @@
       if (state.currentGameToUnlock) {
         window.open(CONFIG.AD_LINK, '_blank');
         state.vipUnlockStatus[state.currentGameToUnlock] = true;
-        closeVipModal(); renderGameTabs(); switchGame(state.currentGameToUnlock);
+        closeVipModal(); 
+        renderGameTabs(); 
+        handleGameSelection(state.currentGameToUnlock);
       }
     }
     
@@ -335,9 +344,12 @@
     function resetAllVipStatus() {
       let statusChanged = false;
       for (const key in state.vipUnlockStatus) {
-        if (state.vipUnlockStatus[key]) { state.vipUnlockStatus[key] = false; statusChanged = true; }
+        if (state.vipUnlockStatus[key]) { 
+          state.vipUnlockStatus[key] = false; 
+          statusChanged = true; 
+        }
       }
-      if (statusChanged && !state.isVipPassActive) renderGameTabs();
+      if (statusChanged) renderGameTabs();
     }
 
     function openFullscreen() {
@@ -376,7 +388,6 @@
         renderGameTabs();
     }
 
-    // --- CORREÇÃO DO BUG ESTÁ AQUI ---
     function init() {
       state.gameKeys.forEach(key => {
         if (CONFIG.ALL_GAMES[key].isVip) state.vipUnlockStatus[key] = false;
@@ -385,13 +396,13 @@
       dom.prevBtn.addEventListener('click', () => {
         if (state.currentPage > 1) { 
           state.currentPage--; 
-          renderPage(); // Use a função unificada
+          renderPage();
         }
       });
       dom.nextBtn.addEventListener('click', () => {
         if (state.currentPage < state.totalPages) { 
           state.currentPage++; 
-          renderPage(); // Use a função unificada
+          renderPage();
         }
       });
       dom.fullscreenBtn.addEventListener('click', openFullscreen);
@@ -401,7 +412,6 @@
       dom.adFlowButton.addEventListener('click', handleAdFlowClick);
       dom.adFlowClose.addEventListener('click', () => dom.adFlowModal.style.display = 'none');
       
-      // Nova função unificada para renderizar a página
       function renderPage() {
           renderGameTabs();
           renderPagination();
@@ -412,7 +422,7 @@
           state.countdownInterval = setInterval(updateCountdown, 1000);
       }
 
-      renderPage(); // Primeira renderização da página
+      renderPage();
     }
 
     document.addEventListener('DOMContentLoaded', init);
