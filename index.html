@@ -201,7 +201,6 @@
             outcome: { title: 'Outcome', src: 'https://play.famobi.com/outcome', isVip: true },
             speedmaster: { title: 'Speed Master', src: 'https://play.famobi.com/speed-master', isVip: true },
             mestredogatilho: { title: 'Mestre do Gatilho', src: 'https://play.famobi.com/gun-spin', isVip: true },
-            // >>>>> AQUI ESTÁ A CORREÇÃO COM O NOVO LINK <<<<<
             dantheman: { title: 'Dan The Man', src: 'https://html5.gamedistribution.com/3d11dfed72a04e00ae9a43ab3fd49bd6/?gd_sdk_referrer_url=https://kaorr-games.vercel.app/', isVip: true }
         }
     };
@@ -246,7 +245,10 @@
             dom.dailyVipButton.textContent = `VIP Ativo: ${formatTime(remaining)}`;
             dom.dailyVipButton.disabled = true;
         } else {
-            state.isVipPassActive = false;
+            if(state.isVipPassActive) { // Se o VIP acabou de expirar, atualiza a tela
+                state.isVipPassActive = false;
+                renderGameTabs();
+            }
             if (now < cooldownExpiry) {
                 const remaining = (cooldownExpiry - now) / 1000;
                 dom.dailyVipButton.textContent = `Prêmio em: ${formatTime(remaining)}`;
@@ -309,7 +311,7 @@
     function renderPagination() {
       dom.pageIndicator.textContent = `Página ${state.currentPage} / ${state.totalPages || 1}`;
       dom.prevBtn.disabled = state.currentPage === 1;
-      dom.nextBtn.disabled = state.totalPages;
+      dom.nextBtn.disabled = state.currentPage === state.totalPages;
     }
     
     function switchGame(gameKey) { handleGameSelection(gameKey); }
@@ -374,16 +376,23 @@
         renderGameTabs();
     }
 
+    // --- CORREÇÃO DO BUG ESTÁ AQUI ---
     function init() {
       state.gameKeys.forEach(key => {
         if (CONFIG.ALL_GAMES[key].isVip) state.vipUnlockStatus[key] = false;
       });
       
       dom.prevBtn.addEventListener('click', () => {
-        if (state.currentPage > 1) { state.currentPage--; renderGameTabs(); renderPagination(); }
+        if (state.currentPage > 1) { 
+          state.currentPage--; 
+          renderPage(); // Use a função unificada
+        }
       });
       dom.nextBtn.addEventListener('click', () => {
-        if (state.currentPage < state.totalPages) { state.currentPage++; renderGameTabs(); renderPagination(); }
+        if (state.currentPage < state.totalPages) { 
+          state.currentPage++; 
+          renderPage(); // Use a função unificada
+        }
       });
       dom.fullscreenBtn.addEventListener('click', openFullscreen);
       dom.unlockVipBtn.addEventListener('click', unlockVipGame);
@@ -392,13 +401,18 @@
       dom.adFlowButton.addEventListener('click', handleAdFlowClick);
       dom.adFlowClose.addEventListener('click', () => dom.adFlowModal.style.display = 'none');
       
+      // Nova função unificada para renderizar a página
+      function renderPage() {
+          renderGameTabs();
+          renderPagination();
+      }
+
       updateCountdown();
       if (!state.countdownInterval) {
           state.countdownInterval = setInterval(updateCountdown, 1000);
       }
 
-      renderGameTabs();
-      renderPagination();
+      renderPage(); // Primeira renderização da página
     }
 
     document.addEventListener('DOMContentLoaded', init);
