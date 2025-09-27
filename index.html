@@ -30,128 +30,102 @@
     header {
       padding: 20px;
       background: rgba(0,0,0,0.8);
-      font-size: clamp(18px, 4vw, 22px); /* Responsive font size */
+      font-size: clamp(18px, 4vw, 22px);
       font-family: 'Press Start 2P', cursive;
       border-bottom: 2px solid var(--primary-color);
     }
     main {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px;
-      justify-content: center;
-      min-height: calc(100vh - 155px);
-      box-sizing: border-box;
+      display: flex; flex-direction: column; align-items: center; padding: 20px;
+      justify-content: center; min-height: calc(100vh - 155px); box-sizing: border-box;
     }
     .game-card {
-      background: rgba(0,0,0,0.7);
-      border-radius: 15px;
-      padding: 15px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.8);
-      width: 100%;
-      max-width: 600px;
+      background: rgba(0,0,0,0.7); border-radius: 15px; padding: 15px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.8); width: 100%; max-width: 600px;
     }
     .game-tabs {
-        display: flex;
-        justify-content: center;
-        gap: 10px;
-        margin-bottom: 15px;
-        flex-wrap: wrap;
-        min-height: 45px;
+        display: flex; justify-content: center; gap: 10px;
+        margin-bottom: 15px; flex-wrap: wrap; min-height: 45px;
     }
     .tab {
-        padding: 10px 15px;
-        font-size: 16px;
-        cursor: pointer;
-        border: 2px solid var(--primary-color);
-        border-radius: 5px;
-        background: transparent;
-        color: var(--primary-color);
-        font-weight: bold;
-        transition: all 0.2s ease-in-out; /* Transição suave */
+        padding: 10px 15px; font-size: 16px; cursor: pointer;
+        border: 2px solid var(--primary-color); border-radius: 5px;
+        background: transparent; color: var(--primary-color); font-weight: bold;
+        transition: all 0.2s ease-in-out;
     }
     .tab:hover, .tab.active {
-        background: var(--primary-color);
-        color: #000;
-        box-shadow: 0 0 15px var(--primary-color);
-        transform: translateY(-2px); /* Efeito de elevação */
+        background: var(--primary-color); color: #000;
+        box-shadow: 0 0 15px var(--primary-color); transform: translateY(-2px);
     }
     .tab.locked {
-        background-color: var(--dark-grey);
-        color: #999;
-        border-color: #777;
+        background-color: var(--dark-grey); color: #999; border-color: #777;
     }
     .tab.locked:hover {
-        background-color: #5a5a5a;
-        box-shadow: 0 0 15px #999;
-        transform: translateY(-2px);
+        background-color: #5a5a5a; box-shadow: 0 0 15px #999; transform: translateY(-2px);
     }
     .iframe-container {
-        width: 100%;
-        padding-top: 56.25%; /* Proporção 16:9 para responsividade */
-        position: relative;
-        border-radius: 10px;
-        background-color: #000;
-        overflow: hidden;
+        width: 100%; padding-top: 56.25%; position: relative;
+        border-radius: 10px; background-color: #000; overflow: hidden;
     }
     iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      border: none;
+      position: absolute; top: 0; left: 0;
+      width: 100%; height: 100%; border: none;
     }
+    /* --- INÍCIO: ESTILO DO NOVO PLACEHOLDER VIP --- */
+    .vip-placeholder {
+        display: none; /* Começa escondido */
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(4px);
+        color: var(--primary-color);
+        text-align: center;
+    }
+    .vip-placeholder.show {
+        display: flex; /* Classe que o torna visível */
+    }
+    .vip-placeholder h3 {
+        font-family: 'Press Start 2P', cursive;
+        font-size: clamp(16px, 4vw, 20px);
+        margin: 0 0 15px 0;
+    }
+    .vip-placeholder .unlock-button-placeholder {
+        padding: 12px 25px;
+        font-size: 18px;
+        font-weight: bold;
+        background: #007bff;
+        color: white;
+    }
+     /* --- FIM: ESTILO DO NOVO PLACEHOLDER VIP --- */
     button {
-      margin-top: 10px;
-      padding: 10px 20px;
-      font-size: 16px;
-      cursor: pointer;
-      border: none;
-      border-radius: 5px;
-      background: var(--primary-color);
-      color: #000;
-      font-weight: bold;
-      transition: all 0.2s ease-in-out;
+      margin-top: 10px; padding: 10px 20px; font-size: 16px; cursor: pointer;
+      border: none; border-radius: 5px; background: var(--primary-color); color: #000;
+      font-weight: bold; transition: all 0.2s ease-in-out;
     }
-    button:hover {
-      background: #FFC700;
-      box-shadow: 0 0 15px var(--primary-color);
-    }
+    button:hover { background: #FFC700; box-shadow: 0 0 15px var(--primary-color); }
     h2 {
-      margin: 10px 0;
-      font-size: clamp(20px, 5vw, 24px); /* Responsive font size */
-      color: var(--primary-color);
-      text-shadow: 2px 2px 5px rgba(0,0,0,0.8);
-      font-family: 'Press Start 2P', cursive;
+      margin: 10px 0; font-size: clamp(20px, 5vw, 24px); color: var(--primary-color);
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.8); font-family: 'Press Start 2P', cursive;
     }
     footer {
-      padding: 15px;
-      background: rgba(0,0,0,0.8);
-      font-size: 14px;
+      padding: 15px; background: rgba(0,0,0,0.8); font-size: 14px;
       border-top: 2px solid var(--primary-color);
     }
     a { color: var(--primary-color); text-decoration: none; }
     
     .pagination {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 15px;
-        margin-top: 20px;
+        display: flex; align-items: center; justify-content: center;
+        gap: 15px; margin-top: 20px;
     }
     .pagination button:disabled {
-        background-color: var(--dark-grey);
-        color: #999;
-        cursor: not-allowed;
-        box-shadow: none;
-        transform: none;
+        background-color: var(--dark-grey); color: #999;
+        cursor: not-allowed; box-shadow: none; transform: none;
     }
     .pagination span {
-        font-size: 18px;
-        font-weight: bold;
-        color: var(--primary-color);
-        font-family: 'Press Start 2P', cursive;
+        font-size: 18px; font-weight: bold;
+        color: var(--primary-color); font-family: 'Press Start 2P', cursive;
     }
     #vip-modal-overlay {
         display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -171,16 +145,17 @@
   </style>
 </head>
 <body>
-
   <script>(function(s){s.dataset.zone='9932995',s.src='https://groleegni.net/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
-
   <header> 🎮 Jogos do Kaorr </header>
-
   <main>
     <div class="game-tabs" id="game-tabs-container"></div>
     <div class="game-card">
       <h2 id="game-title">Carregando...</h2>
       <div class="iframe-container">
+          <div id="vip-placeholder" class="vip-placeholder">
+              <h3>👑 Jogo VIP Bloqueado 👑</h3>
+              <button id="placeholder-unlock-btn" class="unlock-button-placeholder">Desbloquear Jogo!</button>
+          </div>
           <iframe id="game-frame" src="" allowfullscreen></iframe>
       </div>
       <button id="fullscreen-btn">Tela Cheia</button>
@@ -207,9 +182,6 @@
   </footer>
 
   <script>
-    // ===================================================================================
-    // ÁREA DE CONFIGURAÇÃO - PARA ADICIONAR JOGOS, EDITE APENAS AQUI
-    // ===================================================================================
     const GAMES_PER_PAGE = 4;
     const AD_LINK = 'https://otieu.com/4/9935573';
     const ALL_GAMES = {
@@ -221,14 +193,11 @@
         outcome: { title: 'Outcome', src: 'https://play.famobi.com/outcome', isVip: true },
         speedmaster: { title: 'Speed Master', src: 'https://play.famobi.com/speed-master', isVip: true }
     };
-    // ===================================================================================
 
     const state = {
-      currentPage: 1,
-      gameKeys: Object.keys(ALL_GAMES),
+      currentPage: 1, gameKeys: Object.keys(ALL_GAMES),
       totalPages: Math.ceil(Object.keys(ALL_GAMES).length / GAMES_PER_PAGE),
-      vipUnlockStatus: {},
-      currentGameToUnlock: null,
+      vipUnlockStatus: {}, currentGameToUnlock: null,
     };
 
     const dom = {
@@ -236,17 +205,16 @@
       gameTitle: document.getElementById('game-title'),
       gameTabsContainer: document.getElementById('game-tabs-container'),
       pageIndicator: document.getElementById('page-indicator'),
-      prevBtn: document.getElementById('prev-page-btn'),
-      nextBtn: document.getElementById('next-page-btn'),
+      prevBtn: document.getElementById('prev-page-btn'), nextBtn: document.getElementById('next-page-btn'),
       fullscreenBtn: document.getElementById('fullscreen-btn'),
       vipModal: document.getElementById('vip-modal-overlay'),
       unlockVipBtn: document.getElementById('unlock-button'),
       closeModalBtn: document.getElementById('close-modal'),
+      // Nova referência para o placeholder
+      vipPlaceholder: document.getElementById('vip-placeholder'),
+      placeholderUnlockBtn: document.getElementById('placeholder-unlock-btn'),
     };
 
-    /**
-     * Renderiza as abas dos jogos para a página atual.
-     */
     function renderGameTabs() {
       dom.gameTabsContainer.innerHTML = '';
       const startIndex = (state.currentPage - 1) * GAMES_PER_PAGE;
@@ -260,17 +228,11 @@
       gamesForCurrentPage.forEach(gameKey => {
         const game = ALL_GAMES[gameKey];
         const tab = document.createElement('div');
-        tab.className = 'tab';
-        tab.dataset.gameKey = gameKey;
-        
+        tab.className = 'tab'; tab.dataset.gameKey = gameKey;
         if (game.isVip) {
           tab.id = `vip-tab-${gameKey}`;
-          if (state.vipUnlockStatus[gameKey]) {
-            tab.innerHTML = `${game.title.split(' ')[0]} 👑`;
-          } else {
-            tab.classList.add('locked');
-            tab.innerHTML = `${game.title.split(' ')[0]} 🔒`;
-          }
+          tab.innerHTML = state.vipUnlockStatus[gameKey] ? `${game.title.split(' ')[0]} 👑` : `${game.title.split(' ')[0]} 🔒`;
+          if (!state.vipUnlockStatus[gameKey]) tab.classList.add('locked');
           tab.addEventListener('click', () => handleVipGameClick(gameKey));
         } else {
           tab.innerHTML = game.title;
@@ -279,29 +241,35 @@
         dom.gameTabsContainer.appendChild(tab);
       });
       
-      // >>>>> INÍCIO DA CORREÇÃO DO BUG <<<<<
-      // Carrega o primeiro jogo da página, respeitando o status VIP
       if (gamesForCurrentPage.length > 0) {
           const firstGameKey = gamesForCurrentPage[0];
-          const firstGame = ALL_GAMES[firstGameKey];
-
-          // Marca a aba como ativa visualmente
-          document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-          const activeTab = document.querySelector(`.tab[data-game-key='${firstGameKey}']`);
-          if (activeTab) activeTab.classList.add('active');
-
-          if (firstGame.isVip && !state.vipUnlockStatus[firstGameKey]) {
-              // Se o primeiro jogo for VIP e estiver BLOQUEADO:
-              // 1. Apenas mostre o título.
-              // 2. Limpe o iframe para não mostrar o jogo anterior.
-              dom.gameTitle.textContent = firstGame.title;
-              dom.gameFrame.src = 'about:blank'; // 'about:blank' é uma página em branco segura
-          } else {
-              // Se for um jogo grátis ou um VIP já desbloqueado, carregue normalmente
-              switchGame(firstGameKey);
-          }
+          handleGameSelection(firstGameKey);
       }
-      // >>>>> FIM DA CORREÇÃO DO BUG <<<<<
+    }
+    
+    // >> NOVA FUNÇÃO CENTRALIZADA para lidar com a seleção de um jogo
+    function handleGameSelection(gameKey) {
+        if (!ALL_GAMES[gameKey]) return;
+        const game = ALL_GAMES[gameKey];
+
+        dom.gameTitle.textContent = game.title;
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        const activeTab = document.querySelector(`.tab[data-game-key='${gameKey}']`);
+        if (activeTab) activeTab.classList.add('active');
+
+        if (game.isVip && !state.vipUnlockStatus[gameKey]) {
+            // Se for VIP e bloqueado, mostra o placeholder
+            dom.gameFrame.style.display = 'none';
+            dom.vipPlaceholder.classList.add('show');
+            // Associa o botão do placeholder ao jogo atual
+            dom.placeholderUnlockBtn.onclick = () => handleVipGameClick(gameKey);
+        } else {
+            // Se for grátis ou VIP desbloqueado, mostra o jogo
+            dom.vipPlaceholder.classList.remove('show');
+            dom.gameFrame.style.display = 'block';
+            dom.gameFrame.src = game.src;
+            if(!game.isVip) resetAllVipStatus();
+        }
     }
 
     function renderPagination() {
@@ -309,19 +277,10 @@
       dom.prevBtn.disabled = state.currentPage === 1;
       dom.nextBtn.disabled = state.currentPage === state.totalPages;
     }
-
+    
+    // >> FUNÇÃO SWITCHGAME SIMPLIFICADA
     function switchGame(gameKey) {
-      if (!ALL_GAMES[gameKey]) return;
-
-      const game = ALL_GAMES[gameKey];
-      if (!game.isVip) resetAllVipStatus();
-      
-      dom.gameFrame.src = game.src;
-      dom.gameTitle.textContent = game.title;
-
-      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-      const activeTab = document.querySelector(`.tab[data-game-key='${gameKey}']`);
-      if (activeTab) activeTab.classList.add('active');
+        handleGameSelection(gameKey);
     }
     
     function handleVipGameClick(gameKey) {
