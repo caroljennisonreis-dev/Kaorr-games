@@ -18,20 +18,16 @@
       --background-light: #3A6073;
       --text-color: #fff;
       --dark-grey: #4a4a4a;
+      --blue-action: #007bff;
     }
     body {
-      margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-image: linear-gradient(to bottom, var(--background-dark), var(--background-light));
-      background-attachment: fixed;
-      color: var(--text-color);
-      text-align: center;
+      background-attachment: fixed; color: var(--text-color); text-align: center;
     }
     header {
-      padding: 20px;
-      background: rgba(0,0,0,0.8);
-      font-size: clamp(18px, 4vw, 22px);
-      font-family: 'Press Start 2P', cursive;
+      padding: 20px; background: rgba(0,0,0,0.8);
+      font-size: clamp(18px, 4vw, 22px); font-family: 'Press Start 2P', cursive;
       border-bottom: 2px solid var(--primary-color);
     }
     main {
@@ -42,61 +38,68 @@
       background: rgba(0,0,0,0.7); border-radius: 15px; padding: 15px;
       box-shadow: 0 0 15px rgba(0,0,0,0.8); width: 100%; max-width: 600px;
     }
+    /* --- INÍCIO: ESTILOS DO BOTÃO VIP DIÁRIO --- */
+    .daily-vip-container {
+        margin-bottom: 20px;
+        width: 100%;
+        max-width: 600px;
+    }
+    #daily-vip-button {
+        width: 100%;
+        padding: 15px;
+        font-size: 18px;
+        font-weight: bold;
+        font-family: 'Press Start 2P', cursive;
+        border: 2px solid var(--primary-color);
+        border-radius: 10px;
+        background: linear-gradient(45deg, #ffc107, #ffeb3b);
+        color: #000;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+    }
+    #daily-vip-button:hover:not(:disabled) {
+        transform: scale(1.02);
+        box-shadow: 0 6px 20px rgba(255, 215, 0, 0.6);
+    }
+    #daily-vip-button:disabled {
+        background: var(--dark-grey);
+        border-color: #777;
+        color: #aaa;
+        cursor: not-allowed;
+        box-shadow: none;
+    }
+    /* --- FIM: ESTILOS DO BOTÃO VIP DIÁRIO --- */
     .game-tabs {
         display: flex; justify-content: center; gap: 10px;
         margin-bottom: 15px; flex-wrap: wrap; min-height: 45px;
     }
     .tab {
-        padding: 10px 15px; font-size: 16px; cursor: pointer;
-        border: 2px solid var(--primary-color); border-radius: 5px;
-        background: transparent; color: var(--primary-color); font-weight: bold;
+        padding: 10px 15px; font-size: 16px; cursor: pointer; border: 2px solid var(--primary-color);
+        border-radius: 5px; background: transparent; color: var(--primary-color); font-weight: bold;
         transition: all 0.2s ease-in-out;
     }
     .tab:hover, .tab.active {
         background: var(--primary-color); color: #000;
         box-shadow: 0 0 15px var(--primary-color); transform: translateY(-2px);
     }
-    .tab.locked {
-        background-color: var(--dark-grey); color: #999; border-color: #777;
-    }
-    .tab.locked:hover {
-        background-color: #5a5a5a; box-shadow: 0 0 15px #999; transform: translateY(-2px);
-    }
+    .tab.locked { background-color: var(--dark-grey); color: #999; border-color: #777; }
+    .tab.locked:hover { background-color: #5a5a5a; box-shadow: 0 0 15px #999; }
     .iframe-container {
         width: 100%; padding-top: 56.25%; position: relative;
         border-radius: 10px; background-color: #000; overflow: hidden;
     }
-    iframe {
-      position: absolute; top: 0; left: 0;
-      width: 100%; height: 100%; border: none;
-    }
+    iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
     .vip-placeholder {
-        display: none;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        position: absolute;
-        top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(0, 0, 0, 0.7);
-        backdrop-filter: blur(4px);
-        color: var(--primary-color);
-        text-align: center;
+        display: none; flex-direction: column; justify-content: center; align-items: center;
+        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(4px);
+        color: var(--primary-color); text-align: center;
     }
-    .vip-placeholder.show {
-        display: flex;
-    }
-    .vip-placeholder h3 {
-        font-family: 'Press Start 2P', cursive;
-        font-size: clamp(16px, 4vw, 20px);
-        margin: 0 0 15px 0;
-    }
-    .vip-placeholder .unlock-button-placeholder {
-        padding: 12px 25px;
-        font-size: 18px;
-        font-weight: bold;
-        background: #007bff;
-        color: white;
-    }
+    .vip-placeholder.show { display: flex; }
+    .vip-placeholder h3 { font-family: 'Press Start 2P', cursive; font-size: clamp(16px, 4vw, 20px); margin: 0 0 15px 0; }
+    .vip-placeholder .unlock-button-placeholder { padding: 12px 25px; font-size: 18px; font-weight: bold; background: var(--blue-action); color: white; }
     button {
       margin-top: 10px; padding: 10px 20px; font-size: 16px; cursor: pointer;
       border: none; border-radius: 5px; background: var(--primary-color); color: #000;
@@ -107,39 +110,29 @@
       margin: 10px 0; font-size: clamp(20px, 5vw, 24px); color: var(--primary-color);
       text-shadow: 2px 2px 5px rgba(0,0,0,0.8); font-family: 'Press Start 2P', cursive;
     }
-    footer {
-      padding: 15px; background: rgba(0,0,0,0.8); font-size: 14px;
-      border-top: 2px solid var(--primary-color);
-    }
+    footer { padding: 15px; background: rgba(0,0,0,0.8); font-size: 14px; border-top: 2px solid var(--primary-color); }
     a { color: var(--primary-color); text-decoration: none; }
     
-    .pagination {
-        display: flex; align-items: center; justify-content: center;
-        gap: 15px; margin-top: 20px;
-    }
-    .pagination button:disabled {
-        background-color: var(--dark-grey); color: #999;
-        cursor: not-allowed; box-shadow: none; transform: none;
-    }
-    .pagination span {
-        font-size: 18px; font-weight: bold;
-        color: var(--primary-color); font-family: 'Press Start 2P', cursive;
-    }
-    #vip-modal-overlay {
+    .pagination { display: flex; align-items: center; justify-content: center; gap: 15px; margin-top: 20px; }
+    .pagination button:disabled { background-color: var(--dark-grey); color: #999; cursor: not-allowed; box-shadow: none; transform: none; }
+    .pagination span { font-size: 18px; font-weight: bold; color: var(--primary-color); font-family: 'Press Start 2P', cursive; }
+    
+    /* Base para Modals (VIP e Anúncios) */
+    .modal-overlay {
         display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
         background-color: rgba(0,0,0,0.8); z-index: 2000; justify-content: center;
         align-items: center; padding: 20px; box-sizing: border-box;
     }
-    #vip-modal-content {
+    .modal-content {
         background: var(--background-dark); padding: 30px; border-radius: 15px;
         border: 2px solid var(--primary-color); max-width: 400px; width: 100%;
         box-shadow: 0 0 25px var(--primary-color);
     }
-    #vip-modal-content h3 { font-family: 'Press Start 2P', cursive; margin-top: 0; }
-    #unlock-button { background: #007bff; color: white; margin-right: 10px; }
-    #unlock-button:hover { background: #0056b3; }
-    #close-modal { background: #6c757d; color: white; }
-    #close-modal:hover { background: #5a6268; }
+    .modal-content h3 { font-family: 'Press Start 2P', cursive; margin-top: 0; }
+    #unlock-button, #ad-flow-button { background: var(--blue-action); color: white; margin-right: 10px; }
+    #unlock-button:hover, #ad-flow-button:hover { background: #0056b3; }
+    #close-modal, #ad-flow-close { background: #6c757d; color: white; }
+    #close-modal:hover, #ad-flow-close:hover { background: #5a6268; }
   </style>
 </head>
 <body>
@@ -149,6 +142,10 @@
   <header> 🎮 Jogos do Kaorr </header>
 
   <main>
+    <div class="daily-vip-container">
+        <button id="daily-vip-button">🎁 Resgatar VIP Diário!</button>
+    </div>
+
     <div class="game-tabs" id="game-tabs-container"></div>
     <div class="game-card">
       <h2 id="game-title">Carregando...</h2>
@@ -168,13 +165,22 @@
     </div>
   </main>
 
-  <div id="vip-modal-overlay">
-    <div id="vip-modal-content">
+  <div id="vip-modal-overlay" class="modal-overlay">
+    <div class="modal-content">
         <h3>👑 Desbloquear Jogo VIP 👑</h3>
         <p>Assista a um anúncio rápido para nos apoiar e liberar este jogo agora!</p>
         <button id="unlock-button">Desbloquear!</button>
         <button id="close-modal">Agora não</button>
     </div>
+  </div>
+
+  <div id="ad-flow-modal" class="modal-overlay">
+      <div class="modal-content">
+          <h3>💎 Passe VIP Diário 💎</h3>
+          <p>Assista a 5 anúncios para liberar TODOS os jogos VIP por 5 horas!</p>
+          <button id="ad-flow-button">Assistir Anúncio (1/5)</button>
+          <button id="ad-flow-close">Agora não</button>
+      </div>
   </div>
 
   <footer>
@@ -183,61 +189,93 @@
   </footer>
 
   <script>
-    // ===================================================================================
-    // ÁREA DE CONFIGURAÇÃO - PARA ADICIONAR JOGOS, EDITE APENAS AQUI
-    // ===================================================================================
-    const GAMES_PER_PAGE = 4;
-    const AD_LINK = 'https://otieu.com/4/9935573';
-    const ALL_GAMES = {
-        pacman: { title: 'Pac-Man', src: 'https://funhtml5games.com?embed=pacman', isVip: false },
-        mazeblox: { title: 'Mazeblox', src: 'https://funhtml5games.com?embed=mazeblox', isVip: false },
-        omnomrun: { title: 'Om Nom Run', src: 'https://play.famobi.com/om-nom-run', isVip: false },
-        giantrush: { title: 'Giant Rush', src: 'https://play.famobi.com/giant-rush', isVip: false },
-        westernsniper: { title: 'Western Sniper', src: 'https://play.famobi.com/western-sniper', isVip: true },
-        outcome: { title: 'Outcome', src: 'https://play.famobi.com/outcome', isVip: true },
-        speedmaster: { title: 'Speed Master', src: 'https://play.famobi.com/speed-master', isVip: true },
-        mestredogatilho: { title: 'Mestre do Gatilho', src: 'https://play.famobi.com/gun-spin', isVip: true }
+    const CONFIG = {
+        GAMES_PER_PAGE: 4,
+        AD_LINK: 'https://otieu.com/4/9935573',
+        DAILY_VIP_ADS_REQUIRED: 5,
+        DAILY_VIP_DURATION_HOURS: 5,
+        DAILY_VIP_COOLDOWN_HOURS: 24,
+        ALL_GAMES: {
+            pacman: { title: 'Pac-Man', src: 'https://funhtml5games.com?embed=pacman', isVip: false },
+            mazeblox: { title: 'Mazeblox', src: 'https://funhtml5games.com?embed=mazeblox', isVip: false },
+            omnomrun: { title: 'Om Nom Run', src: 'https://play.famobi.com/om-nom-run', isVip: false },
+            giantrush: { title: 'Giant Rush', src: 'https://play.famobi.com/giant-rush', isVip: false },
+            westernsniper: { title: 'Western Sniper', src: 'https://play.famobi.com/western-sniper', isVip: true },
+            outcome: { title: 'Outcome', src: 'https://play.famobi.com/outcome', isVip: true },
+            speedmaster: { title: 'Speed Master', src: 'https://play.famobi.com/speed-master', isVip: true },
+            mestredogatilho: { title: 'Mestre do Gatilho', src: 'https://play.famobi.com/gun-spin', isVip: true }
+        }
     };
-    // ===================================================================================
 
     const state = {
-      currentPage: 1, gameKeys: Object.keys(ALL_GAMES),
-      totalPages: Math.ceil(Object.keys(ALL_GAMES).length / GAMES_PER_PAGE),
+      currentPage: 1, gameKeys: Object.keys(CONFIG.ALL_GAMES),
+      totalPages: Math.ceil(Object.keys(CONFIG.ALL_GAMES).length / CONFIG.GAMES_PER_PAGE),
       vipUnlockStatus: {}, currentGameToUnlock: null,
+      isVipPassActive: false, adFlowCounter: 0, countdownInterval: null
     };
 
     const dom = {
-      gameFrame: document.getElementById('game-frame'),
-      gameTitle: document.getElementById('game-title'),
+      gameFrame: document.getElementById('game-frame'), gameTitle: document.getElementById('game-title'),
       gameTabsContainer: document.getElementById('game-tabs-container'),
       pageIndicator: document.getElementById('page-indicator'),
       prevBtn: document.getElementById('prev-page-btn'), nextBtn: document.getElementById('next-page-btn'),
       fullscreenBtn: document.getElementById('fullscreen-btn'),
       vipModal: document.getElementById('vip-modal-overlay'),
-      unlockVipBtn: document.getElementById('unlock-button'),
-      closeModalBtn: document.getElementById('close-modal'),
-      vipPlaceholder: document.getElementById('vip-placeholder'),
-      placeholderUnlockBtn: document.getElementById('placeholder-unlock-btn'),
+      unlockVipBtn: document.getElementById('unlock-button'), closeModalBtn: document.getElementById('close-modal'),
+      vipPlaceholder: document.getElementById('vip-placeholder'), placeholderUnlockBtn: document.getElementById('placeholder-unlock-btn'),
+      dailyVipButton: document.getElementById('daily-vip-button'),
+      adFlowModal: document.getElementById('ad-flow-modal'),
+      adFlowButton: document.getElementById('ad-flow-button'),
+      adFlowClose: document.getElementById('ad-flow-close')
     };
+    
+    function formatTime(seconds) {
+        const h = Math.floor(seconds / 3600).toString().padStart(2, '0');
+        const m = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
+        const s = Math.floor(seconds % 60).toString().padStart(2, '0');
+        return `${h}:${m}:${s}`;
+    }
+
+    function updateCountdown() {
+        const now = Date.now();
+        const vipPassExpiry = parseInt(localStorage.getItem('vipPassExpiry') || '0');
+        const cooldownExpiry = parseInt(localStorage.getItem('cooldownExpiry') || '0');
+
+        if (now < vipPassExpiry) {
+            state.isVipPassActive = true;
+            const remaining = (vipPassExpiry - now) / 1000;
+            dom.dailyVipButton.textContent = `VIP Ativo: ${formatTime(remaining)}`;
+            dom.dailyVipButton.disabled = true;
+        } else {
+            state.isVipPassActive = false;
+            if (now < cooldownExpiry) {
+                const remaining = (cooldownExpiry - now) / 1000;
+                dom.dailyVipButton.textContent = `Prêmio em: ${formatTime(remaining)}`;
+                dom.dailyVipButton.disabled = true;
+            } else {
+                dom.dailyVipButton.textContent = '🎁 Resgatar VIP Diário!';
+                dom.dailyVipButton.disabled = false;
+                clearInterval(state.countdownInterval);
+                state.countdownInterval = null;
+            }
+        }
+    }
 
     function renderGameTabs() {
       dom.gameTabsContainer.innerHTML = '';
-      const startIndex = (state.currentPage - 1) * GAMES_PER_PAGE;
-      const gamesForCurrentPage = state.gameKeys.slice(startIndex, startIndex + GAMES_PER_PAGE);
-
-      if (gamesForCurrentPage.length === 0) {
-        dom.gameTabsContainer.innerHTML = '<p>Nenhum jogo encontrado.</p>';
-        return;
-      }
+      const startIndex = (state.currentPage - 1) * CONFIG.GAMES_PER_PAGE;
+      const gamesForCurrentPage = state.gameKeys.slice(startIndex, startIndex + CONFIG.GAMES_PER_PAGE);
+      if (gamesForCurrentPage.length === 0) return;
       
       gamesForCurrentPage.forEach(gameKey => {
-        const game = ALL_GAMES[gameKey];
+        const game = CONFIG.ALL_GAMES[gameKey];
         const tab = document.createElement('div');
         tab.className = 'tab'; tab.dataset.gameKey = gameKey;
         if (game.isVip) {
           tab.id = `vip-tab-${gameKey}`;
-          tab.innerHTML = state.vipUnlockStatus[gameKey] ? `${game.title.split(' ')[0]} 👑` : `${game.title.split(' ')[0]} 🔒`;
-          if (!state.vipUnlockStatus[gameKey]) tab.classList.add('locked');
+          const isUnlocked = state.isVipPassActive || state.vipUnlockStatus[gameKey];
+          tab.innerHTML = isUnlocked ? `${game.title.split(' ')[0]} 👑` : `${game.title.split(' ')[0]} 🔒`;
+          if (!isUnlocked) tab.classList.add('locked');
           tab.addEventListener('click', () => handleVipGameClick(gameKey));
         } else {
           tab.innerHTML = game.title;
@@ -245,23 +283,19 @@
         }
         dom.gameTabsContainer.appendChild(tab);
       });
-      
-      if (gamesForCurrentPage.length > 0) {
-          const firstGameKey = gamesForCurrentPage[0];
-          handleGameSelection(firstGameKey);
-      }
+      handleGameSelection(gamesForCurrentPage[0]);
     }
     
     function handleGameSelection(gameKey) {
-        if (!ALL_GAMES[gameKey]) return;
-        const game = ALL_GAMES[gameKey];
-
+        if (!CONFIG.ALL_GAMES[gameKey]) return;
+        const game = CONFIG.ALL_GAMES[gameKey];
         dom.gameTitle.textContent = game.title;
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
         const activeTab = document.querySelector(`.tab[data-game-key='${gameKey}']`);
         if (activeTab) activeTab.classList.add('active');
 
-        if (game.isVip && !state.vipUnlockStatus[gameKey]) {
+        const isUnlocked = state.isVipPassActive || state.vipUnlockStatus[gameKey];
+        if (game.isVip && !isUnlocked) {
             dom.gameFrame.style.display = 'none';
             dom.vipPlaceholder.classList.add('show');
             dom.placeholderUnlockBtn.onclick = () => handleVipGameClick(gameKey);
@@ -279,43 +313,30 @@
       dom.nextBtn.disabled = state.currentPage === state.totalPages;
     }
     
-    function switchGame(gameKey) {
-        handleGameSelection(gameKey);
-    }
+    function switchGame(gameKey) { handleGameSelection(gameKey); }
     
     function handleVipGameClick(gameKey) {
-      if (state.vipUnlockStatus[gameKey]) {
-        switchGame(gameKey);
-      } else {
-        state.currentGameToUnlock = gameKey;
-        dom.vipModal.style.display = 'flex';
-      }
+      const isUnlocked = state.isVipPassActive || state.vipUnlockStatus[gameKey];
+      if (isUnlocked) { switchGame(gameKey); } 
+      else { state.currentGameToUnlock = gameKey; dom.vipModal.style.display = 'flex'; }
     }
 
     function unlockVipGame() {
       if (state.currentGameToUnlock) {
-        window.open(AD_LINK, '_blank');
+        window.open(CONFIG.AD_LINK, '_blank');
         state.vipUnlockStatus[state.currentGameToUnlock] = true;
-        closeVipModal();
-        renderGameTabs();
-        switchGame(state.currentGameToUnlock);
+        closeVipModal(); renderGameTabs(); switchGame(state.currentGameToUnlock);
       }
     }
     
-    function closeVipModal() {
-      dom.vipModal.style.display = 'none';
-      state.currentGameToUnlock = null;
-    }
+    function closeVipModal() { dom.vipModal.style.display = 'none'; state.currentGameToUnlock = null; }
 
     function resetAllVipStatus() {
       let statusChanged = false;
       for (const key in state.vipUnlockStatus) {
-        if (state.vipUnlockStatus[key]) {
-          state.vipUnlockStatus[key] = false;
-          statusChanged = true;
-        }
+        if (state.vipUnlockStatus[key]) { state.vipUnlockStatus[key] = false; statusChanged = true; }
       }
-      if (statusChanged) renderGameTabs();
+      if (statusChanged && !state.isVipPassActive) renderGameTabs();
     }
 
     function openFullscreen() {
@@ -323,30 +344,60 @@
       else if (dom.gameFrame.webkitRequestFullscreen) dom.gameFrame.webkitRequestFullscreen();
       else if (dom.gameFrame.msRequestFullscreen) dom.gameFrame.msRequestFullscreen();
     }
+    
+    function startDailyVipFlow() {
+        state.adFlowCounter = 0;
+        dom.adFlowButton.textContent = `Assistir Anúncio (${state.adFlowCounter + 1}/${CONFIG.DAILY_VIP_ADS_REQUIRED})`;
+        dom.adFlowModal.style.display = 'flex';
+    }
+
+    function handleAdFlowClick() {
+        state.adFlowCounter++;
+        window.open(CONFIG.AD_LINK, '_blank');
+        dom.adFlowButton.textContent = `Assistir Anúncio (${state.adFlowCounter + 1}/${CONFIG.DAILY_VIP_ADS_REQUIRED})`;
+        if (state.adFlowCounter >= CONFIG.DAILY_VIP_ADS_REQUIRED) {
+            dom.adFlowModal.style.display = 'none';
+            grantVipAccess();
+        }
+    }
+
+    function grantVipAccess() {
+        const now = Date.now();
+        const vipDurationMs = CONFIG.DAILY_VIP_DURATION_HOURS * 60 * 60 * 1000;
+        const cooldownDurationMs = CONFIG.DAILY_VIP_COOLDOWN_HOURS * 60 * 60 * 1000;
+        
+        localStorage.setItem('vipPassExpiry', now + vipDurationMs);
+        localStorage.setItem('cooldownExpiry', now + cooldownDurationMs);
+
+        if (state.countdownInterval) clearInterval(state.countdownInterval);
+        state.countdownInterval = setInterval(updateCountdown, 1000);
+        updateCountdown();
+        renderGameTabs();
+    }
 
     function init() {
       state.gameKeys.forEach(key => {
-        if (ALL_GAMES[key].isVip) state.vipUnlockStatus[key] = false;
+        if (CONFIG.ALL_GAMES[key].isVip) state.vipUnlockStatus[key] = false;
       });
       
       dom.prevBtn.addEventListener('click', () => {
-        if (state.currentPage > 1) {
-          state.currentPage--;
-          renderGameTabs();
-          renderPagination();
-        }
+        if (state.currentPage > 1) { state.currentPage--; renderGameTabs(); renderPagination(); }
       });
       dom.nextBtn.addEventListener('click', () => {
-        if (state.currentPage < state.totalPages) {
-          state.currentPage++;
-          renderGameTabs();
-          renderPagination();
-        }
+        if (state.currentPage < state.totalPages) { state.currentPage++; renderGameTabs(); renderPagination(); }
       });
       dom.fullscreenBtn.addEventListener('click', openFullscreen);
       dom.unlockVipBtn.addEventListener('click', unlockVipGame);
       dom.closeModalBtn.addEventListener('click', closeVipModal);
+      dom.dailyVipButton.addEventListener('click', startDailyVipFlow);
+      dom.adFlowButton.addEventListener('click', handleAdFlowClick);
+      dom.adFlowClose.addEventListener('click', () => dom.adFlowModal.style.display = 'none');
       
+      updateCountdown();
+      if (!state.countdownInterval) {
+          state.countdownInterval = setInterval(updateCountdown, 1000);
+      }
+
       renderGameTabs();
       renderPagination();
     }
