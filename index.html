@@ -70,9 +70,8 @@
       position: absolute; top: 0; left: 0;
       width: 100%; height: 100%; border: none;
     }
-    /* --- INÍCIO: ESTILO DO NOVO PLACEHOLDER VIP --- */
     .vip-placeholder {
-        display: none; /* Começa escondido */
+        display: none;
         flex-direction: column;
         justify-content: center;
         align-items: center;
@@ -84,7 +83,7 @@
         text-align: center;
     }
     .vip-placeholder.show {
-        display: flex; /* Classe que o torna visível */
+        display: flex;
     }
     .vip-placeholder h3 {
         font-family: 'Press Start 2P', cursive;
@@ -98,7 +97,6 @@
         background: #007bff;
         color: white;
     }
-     /* --- FIM: ESTILO DO NOVO PLACEHOLDER VIP --- */
     button {
       margin-top: 10px; padding: 10px 20px; font-size: 16px; cursor: pointer;
       border: none; border-radius: 5px; background: var(--primary-color); color: #000;
@@ -145,8 +143,11 @@
   </style>
 </head>
 <body>
+
   <script>(function(s){s.dataset.zone='9932995',s.src='https://groleegni.net/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+
   <header> 🎮 Jogos do Kaorr </header>
+
   <main>
     <div class="game-tabs" id="game-tabs-container"></div>
     <div class="game-card">
@@ -182,6 +183,9 @@
   </footer>
 
   <script>
+    // ===================================================================================
+    // ÁREA DE CONFIGURAÇÃO - PARA ADICIONAR JOGOS, EDITE APENAS AQUI
+    // ===================================================================================
     const GAMES_PER_PAGE = 4;
     const AD_LINK = 'https://otieu.com/4/9935573';
     const ALL_GAMES = {
@@ -191,8 +195,10 @@
         giantrush: { title: 'Giant Rush', src: 'https://play.famobi.com/giant-rush', isVip: false },
         westernsniper: { title: 'Western Sniper', src: 'https://play.famobi.com/western-sniper', isVip: true },
         outcome: { title: 'Outcome', src: 'https://play.famobi.com/outcome', isVip: true },
-        speedmaster: { title: 'Speed Master', src: 'https://play.famobi.com/speed-master', isVip: true }
+        speedmaster: { title: 'Speed Master', src: 'https://play.famobi.com/speed-master', isVip: true },
+        mestredogatilho: { title: 'Mestre do Gatilho', src: 'https://play.famobi.com/gun-spin', isVip: true }
     };
+    // ===================================================================================
 
     const state = {
       currentPage: 1, gameKeys: Object.keys(ALL_GAMES),
@@ -210,7 +216,6 @@
       vipModal: document.getElementById('vip-modal-overlay'),
       unlockVipBtn: document.getElementById('unlock-button'),
       closeModalBtn: document.getElementById('close-modal'),
-      // Nova referência para o placeholder
       vipPlaceholder: document.getElementById('vip-placeholder'),
       placeholderUnlockBtn: document.getElementById('placeholder-unlock-btn'),
     };
@@ -247,7 +252,6 @@
       }
     }
     
-    // >> NOVA FUNÇÃO CENTRALIZADA para lidar com a seleção de um jogo
     function handleGameSelection(gameKey) {
         if (!ALL_GAMES[gameKey]) return;
         const game = ALL_GAMES[gameKey];
@@ -258,13 +262,10 @@
         if (activeTab) activeTab.classList.add('active');
 
         if (game.isVip && !state.vipUnlockStatus[gameKey]) {
-            // Se for VIP e bloqueado, mostra o placeholder
             dom.gameFrame.style.display = 'none';
             dom.vipPlaceholder.classList.add('show');
-            // Associa o botão do placeholder ao jogo atual
             dom.placeholderUnlockBtn.onclick = () => handleVipGameClick(gameKey);
         } else {
-            // Se for grátis ou VIP desbloqueado, mostra o jogo
             dom.vipPlaceholder.classList.remove('show');
             dom.gameFrame.style.display = 'block';
             dom.gameFrame.src = game.src;
@@ -278,7 +279,6 @@
       dom.nextBtn.disabled = state.currentPage === state.totalPages;
     }
     
-    // >> FUNÇÃO SWITCHGAME SIMPLIFICADA
     function switchGame(gameKey) {
         handleGameSelection(gameKey);
     }
