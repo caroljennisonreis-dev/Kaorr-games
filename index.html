@@ -201,8 +201,8 @@
             outcome: { title: 'Outcome', src: 'https://play.famobi.com/outcome', isVip: true },
             speedmaster: { title: 'Speed Master', src: 'https://play.famobi.com/speed-master', isVip: true },
             mestredogatilho: { title: 'Mestre do Gatilho', src: 'https://play.famobi.com/gun-spin', isVip: true },
-            // >>>>> AQUI ESTÁ A ÚNICA ALTERAÇÃO <<<<<
-            dantheman: { title: 'Dan The Man', src: 'https://html5.gamedistribution.com/3d1a71ef72c84275a5e3a95a864d509a/', isVip: true }
+            // >>>>> AQUI ESTÁ A CORREÇÃO COM O NOVO LINK <<<<<
+            dantheman: { title: 'Dan The Man', src: 'https://html5.gamedistribution.com/3d11dfed72a04e00ae9a43ab3fd49bd6/?gd_sdk_referrer_url=https://kaorr-games.vercel.app/', isVip: true }
         }
     };
 
@@ -309,7 +309,7 @@
     function renderPagination() {
       dom.pageIndicator.textContent = `Página ${state.currentPage} / ${state.totalPages || 1}`;
       dom.prevBtn.disabled = state.currentPage === 1;
-      dom.nextBtn.disabled = state.currentPage === state.totalPages;
+      dom.nextBtn.disabled = state.totalPages;
     }
     
     function switchGame(gameKey) { handleGameSelection(gameKey); }
