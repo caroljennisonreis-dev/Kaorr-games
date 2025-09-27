@@ -247,7 +247,7 @@
         } else {
             if(state.isVipPassActive) {
                 state.isVipPassActive = false;
-                renderGameTabs();
+                renderPage();
             }
             if (now < cooldownExpiry) {
                 const remaining = (cooldownExpiry - now) / 1000;
@@ -292,11 +292,6 @@
     function handleGameSelection(gameKey) {
         if (!CONFIG.ALL_GAMES[gameKey]) return;
         const game = CONFIG.ALL_GAMES[gameKey];
-        
-        // >>>>> CORREÇÃO DO BUG ANTERIOR (MOVIDA PARA CÁ) <<<<<
-        if (!game.isVip) {
-          resetAllVipStatus();
-        }
 
         dom.gameTitle.textContent = game.title;
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -321,7 +316,13 @@
       dom.nextBtn.disabled = state.currentPage === state.totalPages;
     }
     
-    function switchGame(gameKey) { handleGameSelection(gameKey); }
+    function switchGame(gameKey) {
+        // Ao trocar para um jogo gratuito, reseta os unlocks individuais
+        if (!CONFIG.ALL_GAMES[gameKey].isVip) {
+            resetIndividualUnlocks();
+        }
+        handleGameSelection(gameKey);
+    }
     
     function handleVipGameClick(gameKey) {
       const isUnlocked = state.isVipPassActive || state.vipUnlockStatus[gameKey];
@@ -341,7 +342,7 @@
     
     function closeVipModal() { dom.vipModal.style.display = 'none'; state.currentGameToUnlock = null; }
 
-    function resetAllVipStatus() {
+    function resetIndividualUnlocks() {
       let statusChanged = false;
       for (const key in state.vipUnlockStatus) {
         if (state.vipUnlockStatus[key]) { 
@@ -349,7 +350,10 @@
           statusChanged = true; 
         }
       }
-      if (statusChanged) renderGameTabs();
+      // Se algo mudou e o passe VIP não estiver ativo, redesenha as abas
+      if (statusChanged && !state.isVipPassActive) {
+          renderGameTabs();
+      }
     }
 
     function openFullscreen() {
@@ -388,6 +392,7 @@
         renderGameTabs();
     }
 
+    // --- CORREÇÃO FINAL APLICADA AQUI ---
     function init() {
       state.gameKeys.forEach(key => {
         if (CONFIG.ALL_GAMES[key].isVip) state.vipUnlockStatus[key] = false;
@@ -395,12 +400,14 @@
       
       dom.prevBtn.addEventListener('click', () => {
         if (state.currentPage > 1) { 
+          resetIndividualUnlocks(); // Reseta unlocks ao trocar de página
           state.currentPage--; 
           renderPage();
         }
       });
       dom.nextBtn.addEventListener('click', () => {
         if (state.currentPage < state.totalPages) { 
+          resetIndividualUnlocks(); // Reseta unlocks ao trocar de página
           state.currentPage++; 
           renderPage();
         }
