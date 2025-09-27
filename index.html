@@ -30,9 +30,20 @@
       font-size: clamp(18px, 4vw, 22px); font-family: 'Press Start 2P', cursive;
       border-bottom: 2px solid var(--primary-color);
     }
+    /* --- INÍCIO: NOVO ESTILO DO SUBTÍTULO --- */
+    .subtitle {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 14px;
+        font-weight: bold;
+        color: var(--primary-color);
+        margin: 8px 0 0 0;
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+        letter-spacing: 0.5px;
+    }
+    /* --- FIM: NOVO ESTILO DO SUBTÍTULO --- */
     main {
       display: flex; flex-direction: column; align-items: center; padding: 20px;
-      justify-content: center; min-height: calc(100vh - 155px); box-sizing: border-box;
+      justify-content: center; min-height: calc(100vh - 170px); box-sizing: border-box; /* Ajuste de altura */
     }
     .game-card {
       background: rgba(0,0,0,0.7); border-radius: 15px; padding: 15px;
@@ -44,17 +55,10 @@
         max-width: 600px;
     }
     #daily-vip-button {
-        width: 100%;
-        padding: 15px;
-        font-size: 18px;
-        font-weight: bold;
-        font-family: 'Press Start 2P', cursive;
-        border: 2px solid var(--primary-color);
-        border-radius: 10px;
-        background: linear-gradient(45deg, #ffc107, #ffeb3b);
-        color: #000;
-        cursor: pointer;
-        transition: all 0.3s ease;
+        width: 100%; padding: 15px; font-size: 18px; font-weight: bold;
+        font-family: 'Press Start 2P', cursive; border: 2px solid var(--primary-color);
+        border-radius: 10px; background: linear-gradient(45deg, #ffc107, #ffeb3b);
+        color: #000; cursor: pointer; transition: all 0.3s ease;
         text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
         box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
     }
@@ -63,11 +67,8 @@
         box-shadow: 0 6px 20px rgba(255, 215, 0, 0.6);
     }
     #daily-vip-button:disabled {
-        background: var(--dark-grey);
-        border-color: #777;
-        color: #aaa;
-        cursor: not-allowed;
-        box-shadow: none;
+        background: var(--dark-grey); border-color: #777; color: #aaa;
+        cursor: not-allowed; box-shadow: none;
     }
     .game-tabs {
         display: flex; justify-content: center; gap: 10px;
@@ -136,7 +137,12 @@
 
   <script>(function(s){s.dataset.zone='9932995',s.src='https://groleegni.net/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
 
-  <header> 🎮 Jogos do Kaorr </header>
+  <header>
+      <div>
+          <span>🎮 Jogos do Kaorr 🎮</span>
+          <p class="subtitle">Forjado em código por Jennison Reis</p>
+      </div>
+  </header>
 
   <main>
     <div class="daily-vip-container">
@@ -292,6 +298,7 @@
     function handleGameSelection(gameKey) {
         if (!CONFIG.ALL_GAMES[gameKey]) return;
         const game = CONFIG.ALL_GAMES[gameKey];
+        if (!game.isVip) { resetIndividualUnlocks(); }
 
         dom.gameTitle.textContent = game.title;
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -316,13 +323,7 @@
       dom.nextBtn.disabled = state.currentPage === state.totalPages;
     }
     
-    function switchGame(gameKey) {
-        // Ao trocar para um jogo gratuito, reseta os unlocks individuais
-        if (!CONFIG.ALL_GAMES[gameKey].isVip) {
-            resetIndividualUnlocks();
-        }
-        handleGameSelection(gameKey);
-    }
+    function switchGame(gameKey) { handleGameSelection(gameKey); }
     
     function handleVipGameClick(gameKey) {
       const isUnlocked = state.isVipPassActive || state.vipUnlockStatus[gameKey];
@@ -350,9 +351,8 @@
           statusChanged = true; 
         }
       }
-      // Se algo mudou e o passe VIP não estiver ativo, redesenha as abas
       if (statusChanged && !state.isVipPassActive) {
-          renderGameTabs();
+          renderPage(); // Use renderPage para redesenhar tudo corretamente
       }
     }
 
@@ -392,7 +392,11 @@
         renderGameTabs();
     }
 
-    // --- CORREÇÃO FINAL APLICADA AQUI ---
+    function renderPage() {
+        renderGameTabs();
+        renderPagination();
+    }
+
     function init() {
       state.gameKeys.forEach(key => {
         if (CONFIG.ALL_GAMES[key].isVip) state.vipUnlockStatus[key] = false;
@@ -400,14 +404,14 @@
       
       dom.prevBtn.addEventListener('click', () => {
         if (state.currentPage > 1) { 
-          resetIndividualUnlocks(); // Reseta unlocks ao trocar de página
+          resetIndividualUnlocks();
           state.currentPage--; 
           renderPage();
         }
       });
       dom.nextBtn.addEventListener('click', () => {
         if (state.currentPage < state.totalPages) { 
-          resetIndividualUnlocks(); // Reseta unlocks ao trocar de página
+          resetIndividualUnlocks();
           state.currentPage++; 
           renderPage();
         }
@@ -419,11 +423,6 @@
       dom.adFlowButton.addEventListener('click', handleAdFlowClick);
       dom.adFlowClose.addEventListener('click', () => dom.adFlowModal.style.display = 'none');
       
-      function renderPage() {
-          renderGameTabs();
-          renderPagination();
-      }
-
       updateCountdown();
       if (!state.countdownInterval) {
           state.countdownInterval = setInterval(updateCountdown, 1000);
