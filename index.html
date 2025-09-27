@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   
-  <title>🎮 Jogos do Kaorr</title>
+  <title>🎮 Kaorr Games</title>
   <style>
     :root {
       --primary-color: #FFD700;
@@ -40,7 +40,6 @@
         text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
         letter-spacing: 0.5px;
     }
-    /* --- INÍCIO: ESTILO DA NOVA FRASE DE ATUALIZAÇÃO --- */
     .update-notice {
         font-family: 'Press Start 2P', cursive;
         font-size: 12px;
@@ -54,10 +53,9 @@
         50% { opacity: 1; }
         100% { opacity: 0.7; }
     }
-    /* --- FIM: ESTILO DA NOVA FRASE DE ATUALIZAÇÃO --- */
     main {
       display: flex; flex-direction: column; align-items: center; padding: 20px;
-      justify-content: center; min-height: calc(100vh - 195px); box-sizing: border-box; /* Ajuste de altura */
+      justify-content: center; min-height: calc(100vh - 195px); box-sizing: border-box;
     }
     .game-card {
       background: rgba(0,0,0,0.7); border-radius: 15px; padding: 15px;
@@ -153,7 +151,7 @@
 
   <header>
       <div>
-          <span>🎮 Jogos do Kaorr 🎮</span>
+          <span>🎮 Kaorr Games 🎮</span>
           <p class="subtitle">Forjado em código por Jennison Reis</p>
           <p class="update-notice">+ Novos jogos e desafios diários +</p>
       </div>
@@ -202,8 +200,7 @@
   </div>
 
   <footer>
-    © 2025 Jogos do Kaorr | Feito com ❤️ para diversão <br>
-    <a href="#">Apoie o site</a>
+    © 2025 Kaorr Games | Feito com ❤️ para diversão
   </footer>
 
   <script>
@@ -317,7 +314,7 @@
 
         dom.gameTitle.textContent = game.title;
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        const activeTab = document.querySelector(`.tab[data-key-game='${gameKey}']`);
+        const activeTab = document.querySelector(`.tab[data-game-key='${gameKey}']`);
         if (activeTab) activeTab.classList.add('active');
 
         const isUnlocked = state.isVipPassActive || state.vipUnlockStatus[gameKey];
