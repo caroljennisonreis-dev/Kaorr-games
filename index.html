@@ -19,7 +19,7 @@
       --text-color: #fff;
       --dark-grey: #4a4a4a;
       --blue-action: #007bff;
-      --pacman-blue: #00FFFF; /* Azul Ciano Neon */
+      --pacman-blue: #00FFFF;
     }
     body {
       margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -28,44 +28,48 @@
     }
     header {
       padding: 20px; background: rgba(0,0,0,0.8);
-      font-size: clamp(18px, 4vw, 22px); font-family: 'Press Start 2P', cursive;
+      font-family: 'Press Start 2P', cursive;
       border-bottom: 2px solid var(--primary-color);
+    }
+    .header-content {
+        font-size: clamp(18px, 4vw, 22px);
     }
     .subtitle {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        font-size: 14px;
-        font-weight: bold;
-        color: var(--primary-color);
-        margin: 8px 0 0 0;
-        text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+        font-size: 14px; font-weight: bold; color: var(--primary-color);
+        margin: 8px 0 0 0; text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
         letter-spacing: 0.5px;
     }
     .update-notice {
-        font-family: 'Press Start 2P', cursive;
-        font-size: 12px;
-        color: var(--pacman-blue);
-        margin: 12px 0 0 0;
+        font-family: 'Press Start 2P', cursive; font-size: 12px;
+        color: var(--pacman-blue); margin: 12px 0 0 0;
         text-shadow: 0 0 4px var(--pacman-blue), 0 0 8px var(--pacman-blue);
         animation: pulse 2.5s infinite ease-in-out;
     }
-    @keyframes pulse {
-        0% { opacity: 0.7; }
-        50% { opacity: 1; }
-        100% { opacity: 0.7; }
+    @keyframes pulse { 0%, 100% { opacity: 0.7; } 50% { opacity: 1; } }
+
+    #coin-balance {
+        margin-top: 15px;
+        padding: 5px 15px;
+        background-color: rgba(0,0,0,0.5);
+        border: 2px solid var(--primary-color);
+        border-radius: 20px;
+        display: inline-block;
+        font-family: 'Press Start 2P', cursive;
+        font-size: 14px;
+        color: var(--primary-color);
+        text-shadow: 0 0 5px var(--primary-color);
     }
+
     main {
       display: flex; flex-direction: column; align-items: center; padding: 20px;
-      justify-content: center; min-height: calc(100vh - 195px); box-sizing: border-box;
+      justify-content: center; min-height: calc(100vh - 225px); box-sizing: border-box;
     }
     .game-card {
       background: rgba(0,0,0,0.7); border-radius: 15px; padding: 15px;
       box-shadow: 0 0 15px rgba(0,0,0,0.8); width: 100%; max-width: 600px;
     }
-    .daily-vip-container {
-        margin-bottom: 20px;
-        width: 100%;
-        max-width: 600px;
-    }
+    .daily-vip-container { margin-bottom: 20px; width: 100%; max-width: 600px; }
     #daily-vip-button {
         width: 100%; padding: 15px; font-size: 18px; font-weight: bold;
         font-family: 'Press Start 2P', cursive; border: 2px solid var(--primary-color);
@@ -74,33 +78,18 @@
         text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
         box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
     }
-    #daily-vip-button:hover:not(:disabled) {
-        transform: scale(1.02);
-        box-shadow: 0 6px 20px rgba(255, 215, 0, 0.6);
-    }
-    #daily-vip-button:disabled {
-        background: var(--dark-grey); border-color: #777; color: #aaa;
-        cursor: not-allowed; box-shadow: none;
-    }
-    .game-tabs {
-        display: flex; justify-content: center; gap: 10px;
-        margin-bottom: 15px; flex-wrap: wrap; min-height: 45px;
-    }
+    #daily-vip-button:hover:not(:disabled) { transform: scale(1.02); box-shadow: 0 6px 20px rgba(255, 215, 0, 0.6); }
+    #daily-vip-button:disabled { background: var(--dark-grey); border-color: #777; color: #aaa; cursor: not-allowed; box-shadow: none; }
+    .game-tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; min-height: 45px; }
     .tab {
         padding: 10px 15px; font-size: 16px; cursor: pointer; border: 2px solid var(--primary-color);
         border-radius: 5px; background: transparent; color: var(--primary-color); font-weight: bold;
         transition: all 0.2s ease-in-out;
     }
-    .tab:hover, .tab.active {
-        background: var(--primary-color); color: #000;
-        box-shadow: 0 0 15px var(--primary-color); transform: translateY(-2px);
-    }
+    .tab:hover, .tab.active { background: var(--primary-color); color: #000; box-shadow: 0 0 15px var(--primary-color); transform: translateY(-2px); }
     .tab.locked { background-color: var(--dark-grey); color: #999; border-color: #777; }
     .tab.locked:hover { background-color: #5a5a5a; box-shadow: 0 0 15px #999; }
-    .iframe-container {
-        width: 100%; padding-top: 56.25%; position: relative;
-        border-radius: 10px; background-color: #000; overflow: hidden;
-    }
+    .iframe-container { width: 100%; padding-top: 56.25%; position: relative; border-radius: 10px; background-color: #000; overflow: hidden; }
     iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
     .vip-placeholder {
         display: none; flex-direction: column; justify-content: center; align-items: center;
@@ -150,11 +139,12 @@
   <script>(function(s){s.dataset.zone='9932995',s.src='https://groleegni.net/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
 
   <header>
-      <div>
+      <div class="header-content">
           <span>🎮 Kaorr Games 🎮</span>
           <p class="subtitle">Forjado em código por Jennison Reis</p>
           <p class="update-notice">+ Novos jogos e desafios diários +</p>
       </div>
+      <div id="coin-balance">👑 0 KC</div>
   </header>
 
   <main>
@@ -210,6 +200,9 @@
         DAILY_VIP_ADS_REQUIRED: 5,
         DAILY_VIP_DURATION_HOURS: 5,
         DAILY_VIP_COOLDOWN_HOURS: 24,
+        DAILY_LOGIN_COINS: 10,
+        PLAYTIME_REWARD_COINS: 5, // <-- Recompensa por tempo
+        PLAYTIME_REWARD_MINUTES: 1, // <-- Tempo para ganhar
         ALL_GAMES: {
             pacman: { title: 'Pac-Man', src: 'https://funhtml5games.com?embed=pacman', isVip: false },
             mazeblox: { title: 'Mazeblox', src: 'https://funhtml5games.com?embed=mazeblox', isVip: false },
@@ -227,7 +220,9 @@
       currentPage: 1, gameKeys: Object.keys(CONFIG.ALL_GAMES),
       totalPages: Math.ceil(Object.keys(CONFIG.ALL_GAMES).length / CONFIG.GAMES_PER_PAGE),
       vipUnlockStatus: {}, currentGameToUnlock: null,
-      isVipPassActive: false, adFlowCounter: 0, countdownInterval: null
+      isVipPassActive: false, adFlowCounter: 0, countdownInterval: null,
+      kaorrCoins: 0,
+      playtimeTimer: null // <-- Novo estado para o timer de jogo
     };
 
     const dom = {
@@ -242,9 +237,33 @@
       dailyVipButton: document.getElementById('daily-vip-button'),
       adFlowModal: document.getElementById('ad-flow-modal'),
       adFlowButton: document.getElementById('ad-flow-button'),
-      adFlowClose: document.getElementById('ad-flow-close')
+      adFlowClose: document.getElementById('ad-flow-close'),
+      coinBalance: document.getElementById('coin-balance')
     };
     
+    // --- LÓGICA DAS MOEDAS ---
+    function updateCoinBalance(newAmount) {
+        state.kaorrCoins = newAmount;
+        localStorage.setItem('kaorrCoins', state.kaorrCoins);
+        dom.coinBalance.innerHTML = `👑 ${state.kaorrCoins} KC`;
+    }
+
+    function addCoins(amount) {
+        const currentCoins = parseInt(localStorage.getItem('kaorrCoins') || '0');
+        updateCoinBalance(currentCoins + amount);
+        console.log(`Ganhou ${amount} KC!`); // Log para teste
+    }
+    
+    function handleDailyLogin() {
+        const now = new Date();
+        const lastVisit = localStorage.getItem('lastDailyLogin');
+        if (!lastVisit || new Date(parseInt(lastVisit)).getDate() !== now.getDate()) {
+            addCoins(CONFIG.DAILY_LOGIN_COINS);
+            localStorage.setItem('lastDailyLogin', now.getTime());
+        }
+    }
+    // --- FIM DA LÓGICA DAS MOEDAS ---
+
     function formatTime(seconds) {
         const h = Math.floor(seconds / 3600).toString().padStart(2, '0');
         const m = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
@@ -317,6 +336,19 @@
         const activeTab = document.querySelector(`.tab[data-game-key='${gameKey}']`);
         if (activeTab) activeTab.classList.add('active');
 
+        // --- LÓGICA DO TIMER DE JOGO ---
+        // Limpa qualquer timer anterior ao selecionar um novo jogo
+        if (state.playtimeTimer) {
+            clearTimeout(state.playtimeTimer);
+        }
+        // Inicia um novo timer para dar moedas
+        const rewardTimeMs = CONFIG.PLAYTIME_REWARD_MINUTES * 60 * 1000;
+        state.playtimeTimer = setTimeout(() => {
+            addCoins(CONFIG.PLAYTIME_REWARD_COINS);
+        }, rewardTimeMs);
+        // --- FIM DA LÓGICA DO TIMER ---
+
+
         const isUnlocked = state.isVipPassActive || state.vipUnlockStatus[gameKey];
         if (game.isVip && !isUnlocked) {
             dom.gameFrame.style.display = 'none';
@@ -332,7 +364,7 @@
     function renderPagination() {
       dom.pageIndicator.textContent = `Página ${state.currentPage} / ${state.totalPages || 1}`;
       dom.prevBtn.disabled = state.currentPage === 1;
-      dom.nextBtn.disabled = state.currentPage === state.totalPages;
+      dom.nextBtn.disabled = state.totalPages;
     }
     
     function switchGame(gameKey) { handleGameSelection(gameKey); }
@@ -410,6 +442,10 @@
     }
 
     function init() {
+      const savedCoins = parseInt(localStorage.getItem('kaorrCoins') || '0');
+      updateCoinBalance(savedCoins);
+      handleDailyLogin();
+
       state.gameKeys.forEach(key => {
         if (CONFIG.ALL_GAMES[key].isVip) state.vipUnlockStatus[key] = false;
       });
