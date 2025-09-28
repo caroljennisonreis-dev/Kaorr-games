@@ -98,7 +98,12 @@
     }
     footer { padding: 15px; background: rgba(0,0,0,0.8); font-size: 14px; border-top: 2px solid var(--primary-color); }
     a { color: var(--primary-color); text-decoration: none; }
-    
+    #council-button {
+        font-weight: bold;
+        margin: 0 10px;
+        text-decoration: underline;
+        cursor: pointer;
+    }
     .pagination { display: flex; align-items: center; justify-content: center; gap: 15px; margin-top: 20px; }
     .pagination button:disabled { background-color: var(--dark-grey); color: #999; cursor: not-allowed; box-shadow: none; transform: none; }
     .pagination span { font-size: 18px; font-weight: bold; color: var(--primary-color); font-family: 'Press Start 2P', cursive; }
@@ -114,10 +119,24 @@
         box-shadow: 0 0 25px var(--primary-color);
     }
     .modal-content h3 { font-family: 'Press Start 2P', cursive; margin-top: 0; }
-    #unlock-button, #ad-flow-button { background: var(--blue-action); color: white; margin-right: 10px; }
-    #unlock-button:hover, #ad-flow-button:hover { background: #0056b3; }
-    #close-modal, #ad-flow-close { background: #6c757d; color: white; }
-    #close-modal:hover, #ad-flow-close:hover { background: #5a6268; }
+    #council-progress-bar-inner {
+        height: 100%;
+        background-color: var(--pacman-blue);
+        border-radius: 5px;
+        width: 0%;
+        transition: width 0.3s ease;
+    }
+    #council-progress-bar {
+        width: 100%;
+        background-color: var(--dark-grey);
+        border-radius: 5px;
+        height: 10px;
+        margin: 10px 0;
+    }
+    #unlock-button, #ad-flow-button, #council-watch-ad-button { background: var(--blue-action); color: white; margin-right: 10px; }
+    #unlock-button:hover, #ad-flow-button:hover, #council-watch-ad-button:hover { background: #0056b3; }
+    #close-modal, #ad-flow-close, #council-close-button { background: #6c757d; color: white; }
+    #close-modal:hover, #ad-flow-close:hover, #council-close-button:hover { background: #5a6268; }
   </style>
 </head>
 <body>
@@ -174,8 +193,22 @@
       </div>
   </div>
 
+  <div id="council-modal" class="modal-overlay">
+    <div class="modal-content">
+        <h3>🗳️ Conselho dos Jogadores 🗳️</h3>
+        <p>Assista a 10 anúncios para ganhar o direito de votar no próximo jogo do site e falar diretamente com o criador!</p>
+        <p id="council-progress-text">Progresso: 0/10</p>
+        <div id="council-progress-bar"><div id="council-progress-bar-inner"></div></div>
+        <button id="council-watch-ad-button">Assistir Anúncio</button>
+        <button id="council-close-button">Agora não</button>
+    </div>
+  </div>
+
+
   <footer>
     © 2025 Kaorr Games | Feito com ❤️ para diversão
+    |
+    <a id="council-button">Vote no Próximo Jogo 🗳️</a>
   </footer>
 
   <script>
@@ -185,6 +218,8 @@
         DAILY_VIP_ADS_REQUIRED: 5,
         DAILY_VIP_DURATION_HOURS: 5,
         DAILY_VIP_COOLDOWN_HOURS: 24,
+        VOTE_ADS_REQUIRED: 10,
+        WHATSAPP_NUMBER: '5548991492533', // NÚMERO ATUALIZADO
         ALL_GAMES: {
             pacman: { title: 'Pac-Man', src: 'https://funhtml5games.com?embed=pacman', isVip: false },
             mazeblox: { title: 'Mazeblox', src: 'https://funhtml5games.com?embed=mazeblox', isVip: false },
@@ -217,7 +252,13 @@
       dailyVipButton: document.getElementById('daily-vip-button'),
       adFlowModal: document.getElementById('ad-flow-modal'),
       adFlowButton: document.getElementById('ad-flow-button'),
-      adFlowClose: document.getElementById('ad-flow-close')
+      adFlowClose: document.getElementById('ad-flow-close'),
+      councilButton: document.getElementById('council-button'),
+      councilModal: document.getElementById('council-modal'),
+      councilProgressText: document.getElementById('council-progress-text'),
+      councilProgressBarInner: document.getElementById('council-progress-bar-inner'),
+      councilWatchAdButton: document.getElementById('council-watch-ad-button'),
+      councilCloseButton: document.getElementById('council-close-button'),
     };
     
     function formatTime(seconds) {
@@ -231,17 +272,13 @@
         const now = Date.now();
         const vipPassExpiry = parseInt(localStorage.getItem('vipPassExpiry') || '0');
         const cooldownExpiry = parseInt(localStorage.getItem('cooldownExpiry') || '0');
-
         if (now < vipPassExpiry) {
             state.isVipPassActive = true;
             const remaining = (vipPassExpiry - now) / 1000;
             dom.dailyVipButton.textContent = `VIP Ativo: ${formatTime(remaining)}`;
             dom.dailyVipButton.disabled = true;
         } else {
-            if(state.isVipPassActive) {
-                state.isVipPassActive = false;
-                renderPage();
-            }
+            if(state.isVipPassActive) { state.isVipPassActive = false; renderPage(); }
             if (now < cooldownExpiry) {
                 const remaining = (cooldownExpiry - now) / 1000;
                 dom.dailyVipButton.textContent = `Prêmio em: ${formatTime(remaining)}`;
@@ -249,10 +286,7 @@
             } else {
                 dom.dailyVipButton.textContent = '🎁 Resgatar VIP Diário!';
                 dom.dailyVipButton.disabled = false;
-                if (state.countdownInterval) {
-                  clearInterval(state.countdownInterval);
-                  state.countdownInterval = null;
-                }
+                if (state.countdownInterval) { clearInterval(state.countdownInterval); state.countdownInterval = null; }
             }
         }
     }
@@ -286,12 +320,10 @@
         if (!CONFIG.ALL_GAMES[gameKey]) return;
         const game = CONFIG.ALL_GAMES[gameKey];
         if (!game.isVip) { resetIndividualUnlocks(); }
-
         dom.gameTitle.textContent = game.title;
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
         const activeTab = document.querySelector(`.tab[data-game-key='${gameKey}']`);
         if (activeTab) activeTab.classList.add('active');
-
         const isUnlocked = state.isVipPassActive || state.vipUnlockStatus[gameKey];
         if (game.isVip && !isUnlocked) {
             dom.gameFrame.style.display = 'none';
@@ -322,9 +354,7 @@
       if (state.currentGameToUnlock) {
         window.open(CONFIG.AD_LINK, '_blank');
         state.vipUnlockStatus[state.currentGameToUnlock] = true;
-        closeVipModal(); 
-        renderGameTabs(); 
-        handleGameSelection(state.currentGameToUnlock);
+        closeVipModal(); renderGameTabs(); handleGameSelection(state.currentGameToUnlock);
       }
     }
     
@@ -333,14 +363,9 @@
     function resetIndividualUnlocks() {
       let statusChanged = false;
       for (const key in state.vipUnlockStatus) {
-        if (state.vipUnlockStatus[key]) { 
-          state.vipUnlockStatus[key] = false; 
-          statusChanged = true; 
-        }
+        if (state.vipUnlockStatus[key]) { state.vipUnlockStatus[key] = false; statusChanged = true; }
       }
-      if (statusChanged && !state.isVipPassActive) {
-          renderPage();
-      }
+      if (statusChanged && !state.isVipPassActive) { renderPage(); }
     }
 
     function openFullscreen() {
@@ -369,14 +394,34 @@
         const now = Date.now();
         const vipDurationMs = CONFIG.DAILY_VIP_DURATION_HOURS * 60 * 60 * 1000;
         const cooldownDurationMs = CONFIG.DAILY_VIP_COOLDOWN_HOURS * 60 * 60 * 1000;
-        
         localStorage.setItem('vipPassExpiry', now + vipDurationMs);
         localStorage.setItem('cooldownExpiry', now + cooldownDurationMs);
-
         if (state.countdownInterval) clearInterval(state.countdownInterval);
         state.countdownInterval = setInterval(updateCountdown, 1000);
         updateCountdown();
         renderGameTabs();
+    }
+
+    function updateCouncilProgress() {
+        const count = parseInt(localStorage.getItem('councilAdCount') || '0');
+        const progressPercent = (count / CONFIG.VOTE_ADS_REQUIRED) * 100;
+        dom.councilProgressText.textContent = `Progresso: ${count}/${CONFIG.VOTE_ADS_REQUIRED}`;
+        dom.councilProgressBarInner.style.width = `${progressPercent}%`;
+        dom.councilWatchAdButton.textContent = `Assistir Anúncio (${count + 1}/${CONFIG.VOTE_ADS_REQUIRED})`;
+    }
+
+    function handleCouncilAdClick() {
+        let count = parseInt(localStorage.getItem('councilAdCount') || '0');
+        count++;
+        localStorage.setItem('councilAdCount', count);
+        updateCouncilProgress();
+        window.open(CONFIG.AD_LINK, '_blank');
+
+        if (count >= CONFIG.VOTE_ADS_REQUIRED) {
+            const message = encodeURIComponent('Olá Jennison! Cumpri a missão dos 10 anúncios no Kaorr Games e estou pronto para ver o catálogo e ajudar a escolher o próximo jogo! 🏆');
+            window.location.href = `https://wa.me/${CONFIG.WHATSAPP_NUMBER}?text=${message}`;
+            localStorage.setItem('councilAdCount', 0); // Reseta o contador
+        }
     }
     
     function renderPage() {
@@ -390,18 +435,10 @@
       });
       
       dom.prevBtn.addEventListener('click', () => {
-        if (state.currentPage > 1) { 
-          resetIndividualUnlocks();
-          state.currentPage--; 
-          renderPage();
-        }
+        if (state.currentPage > 1) { resetIndividualUnlocks(); state.currentPage--; renderPage(); }
       });
       dom.nextBtn.addEventListener('click', () => {
-        if (state.currentPage < state.totalPages) { 
-          resetIndividualUnlocks();
-          state.currentPage++; 
-          renderPage();
-        }
+        if (state.currentPage < state.totalPages) { resetIndividualUnlocks(); state.currentPage++; renderPage(); }
       });
       dom.fullscreenBtn.addEventListener('click', openFullscreen);
       dom.unlockVipBtn.addEventListener('click', unlockVipGame);
@@ -409,12 +446,17 @@
       dom.dailyVipButton.addEventListener('click', startDailyVipFlow);
       dom.adFlowButton.addEventListener('click', handleAdFlowClick);
       dom.adFlowClose.addEventListener('click', () => dom.adFlowModal.style.display = 'none');
-      
+      dom.councilButton.addEventListener('click', () => {
+          updateCouncilProgress();
+          dom.councilModal.style.display = 'flex';
+      });
+      dom.councilCloseButton.addEventListener('click', () => dom.councilModal.style.display = 'none');
+      dom.councilWatchAdButton.addEventListener('click', handleCouncilAdClick);
+
       updateCountdown();
       if (!state.countdownInterval) {
           state.countdownInterval = setInterval(updateCountdown, 1000);
       }
-
       renderPage();
     }
 
