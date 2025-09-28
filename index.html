@@ -96,14 +96,47 @@
       margin: 10px 0; font-size: clamp(20px, 5vw, 24px); color: var(--primary-color);
       text-shadow: 2px 2px 5px rgba(0,0,0,0.8); font-family: 'Press Start 2P', cursive;
     }
-    footer { padding: 15px; background: rgba(0,0,0,0.8); font-size: 14px; border-top: 2px solid var(--primary-color); }
+    footer { 
+        padding: 15px; 
+        background: rgba(0,0,0,0.8); 
+        font-size: 14px; 
+        border-top: 2px solid var(--primary-color);
+        display: flex;
+        flex-direction: column; /* Para empilhar os elementos */
+        align-items: center; /* Centralizar horizontalmente */
+        gap: 10px; /* Espaçamento entre os elementos */
+    }
+    footer .copyright {
+        margin-bottom: 5px; /* Ajuste o espaçamento do copyright */
+    }
     a { color: var(--primary-color); text-decoration: none; }
     #council-button {
         font-weight: bold;
-        margin: 0 10px;
-        text-decoration: underline;
+        padding: 8px 15px;
+        background: linear-gradient(45deg, #ffc107, #ffeb3b); /* Fundo dourado */
+        color: #000; /* Texto escuro para contraste */
+        border: 2px solid var(--primary-color);
+        border-radius: 20px;
+        text-decoration: none; /* Remover sublinhado padrão */
         cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 0 10px rgba(255, 215, 0, 0.5); /* Brilho sutil */
+        animation: councilPulse 2s infinite ease-in-out; /* Animação */
+        font-family: 'Press Start 2P', cursive; /* Fonte do cabeçalho */
+        font-size: 14px;
+        display: inline-block; /* Para o padding funcionar corretamente */
     }
+    #council-button:hover {
+        transform: scale(1.05); /* Pequeno zoom no hover */
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.8); /* Brilho mais intenso */
+    }
+    @keyframes councilPulse {
+        0% { transform: scale(1); box-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
+        50% { transform: scale(1.02); box-shadow: 0 0 15px rgba(255, 215, 0, 0.8); }
+        100% { transform: scale(1); box-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
+    }
+
+
     .pagination { display: flex; align-items: center; justify-content: center; gap: 15px; margin-top: 20px; }
     .pagination button:disabled { background-color: var(--dark-grey); color: #999; cursor: not-allowed; box-shadow: none; transform: none; }
     .pagination span { font-size: 18px; font-weight: bold; color: var(--primary-color); font-family: 'Press Start 2P', cursive; }
@@ -206,8 +239,7 @@
 
 
   <footer>
-    © 2025 Kaorr Games | Feito com ❤️ para diversão
-    |
+    <span class="copyright">© 2025 Kaorr Games | Feito com ❤️ para diversão</span>
     <a id="council-button">Vote no Próximo Jogo 🗳️</a>
   </footer>
 
@@ -219,7 +251,7 @@
         DAILY_VIP_DURATION_HOURS: 5,
         DAILY_VIP_COOLDOWN_HOURS: 24,
         VOTE_ADS_REQUIRED: 10,
-        WHATSAPP_NUMBER: '5548991492533', // NÚMERO ATUALIZADO
+        WHATSAPP_NUMBER: '5548991492533', 
         ALL_GAMES: {
             pacman: { title: 'Pac-Man', src: 'https://funhtml5games.com?embed=pacman', isVip: false },
             mazeblox: { title: 'Mazeblox', src: 'https://funhtml5games.com?embed=mazeblox', isVip: false },
