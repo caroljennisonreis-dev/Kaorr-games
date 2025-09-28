@@ -49,17 +49,20 @@
       display: flex; flex-direction: column; align-items: center; padding: 20px;
       justify-content: center; min-height: calc(100vh - 195px); box-sizing: border-box;
     }
-    /* --- INÍCIO: NOVA BARRA DE AÇÕES --- */
+    .game-card {
+      background: rgba(0,0,0,0.7); border-radius: 15px; padding: 15px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.8); width: 100%; max-width: 600px;
+    }
     .player-actions-bar {
         display: flex;
         justify-content: center;
-        gap: 15px; /* Espaço entre os botões */
+        gap: 15px;
         margin-bottom: 20px;
         width: 100%;
         max-width: 600px;
     }
     .player-actions-bar button {
-        flex: 1; /* Para que os botões dividam o espaço */
+        flex: 1;
         padding: 12px 10px;
         font-size: 14px;
         font-weight: bold;
@@ -87,11 +90,6 @@
     #daily-vip-button:disabled {
         background: var(--dark-grey); border-color: #777; color: #aaa;
         cursor: not-allowed; box-shadow: none;
-    }
-    /* --- FIM: NOVA BARRA DE AÇÕES --- */
-    .game-card {
-      background: rgba(0,0,0,0.7); border-radius: 15px; padding: 15px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.8); width: 100%; max-width: 600px;
     }
     .game-tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; min-height: 45px; }
     .tab {
@@ -123,8 +121,17 @@
       margin: 10px 0; font-size: clamp(20px, 5vw, 24px); color: var(--primary-color);
       text-shadow: 2px 2px 5px rgba(0,0,0,0.8); font-family: 'Press Start 2P', cursive;
     }
-    footer { padding: 15px; background: rgba(0,0,0,0.8); font-size: 14px; border-top: 2px solid var(--primary-color); }
+    footer { 
+        padding: 15px; 
+        background: rgba(0,0,0,0.8); 
+        font-size: 14px; 
+        border-top: 2px solid var(--primary-color);
+    }
+    .copyright {
+        margin-bottom: 15px;
+    }
     a { color: var(--primary-color); text-decoration: none; }
+    
     .pagination { display: flex; align-items: center; justify-content: center; gap: 15px; margin-top: 20px; }
     .pagination button:disabled { background-color: var(--dark-grey); color: #999; cursor: not-allowed; box-shadow: none; transform: none; }
     .pagination span { font-size: 18px; font-weight: bold; color: var(--primary-color); font-family: 'Press Start 2P', cursive; }
@@ -216,7 +223,8 @@
 
 
   <footer>
-    © 2025 Kaorr Games | Feito com ❤️ para diversão
+    <span class="copyright">© 2025 Kaorr Games | Feito com ❤️ para diversão</span>
+    <button id="footer-council-button">🗳️ Vote no Próximo Jogo</button>
   </footer>
 
   <script>
@@ -258,10 +266,11 @@
       unlockVipBtn: document.getElementById('unlock-button'), closeModalBtn: document.getElementById('close-modal'),
       vipPlaceholder: document.getElementById('vip-placeholder'), placeholderUnlockBtn: document.getElementById('placeholder-unlock-btn'),
       dailyVipButton: document.getElementById('daily-vip-button'),
+      councilButton: document.getElementById('council-button'), // Botão da barra de ações
+      footerCouncilButton: document.getElementById('footer-council-button'), // Botão do rodapé
       adFlowModal: document.getElementById('ad-flow-modal'),
       adFlowButton: document.getElementById('ad-flow-button'),
       adFlowClose: document.getElementById('ad-flow-close'),
-      councilButton: document.getElementById('council-button'),
       councilModal: document.getElementById('council-modal'),
       councilProgressText: document.getElementById('council-progress-text'),
       councilProgressBarInner: document.getElementById('council-progress-bar-inner'),
@@ -283,7 +292,7 @@
         if (now < vipPassExpiry) {
             state.isVipPassActive = true;
             const remaining = (vipPassExpiry - now) / 1000;
-            dom.dailyVipButton.textContent = `VIP Ativo: ${formatTime(remaining).substring(3)}`; // Sem horas
+            dom.dailyVipButton.textContent = `VIP Ativo: ${formatTime(remaining).substring(3)}`;
             dom.dailyVipButton.disabled = true;
         } else {
             if(state.isVipPassActive) { state.isVipPassActive = false; renderPage(); }
@@ -410,25 +419,38 @@
         renderGameTabs();
     }
 
+    // --- LÓGICA CORRIGIDA DO CONSELHO ---
     function updateCouncilProgress() {
         const count = parseInt(localStorage.getItem('councilAdCount') || '0');
         const progressPercent = (count / CONFIG.VOTE_ADS_REQUIRED) * 100;
         dom.councilProgressText.textContent = `Progresso: ${count}/${CONFIG.VOTE_ADS_REQUIRED}`;
         dom.councilProgressBarInner.style.width = `${progressPercent}%`;
-        dom.councilWatchAdButton.textContent = `Assistir Anúncio (${count + 1}/${CONFIG.VOTE_ADS_REQUIRED})`;
+
+        if (count < CONFIG.VOTE_ADS_REQUIRED) {
+            dom.councilWatchAdButton.textContent = `Assistir Anúncio (${count + 1}/${CONFIG.VOTE_ADS_REQUIRED})`;
+        } else {
+            dom.councilWatchAdButton.textContent = 'Completou! Redirecionando...';
+        }
     }
 
     function handleCouncilAdClick() {
         let count = parseInt(localStorage.getItem('councilAdCount') || '0');
+        if (count >= CONFIG.VOTE_ADS_REQUIRED) return; // Impede cliques extras
+
         count++;
         localStorage.setItem('councilAdCount', count);
         updateCouncilProgress();
         window.open(CONFIG.AD_LINK, '_blank');
 
         if (count >= CONFIG.VOTE_ADS_REQUIRED) {
-            const message = encodeURIComponent('Olá Jennison! Cumpri a missão dos 10 anúncios no Kaorr Games e estou pronto para ver o catálogo e ajudar a escolher o próximo jogo! 🏆');
-            window.location.href = `https://wa.me/${CONFIG.WHATSAPP_NUMBER}?text=${message}`;
-            localStorage.setItem('councilAdCount', 0); // Reseta o contador
+            dom.councilWatchAdButton.disabled = true;
+            setTimeout(() => {
+                const message = encodeURIComponent('Olá Jennison! Cumpri a missão dos 10 anúncios no Kaorr Games e estou pronto para ver o catálogo e ajudar a escolher o próximo jogo! 🏆');
+                window.location.href = `https://wa.me/${CONFIG.WHATSAPP_NUMBER}?text=${message}`;
+                localStorage.setItem('councilAdCount', 0);
+                dom.councilModal.style.display = 'none';
+                dom.councilWatchAdButton.disabled = false;
+            }, 1500);
         }
     }
     
@@ -452,12 +474,15 @@
       dom.unlockVipBtn.addEventListener('click', unlockVipGame);
       dom.closeModalBtn.addEventListener('click', closeVipModal);
       dom.dailyVipButton.addEventListener('click', startDailyVipFlow);
+      const councilButtons = [dom.councilButton, dom.footerCouncilButton];
+      councilButtons.forEach(btn => {
+          btn.addEventListener('click', () => {
+            updateCouncilProgress();
+            dom.councilModal.style.display = 'flex';
+          });
+      });
       dom.adFlowButton.addEventListener('click', handleAdFlowClick);
       dom.adFlowClose.addEventListener('click', () => dom.adFlowModal.style.display = 'none');
-      dom.councilButton.addEventListener('click', () => {
-          updateCouncilProgress();
-          dom.councilModal.style.display = 'flex';
-      });
       dom.councilCloseButton.addEventListener('click', () => dom.councilModal.style.display = 'none');
       dom.councilWatchAdButton.addEventListener('click', handleCouncilAdClick);
 
