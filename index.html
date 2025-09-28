@@ -47,23 +47,9 @@
         animation: pulse 2.5s infinite ease-in-out;
     }
     @keyframes pulse { 0%, 100% { opacity: 0.7; } 50% { opacity: 1; } }
-
-    #coin-balance {
-        margin-top: 15px;
-        padding: 5px 15px;
-        background-color: rgba(0,0,0,0.5);
-        border: 2px solid var(--primary-color);
-        border-radius: 20px;
-        display: inline-block;
-        font-family: 'Press Start 2P', cursive;
-        font-size: 14px;
-        color: var(--primary-color);
-        text-shadow: 0 0 5px var(--primary-color);
-    }
-
     main {
       display: flex; flex-direction: column; align-items: center; padding: 20px;
-      justify-content: center; min-height: calc(100vh - 225px); box-sizing: border-box;
+      justify-content: center; min-height: calc(100vh - 195px); box-sizing: border-box;
     }
     .game-card {
       background: rgba(0,0,0,0.7); border-radius: 15px; padding: 15px;
@@ -139,12 +125,11 @@
   <script>(function(s){s.dataset.zone='9932995',s.src='https://groleegni.net/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
 
   <header>
-      <div class="header-content">
+      <div>
           <span>🎮 Kaorr Games 🎮</span>
           <p class="subtitle">Forjado em código por Jennison Reis</p>
           <p class="update-notice">+ Novos jogos e desafios diários +</p>
       </div>
-      <div id="coin-balance">👑 0 KC</div>
   </header>
 
   <main>
@@ -200,9 +185,6 @@
         DAILY_VIP_ADS_REQUIRED: 5,
         DAILY_VIP_DURATION_HOURS: 5,
         DAILY_VIP_COOLDOWN_HOURS: 24,
-        DAILY_LOGIN_COINS: 10,
-        PLAYTIME_REWARD_COINS: 5, // <-- Recompensa por tempo
-        PLAYTIME_REWARD_MINUTES: 1, // <-- Tempo para ganhar
         ALL_GAMES: {
             pacman: { title: 'Pac-Man', src: 'https://funhtml5games.com?embed=pacman', isVip: false },
             mazeblox: { title: 'Mazeblox', src: 'https://funhtml5games.com?embed=mazeblox', isVip: false },
@@ -220,9 +202,7 @@
       currentPage: 1, gameKeys: Object.keys(CONFIG.ALL_GAMES),
       totalPages: Math.ceil(Object.keys(CONFIG.ALL_GAMES).length / CONFIG.GAMES_PER_PAGE),
       vipUnlockStatus: {}, currentGameToUnlock: null,
-      isVipPassActive: false, adFlowCounter: 0, countdownInterval: null,
-      kaorrCoins: 0,
-      playtimeTimer: null // <-- Novo estado para o timer de jogo
+      isVipPassActive: false, adFlowCounter: 0, countdownInterval: null
     };
 
     const dom = {
@@ -237,33 +217,9 @@
       dailyVipButton: document.getElementById('daily-vip-button'),
       adFlowModal: document.getElementById('ad-flow-modal'),
       adFlowButton: document.getElementById('ad-flow-button'),
-      adFlowClose: document.getElementById('ad-flow-close'),
-      coinBalance: document.getElementById('coin-balance')
+      adFlowClose: document.getElementById('ad-flow-close')
     };
     
-    // --- LÓGICA DAS MOEDAS ---
-    function updateCoinBalance(newAmount) {
-        state.kaorrCoins = newAmount;
-        localStorage.setItem('kaorrCoins', state.kaorrCoins);
-        dom.coinBalance.innerHTML = `👑 ${state.kaorrCoins} KC`;
-    }
-
-    function addCoins(amount) {
-        const currentCoins = parseInt(localStorage.getItem('kaorrCoins') || '0');
-        updateCoinBalance(currentCoins + amount);
-        console.log(`Ganhou ${amount} KC!`); // Log para teste
-    }
-    
-    function handleDailyLogin() {
-        const now = new Date();
-        const lastVisit = localStorage.getItem('lastDailyLogin');
-        if (!lastVisit || new Date(parseInt(lastVisit)).getDate() !== now.getDate()) {
-            addCoins(CONFIG.DAILY_LOGIN_COINS);
-            localStorage.setItem('lastDailyLogin', now.getTime());
-        }
-    }
-    // --- FIM DA LÓGICA DAS MOEDAS ---
-
     function formatTime(seconds) {
         const h = Math.floor(seconds / 3600).toString().padStart(2, '0');
         const m = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
@@ -336,19 +292,6 @@
         const activeTab = document.querySelector(`.tab[data-game-key='${gameKey}']`);
         if (activeTab) activeTab.classList.add('active');
 
-        // --- LÓGICA DO TIMER DE JOGO ---
-        // Limpa qualquer timer anterior ao selecionar um novo jogo
-        if (state.playtimeTimer) {
-            clearTimeout(state.playtimeTimer);
-        }
-        // Inicia um novo timer para dar moedas
-        const rewardTimeMs = CONFIG.PLAYTIME_REWARD_MINUTES * 60 * 1000;
-        state.playtimeTimer = setTimeout(() => {
-            addCoins(CONFIG.PLAYTIME_REWARD_COINS);
-        }, rewardTimeMs);
-        // --- FIM DA LÓGICA DO TIMER ---
-
-
         const isUnlocked = state.isVipPassActive || state.vipUnlockStatus[gameKey];
         if (game.isVip && !isUnlocked) {
             dom.gameFrame.style.display = 'none';
@@ -364,7 +307,7 @@
     function renderPagination() {
       dom.pageIndicator.textContent = `Página ${state.currentPage} / ${state.totalPages || 1}`;
       dom.prevBtn.disabled = state.currentPage === 1;
-      dom.nextBtn.disabled = state.totalPages;
+      dom.nextBtn.disabled = state.currentPage === state.totalPages;
     }
     
     function switchGame(gameKey) { handleGameSelection(gameKey); }
@@ -442,10 +385,6 @@
     }
 
     function init() {
-      const savedCoins = parseInt(localStorage.getItem('kaorrCoins') || '0');
-      updateCoinBalance(savedCoins);
-      handleDailyLogin();
-
       state.gameKeys.forEach(key => {
         if (CONFIG.ALL_GAMES[key].isVip) state.vipUnlockStatus[key] = false;
       });
