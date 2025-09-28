@@ -31,9 +31,7 @@
       font-family: 'Press Start 2P', cursive;
       border-bottom: 2px solid var(--primary-color);
     }
-    .header-content {
-        font-size: clamp(18px, 4vw, 22px);
-    }
+    .header-content { font-size: clamp(18px, 4vw, 22px); }
     .subtitle {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         font-size: 14px; font-weight: bold; color: var(--primary-color);
@@ -51,21 +49,50 @@
       display: flex; flex-direction: column; align-items: center; padding: 20px;
       justify-content: center; min-height: calc(100vh - 195px); box-sizing: border-box;
     }
+    /* --- INÍCIO: NOVA BARRA DE AÇÕES --- */
+    .player-actions-bar {
+        display: flex;
+        justify-content: center;
+        gap: 15px; /* Espaço entre os botões */
+        margin-bottom: 20px;
+        width: 100%;
+        max-width: 600px;
+    }
+    .player-actions-bar button {
+        flex: 1; /* Para que os botões dividam o espaço */
+        padding: 12px 10px;
+        font-size: 14px;
+        font-weight: bold;
+        font-family: 'Press Start 2P', cursive;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    }
+    #daily-vip-button {
+        border: 2px solid var(--primary-color);
+        background: linear-gradient(45deg, #ffc107, #ffeb3b);
+        color: #000;
+        box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+    }
+    #council-button {
+        border: 2px solid var(--pacman-blue);
+        background: linear-gradient(45deg, #007bff, #00d4ff);
+        color: white;
+        box-shadow: 0 4px 15px rgba(0, 212, 255, 0.4);
+    }
+    #daily-vip-button:hover:not(:disabled), #council-button:hover:not(:disabled) {
+        transform: scale(1.05);
+    }
+    #daily-vip-button:disabled {
+        background: var(--dark-grey); border-color: #777; color: #aaa;
+        cursor: not-allowed; box-shadow: none;
+    }
+    /* --- FIM: NOVA BARRA DE AÇÕES --- */
     .game-card {
       background: rgba(0,0,0,0.7); border-radius: 15px; padding: 15px;
       box-shadow: 0 0 15px rgba(0,0,0,0.8); width: 100%; max-width: 600px;
     }
-    .daily-vip-container { margin-bottom: 20px; width: 100%; max-width: 600px; }
-    #daily-vip-button {
-        width: 100%; padding: 15px; font-size: 18px; font-weight: bold;
-        font-family: 'Press Start 2P', cursive; border: 2px solid var(--primary-color);
-        border-radius: 10px; background: linear-gradient(45deg, #ffc107, #ffeb3b);
-        color: #000; cursor: pointer; transition: all 0.3s ease;
-        text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
-        box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
-    }
-    #daily-vip-button:hover:not(:disabled) { transform: scale(1.02); box-shadow: 0 6px 20px rgba(255, 215, 0, 0.6); }
-    #daily-vip-button:disabled { background: var(--dark-grey); border-color: #777; color: #aaa; cursor: not-allowed; box-shadow: none; }
     .game-tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; min-height: 45px; }
     .tab {
         padding: 10px 15px; font-size: 16px; cursor: pointer; border: 2px solid var(--primary-color);
@@ -96,47 +123,8 @@
       margin: 10px 0; font-size: clamp(20px, 5vw, 24px); color: var(--primary-color);
       text-shadow: 2px 2px 5px rgba(0,0,0,0.8); font-family: 'Press Start 2P', cursive;
     }
-    footer { 
-        padding: 15px; 
-        background: rgba(0,0,0,0.8); 
-        font-size: 14px; 
-        border-top: 2px solid var(--primary-color);
-        display: flex;
-        flex-direction: column; /* Para empilhar os elementos */
-        align-items: center; /* Centralizar horizontalmente */
-        gap: 10px; /* Espaçamento entre os elementos */
-    }
-    footer .copyright {
-        margin-bottom: 5px; /* Ajuste o espaçamento do copyright */
-    }
+    footer { padding: 15px; background: rgba(0,0,0,0.8); font-size: 14px; border-top: 2px solid var(--primary-color); }
     a { color: var(--primary-color); text-decoration: none; }
-    #council-button {
-        font-weight: bold;
-        padding: 8px 15px;
-        background: linear-gradient(45deg, #ffc107, #ffeb3b); /* Fundo dourado */
-        color: #000; /* Texto escuro para contraste */
-        border: 2px solid var(--primary-color);
-        border-radius: 20px;
-        text-decoration: none; /* Remover sublinhado padrão */
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 0 10px rgba(255, 215, 0, 0.5); /* Brilho sutil */
-        animation: councilPulse 2s infinite ease-in-out; /* Animação */
-        font-family: 'Press Start 2P', cursive; /* Fonte do cabeçalho */
-        font-size: 14px;
-        display: inline-block; /* Para o padding funcionar corretamente */
-    }
-    #council-button:hover {
-        transform: scale(1.05); /* Pequeno zoom no hover */
-        box-shadow: 0 0 20px rgba(255, 215, 0, 0.8); /* Brilho mais intenso */
-    }
-    @keyframes councilPulse {
-        0% { transform: scale(1); box-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
-        50% { transform: scale(1.02); box-shadow: 0 0 15px rgba(255, 215, 0, 0.8); }
-        100% { transform: scale(1); box-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
-    }
-
-
     .pagination { display: flex; align-items: center; justify-content: center; gap: 15px; margin-top: 20px; }
     .pagination button:disabled { background-color: var(--dark-grey); color: #999; cursor: not-allowed; box-shadow: none; transform: none; }
     .pagination span { font-size: 18px; font-weight: bold; color: var(--primary-color); font-family: 'Press Start 2P', cursive; }
@@ -152,20 +140,8 @@
         box-shadow: 0 0 25px var(--primary-color);
     }
     .modal-content h3 { font-family: 'Press Start 2P', cursive; margin-top: 0; }
-    #council-progress-bar-inner {
-        height: 100%;
-        background-color: var(--pacman-blue);
-        border-radius: 5px;
-        width: 0%;
-        transition: width 0.3s ease;
-    }
-    #council-progress-bar {
-        width: 100%;
-        background-color: var(--dark-grey);
-        border-radius: 5px;
-        height: 10px;
-        margin: 10px 0;
-    }
+    #council-progress-bar-inner { height: 100%; background-color: var(--pacman-blue); border-radius: 5px; width: 0%; transition: width 0.3s ease; }
+    #council-progress-bar { width: 100%; background-color: var(--dark-grey); border-radius: 5px; height: 10px; margin: 10px 0; }
     #unlock-button, #ad-flow-button, #council-watch-ad-button { background: var(--blue-action); color: white; margin-right: 10px; }
     #unlock-button:hover, #ad-flow-button:hover, #council-watch-ad-button:hover { background: #0056b3; }
     #close-modal, #ad-flow-close, #council-close-button { background: #6c757d; color: white; }
@@ -185,8 +161,9 @@
   </header>
 
   <main>
-    <div class="daily-vip-container">
-        <button id="daily-vip-button">🎁 Resgatar VIP Diário!</button>
+    <div class="player-actions-bar">
+        <button id="daily-vip-button">🎁 VIP Diário</button>
+        <button id="council-button">🗳️ Votar em Jogo</button>
     </div>
 
     <div class="game-tabs" id="game-tabs-container"></div>
@@ -239,8 +216,7 @@
 
 
   <footer>
-    <span class="copyright">© 2025 Kaorr Games | Feito com ❤️ para diversão</span>
-    <a id="council-button">Vote no Próximo Jogo 🗳️</a>
+    © 2025 Kaorr Games | Feito com ❤️ para diversão
   </footer>
 
   <script>
@@ -307,7 +283,7 @@
         if (now < vipPassExpiry) {
             state.isVipPassActive = true;
             const remaining = (vipPassExpiry - now) / 1000;
-            dom.dailyVipButton.textContent = `VIP Ativo: ${formatTime(remaining)}`;
+            dom.dailyVipButton.textContent = `VIP Ativo: ${formatTime(remaining).substring(3)}`; // Sem horas
             dom.dailyVipButton.disabled = true;
         } else {
             if(state.isVipPassActive) { state.isVipPassActive = false; renderPage(); }
@@ -316,7 +292,7 @@
                 dom.dailyVipButton.textContent = `Prêmio em: ${formatTime(remaining)}`;
                 dom.dailyVipButton.disabled = true;
             } else {
-                dom.dailyVipButton.textContent = '🎁 Resgatar VIP Diário!';
+                dom.dailyVipButton.textContent = '🎁 VIP Diário';
                 dom.dailyVipButton.disabled = false;
                 if (state.countdownInterval) { clearInterval(state.countdownInterval); state.countdownInterval = null; }
             }
