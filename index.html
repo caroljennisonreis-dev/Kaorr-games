@@ -101,7 +101,7 @@
     }
     .game-card-image-container {
         width: 100%;
-        padding-top: 75%; /* Proporção 4:3 */
+        padding-top: 75%;
         position: relative;
         background-color: #000;
     }
@@ -215,9 +215,9 @@
       </div>
   </div>
 
-  <div id="vip-modal-overlay" class="modal-overlay" style="display:none;"> </div>
-  <div id="ad-flow-modal" class="modal-overlay" style="display:none;"> </div>
-  <div id="council-modal" class="modal-overlay" style="display:none;"> </div>
+  <div id="vip-modal-overlay" class="modal-overlay"> </div>
+  <div id="ad-flow-modal" class="modal-overlay"> </div>
+  <div id="council-modal" class="modal-overlay"> </div>
 
   <footer>
     © 2025 Kaorr Games | Feito com ❤️ para diversão
@@ -230,7 +230,7 @@
         DAILY_VIP_DURATION_HOURS: 5,
         DAILY_VIP_COOLDOWN_HOURS: 24,
         VOTE_ADS_REQUIRED: 10,
-        WHATSAPP_NUMBER: '5548991451970', 
+        WHATSAPP_NUMBER: '5548991451970', // <-- SEU NÚMERO ATUALIZADO
         ALL_GAMES: {
             pacman: { 
                 title: 'Pac-Man', 
@@ -293,31 +293,11 @@
       isVipPassActive: false,
       vipUnlockStatus: {},
       currentGameToUnlock: null,
-      adFlowCounter: 0,
-      countdownInterval: null
+      countdownInterval: null,
     };
 
-    const dom = {
-      dailyVipButton: document.getElementById('daily-vip-button'),
-      councilButton: document.getElementById('council-button'),
-      gameGrid: document.getElementById('game-grid'),
-      gamePlayerModal: document.getElementById('game-player-modal'),
-      gamePlayerTitle: document.getElementById('game-player-title'),
-      gamePlayerIframe: document.getElementById('game-player-iframe'),
-      gamePlayerClose: document.getElementById('game-player-close'),
-      vipModal: document.getElementById('vip-modal-overlay'),
-      unlockVipBtn: document.getElementById('unlock-button'),
-      closeModalBtn: document.getElementById('close-modal'),
-      adFlowModal: document.getElementById('ad-flow-modal'),
-      adFlowButton: document.getElementById('ad-flow-button'),
-      adFlowClose: document.getElementById('ad-flow-close'),
-      councilModal: document.getElementById('council-modal'),
-      councilProgressText: document.getElementById('council-progress-text'),
-      councilProgressBarInner: document.getElementById('council-progress-bar-inner'),
-      councilWatchAdButton: document.getElementById('council-watch-ad-button'),
-      councilCloseButton: document.getElementById('council-close-button'),
-    };
-    
+    const dom = {}; // Populado no init
+
     function renderGameGrid() {
         dom.gameGrid.innerHTML = '';
         for (const gameKey in CONFIG.ALL_GAMES) {
@@ -370,23 +350,31 @@
     }
 
     function init() {
+        Object.assign(dom, {
+            dailyVipButton: document.getElementById('daily-vip-button'),
+            councilButton: document.getElementById('council-button'),
+            gameGrid: document.getElementById('game-grid'),
+            gamePlayerModal: document.getElementById('game-player-modal'),
+            gamePlayerTitle: document.getElementById('game-player-title'),
+            gamePlayerIframe: document.getElementById('game-player-iframe'),
+            gamePlayerClose: document.getElementById('game-player-close'),
+            vipModal: document.getElementById('vip-modal-overlay'),
+            unlockVipBtn: document.getElementById('unlock-button'),
+            closeModalBtn: document.getElementById('close-modal'),
+            // Adicione aqui as referências para os outros modais (ad-flow e council)
+        });
+
         Object.keys(CONFIG.ALL_GAMES).forEach(key => {
             if (CONFIG.ALL_GAMES[key].isVip) state.vipUnlockStatus[key] = false;
         });
         
-        // Listeners
-        dom.dailyVipButton.addEventListener('click', () => { /* Adicionar lógica do modal de VIP diário */ });
-        dom.councilButton.addEventListener('click', () => { /* Adicionar lógica do modal do Conselho */ });
         dom.gamePlayerClose.addEventListener('click', closeGamePlayer);
-        dom.unlockVipBtn.addEventListener('click', unlockVipGame);
-        dom.closeModalBtn.addEventListener('click', () => dom.vipModal.style.display = 'none' );
-        // ... outros listeners de fechar modais
+        // Lembre-se de adicionar os listeners para os outros botões (daily-vip, council, etc)
+        // dom.dailyVipButton.addEventListener('click', ...);
+        // dom.councilButton.addEventListener('click', ...);
+        // dom.unlockVipBtn.addEventListener('click', unlockVipGame);
+        // dom.closeModalBtn.addEventListener('click', () => dom.vipModal.style.display = 'none');
         
-        // updateCountdown();
-        // if (!state.countdownInterval) {
-        //     state.countdownInterval = setInterval(updateCountdown, 1000);
-        // }
-
         renderGameGrid();
     }
 
