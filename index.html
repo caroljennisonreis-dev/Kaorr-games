@@ -179,7 +179,6 @@
     }
     #game-player-iframe-container { flex-grow: 1; background: #000; }
     #game-player-iframe { width: 100%; height: 100%; border: none; }
-
     #council-progress-bar-inner { height: 100%; background-color: var(--pacman-blue); border-radius: 5px; width: 0%; transition: width 0.3s ease; }
     #council-progress-bar { width: 100%; background-color: var(--dark-grey); border-radius: 5px; height: 10px; margin: 10px 0; }
     button {
@@ -211,8 +210,7 @@
         <button id="council-button">🗳️ Votar em Jogo</button>
     </div>
 
-    <div id="game-grid">
-        </div>
+    <div id="game-grid"></div>
   </main>
   
   <div id="game-player-modal" class="modal-overlay">
@@ -237,12 +235,12 @@
   </div>
 
   <div id="ad-flow-modal" class="modal-overlay">
-      <div class="modal-content">
-          <h3>💎 Passe VIP Diário 💎</h3>
-          <p>Assista a 5 anúncios para liberar TODOS os jogos VIP por 5 horas!</p>
-          <button id="ad-flow-button">Assistir Anúncio (1/5)</button>
-          <button id="ad-flow-close">Agora não</button>
-      </div>
+    <div class="modal-content">
+        <h3>💎 Passe VIP Diário 💎</h3>
+        <p>Assista a 5 anúncios para liberar TODOS os jogos VIP por 5 horas!</p>
+        <button id="ad-flow-button">Assistir Anúncio (1/5)</button>
+        <button id="ad-flow-close">Agora não</button>
+    </div>
   </div>
 
   <div id="council-modal" class="modal-overlay">
@@ -269,60 +267,15 @@
         VOTE_ADS_REQUIRED: 10,
         WHATSAPP_NUMBER: '5548991451970', 
         ALL_GAMES: {
-            pacman: { 
-                title: 'Pac-Man', 
-                src: 'https://funhtml5games.com?embed=pacman', 
-                image: 'https://i.ibb.co/LhXjv1TF/cartoon-artistic-image-draw-animated-260nw-2531832685.jpg',
-                isVip: false 
-            },
-            mazeblox: { 
-                title: 'Mazeblox', 
-                src: 'https://funhtml5games.com?embed=mazeblox',
-                image: 'https://i.ibb.co/4gtS9QST/images.jpg',
-                isVip: false
-            },
-            omnomrun: { 
-                title: 'Om Nom Run', 
-                src: 'https://play.famobi.com/om-nom-run',
-                image: 'https://i.ibb.co/3mVvnVbn/91-Wkd9n-OACL.png',
-                isVip: false
-            },
-            giantrush: { 
-                title: 'Giant Rush', 
-                src: 'https://play.famobi.com/giant-rush',
-                image: 'https://i.ibb.co/49Rbvzg/7086518e78b57e20417f0ab7e13a65fdf04d80ebff466d505a0a998d817598d7.jpg',
-                isVip: false
-            },
-            westernsniper: { 
-                title: 'Western Sniper', 
-                src: 'https://play.famobi.com/western-sniper',
-                image: 'https://i.ibb.co/R4y1bb4W/become-the-ultimate-bandit-hunter-with-a-sniper-rifle.jpg',
-                isVip: true
-            },
-            outcome: { 
-                title: 'Outcome', 
-                src: 'https://play.famobi.com/outcome',
-                image: 'https://i.ibb.co/VWzvRZtP/virtual-reality-headset-controllers-gaming-260nw-2065808501.jpg',
-                isVip: true
-            },
-            speedmaster: { 
-                title: 'Speed Master', 
-                src: 'https://play.famobi.com/speed-master',
-                image: 'https://i.ibb.co/4ns87HDG/speed-master.jpg',
-                isVip: true
-            },
-            mestredogatilho: { 
-                title: 'Mestre do Gatilho', 
-                src: 'https://play.famobi.com/gun-spin',
-                image: 'https://i.ibb.co/Ps3SjLgH/riflerange-galeria-de-tiro-homem-com-rifle-armas-e-ilustracao-de-rifle-169479-1503.jpg',
-                isVip: true
-            },
-            dantheman: { 
-                title: 'Dan The Man', 
-                src: 'https://html5.gamedistribution.com/3d11dfed72a04e00ae9a43ab3fd49bd6/?gd_sdk_referrer_url=https://kaorr-games.vercel.app/',
-                image: 'https://i.ibb.co/BKTZfKJJ/d2c4cecf303d0c120100d5422f42d3fc.jpg',
-                isVip: true
-            }
+            pacman: { title: 'Pac-Man', src: 'https://funhtml5games.com?embed=pacman', image: 'https://i.ibb.co/LhXjv1TF/cartoon-artistic-image-draw-animated-260nw-2531832685.jpg', isVip: false },
+            mazeblox: { title: 'Mazeblox', src: 'https://funhtml5games.com?embed=mazeblox', image: 'https://i.ibb.co/4gtS9QST/images.jpg', isVip: false },
+            omnomrun: { title: 'Om Nom Run', src: 'https://play.famobi.com/om-nom-run', image: 'https://i.ibb.co/3mVvnVbn/91-Wkd9n-OACL.png', isVip: false },
+            giantrush: { title: 'Giant Rush', src: 'https://play.famobi.com/giant-rush', image: 'https://i.ibb.co/49Rbvzg/7086518e78b57e20417f0ab7e13a65fdf04d80ebff466d505a0a998d817598d7.jpg', isVip: false },
+            westernsniper: { title: 'Western Sniper', src: 'https://play.famobi.com/western-sniper', image: 'https://i.ibb.co/R4y1bb4W/become-the-ultimate-bandit-hunter-with-a-sniper-rifle.jpg', isVip: true },
+            outcome: { title: 'Outcome', src: 'https://play.famobi.com/outcome', image: 'https://i.ibb.co/VWzvRZtP/virtual-reality-headset-controllers-gaming-260nw-2065808501.jpg', isVip: true },
+            speedmaster: { title: 'Speed Master', src: 'https://play.famobi.com/speed-master', image: 'https://i.ibb.co/4ns87HDG/speed-master.jpg', isVip: true },
+            mestredogatilho: { title: 'Mestre do Gatilho', src: 'https://play.famobi.com/gun-spin', image: 'https://i.ibb.co/Ps3SjLgH/riflerange-galeria-de-tiro-homem-com-rifle-armas-e-ilustracao-de-rifle-169479-1503.jpg', isVip: true },
+            dantheman: { title: 'Dan The Man', src: 'https://html5.gamedistribution.com/3d11dfed72a04e00ae9a43ab3fd49bd6/?gd_sdk_referrer_url=https://kaorr-games.vercel.app/', image: 'https://i.ibb.co/BKTZfKJJ/d2c4cecf303d0c120100d5422f42d3fc.jpg', isVip: true }
         }
     };
 
@@ -366,7 +319,7 @@
         dom.dailyVipButton.addEventListener('click', startDailyVipFlow);
         dom.councilButton.addEventListener('click', openCouncilModal);
         dom.unlockVipBtn.addEventListener('click', unlockVipGame);
-        dom.closeModalBtn.addEventListener('click', () => dom.vipModal.style.display = 'none' );
+        dom.closeModalBtn.addEventListener('click', closeVipModal);
         dom.adFlowButton.addEventListener('click', handleAdFlowClick);
         dom.adFlowClose.addEventListener('click', () => dom.adFlowModal.style.display = 'none');
         dom.councilWatchAdButton.addEventListener('click', handleCouncilAdClick);
@@ -379,7 +332,7 @@
 
         renderGameGrid();
     }
-    
+
     function renderGameGrid() {
         dom.gameGrid.innerHTML = '';
         for (const gameKey in CONFIG.ALL_GAMES) {
@@ -402,9 +355,30 @@
             dom.gameGrid.appendChild(card);
         }
     }
+    
+    // >>>>> INÍCIO DA CORREÇÃO <<<<<
+    
+    function resetIndividualUnlocks() {
+        let statusChanged = false;
+        for (const key in state.vipUnlockStatus) {
+            if (state.vipUnlockStatus[key]) { 
+                state.vipUnlockStatus[key] = false; 
+                statusChanged = true; 
+            }
+        }
+        if (statusChanged && !state.isVipPassActive) {
+            renderGameGrid(); // Apenas redesenha a grade
+        }
+    }
 
     function openGamePlayer(gameKey) {
         const game = CONFIG.ALL_GAMES[gameKey];
+        
+        // Se o jogo a ser aberto for gratuito, reseta todos os unlocks individuais ANTES de continuar
+        if (!game.isVip) {
+            resetIndividualUnlocks();
+        }
+
         const isUnlocked = state.isVipPassActive || state.vipUnlockStatus[gameKey];
         if (game.isVip && !isUnlocked) {
             state.currentGameToUnlock = gameKey;
@@ -419,10 +393,13 @@
     function closeGamePlayer() {
         dom.gamePlayerModal.style.display = 'none';
         dom.gamePlayerIframe.src = 'about:blank';
+        // Reseta unlocks individuais ao fechar o player
+        resetIndividualUnlocks();
     }
 
     function unlockVipGame() {
       if (state.currentGameToUnlock) {
+        resetIndividualUnlocks(); // Reseta qualquer outro unlock antes de liberar o novo
         window.open(CONFIG.AD_LINK, '_blank');
         state.vipUnlockStatus[state.currentGameToUnlock] = true;
         closeVipModal(); 
@@ -436,93 +413,27 @@
         state.currentGameToUnlock = null;
     }
 
-    function updateCountdown() {
-        const now = Date.now();
-        const vipPassExpiry = parseInt(localStorage.getItem('vipPassExpiry') || '0');
-        const cooldownExpiry = parseInt(localStorage.getItem('cooldownExpiry') || '0');
-        if (now < vipPassExpiry) {
-            state.isVipPassActive = true;
-            const remaining = (vipPassExpiry - now) / 1000;
-            dom.dailyVipButton.textContent = `VIP Ativo: ${formatTime(remaining).substring(3)}`;
-            dom.dailyVipButton.disabled = true;
-        } else {
-            if(state.isVipPassActive) { state.isVipPassActive = false; renderGameGrid(); }
-            if (now < cooldownExpiry) {
-                const remaining = (cooldownExpiry - now) / 1000;
-                dom.dailyVipButton.textContent = `Prêmio em: ${formatTime(remaining)}`;
-                dom.dailyVipButton.disabled = true;
-            } else {
-                dom.dailyVipButton.textContent = '🎁 VIP Diário';
-                dom.dailyVipButton.disabled = false;
-                if (state.countdownInterval) { clearInterval(state.countdownInterval); state.countdownInterval = null; }
-            }
-        }
-    }
+    // --- O RESTANTE DAS FUNÇÕES (updateCountdown, VIP Diário, Conselho) CONTINUAM IGUAIS ---
+
+    function formatTime(seconds) { /* ...código... */ }
+    function updateCountdown() { /* ...código... */ }
+    function startDailyVipFlow() { /* ...código... */ }
+    function handleAdFlowClick() { /* ...código... */ }
+    function grantVipAccess() { /* ...código... */ }
+    function openCouncilModal() { /* ...código... */ }
+    function updateCouncilProgress() { /* ...código... */ }
+    function handleCouncilAdClick() { /* ...código... */ }
     
-    function startDailyVipFlow() {
-        state.adFlowCounter = 0;
-        dom.adFlowButton.textContent = `Assistir Anúncio (${state.adFlowCounter + 1}/${CONFIG.DAILY_VIP_ADS_REQUIRED})`;
-        dom.adFlowModal.style.display = 'flex';
-    }
-
-    function handleAdFlowClick() {
-        state.adFlowCounter++;
-        window.open(CONFIG.AD_LINK, '_blank');
-        dom.adFlowButton.textContent = `Assistir Anúncio (${state.adFlowCounter + 1}/${CONFIG.DAILY_VIP_ADS_REQUIRED})`;
-        if (state.adFlowCounter >= CONFIG.DAILY_VIP_ADS_REQUIRED) {
-            dom.adFlowModal.style.display = 'none';
-            grantVipAccess();
-        }
-    }
-
-    function grantVipAccess() {
-        const now = Date.now();
-        const vipDurationMs = CONFIG.DAILY_VIP_DURATION_HOURS * 60 * 60 * 1000;
-        const cooldownDurationMs = CONFIG.DAILY_VIP_COOLDOWN_HOURS * 60 * 60 * 1000;
-        localStorage.setItem('vipPassExpiry', now + vipDurationMs);
-        localStorage.setItem('cooldownExpiry', now + cooldownDurationMs);
-        if (state.countdownInterval) clearInterval(state.countdownInterval);
-        state.countdownInterval = setInterval(updateCountdown, 1000);
-        updateCountdown();
-        renderGameGrid();
-    }
-
-    function openCouncilModal() {
-        updateCouncilProgress();
-        dom.councilModal.style.display = 'flex';
-    }
-
-    function updateCouncilProgress() {
-        const count = parseInt(localStorage.getItem('councilAdCount') || '0');
-        const progressPercent = (count / CONFIG.VOTE_ADS_REQUIRED) * 100;
-        dom.councilProgressText.textContent = `Progresso: ${count}/${CONFIG.VOTE_ADS_REQUIRED}`;
-        dom.councilProgressBarInner.style.width = `${progressPercent}%`;
-        if (count < CONFIG.VOTE_ADS_REQUIRED) {
-            dom.councilWatchAdButton.textContent = `Assistir Anúncio (${count + 1}/${CONFIG.VOTE_ADS_REQUIRED})`;
-        } else {
-            dom.councilWatchAdButton.textContent = 'Completou! Redirecionando...';
-        }
-    }
-
-    function handleCouncilAdClick() {
-        let count = parseInt(localStorage.getItem('councilAdCount') || '0');
-        if (count >= CONFIG.VOTE_ADS_REQUIRED) return;
-        count++;
-        localStorage.setItem('councilAdCount', count);
-        updateCouncilProgress();
-        window.open(CONFIG.AD_LINK, '_blank');
-
-        if (count >= CONFIG.VOTE_ADS_REQUIRED) {
-            dom.councilWatchAdButton.disabled = true;
-            setTimeout(() => {
-                const message = encodeURIComponent('Olá Jennison! Cumpri a missão dos 10 anúncios no Kaorr Games e estou pronto para ver o catálogo e ajudar a escolher o próximo jogo! 🏆');
-                window.location.href = `https://wa.me/${CONFIG.WHATSAPP_NUMBER}?text=${message}`;
-                localStorage.setItem('councilAdCount', 0);
-                dom.councilModal.style.display = 'none';
-                dom.councilWatchAdButton.disabled = false;
-            }, 1500);
-        }
-    }
+    // As funções abaixo foram omitidas para simplicidade, mas estão no código final
+    function formatTime(seconds){const h=Math.floor(seconds/3600).toString().padStart(2,'0');const m=Math.floor(seconds%3600/60).toString().padStart(2,'0');const s=Math.floor(seconds%60).toString().padStart(2,'0');return `${h}:${m}:${s}`}
+    function updateCountdown(){const now=Date.now();const vipPassExpiry=parseInt(localStorage.getItem('vipPassExpiry')||'0');const cooldownExpiry=parseInt(localStorage.getItem('cooldownExpiry')||'0');if(now<vipPassExpiry){state.isVipPassActive=true;const remaining=(vipPassExpiry-now)/1000;dom.dailyVipButton.textContent=`VIP Ativo: ${formatTime(remaining).substring(3)}`;dom.dailyVipButton.disabled=true}else{if(state.isVipPassActive){state.isVipPassActive=false;renderGameGrid()}
+    if(now<cooldownExpiry){const remaining=(cooldownExpiry-now)/1000;dom.dailyVipButton.textContent=`Prêmio em: ${formatTime(remaining)}`;dom.dailyVipButton.disabled=true}else{dom.dailyVipButton.textContent='🎁 VIP Diário';dom.dailyVipButton.disabled=false;if(state.countdownInterval){clearInterval(state.countdownInterval);state.countdownInterval=null}}}}
+    function startDailyVipFlow(){state.adFlowCounter=0;dom.adFlowButton.textContent=`Assistir Anúncio (${state.adFlowCounter+1}/${CONFIG.DAILY_VIP_ADS_REQUIRED})`;dom.adFlowModal.style.display='flex'}
+    function handleAdFlowClick(){state.adFlowCounter++;window.open(CONFIG.AD_LINK,'_blank');dom.adFlowButton.textContent=`Assistir Anúncio (${state.adFlowCounter+1}/${CONFIG.DAILY_VIP_ADS_REQUIRED})`;if(state.adFlowCounter>=CONFIG.DAILY_VIP_ADS_REQUIRED){dom.adFlowModal.style.display='none';grantVipAccess()}}
+    function grantVipAccess(){const now=Date.now();const vipDurationMs=CONFIG.DAILY_VIP_DURATION_HOURS*60*60*1000;const cooldownDurationMs=CONFIG.DAILY_VIP_COOLDOWN_HOURS*60*60*1000;localStorage.setItem('vipPassExpiry',now+vipDurationMs);localStorage.setItem('cooldownExpiry',now+cooldownDurationMs);if(state.countdownInterval)clearInterval(state.countdownInterval);state.countdownInterval=setInterval(updateCountdown,1000);updateCountdown();renderGameGrid()}
+    function openCouncilModal(){updateCouncilProgress();dom.councilModal.style.display='flex'}
+    function updateCouncilProgress(){const count=parseInt(localStorage.getItem('councilAdCount')||'0');const progressPercent=count/CONFIG.VOTE_ADS_REQUIRED*100;dom.councilProgressText.textContent=`Progresso: ${count}/${CONFIG.VOTE_ADS_REQUIRED}`;dom.councilProgressBarInner.style.width=`${progressPercent}%`;if(count<CONFIG.VOTE_ADS_REQUIRED){dom.councilWatchAdButton.textContent=`Assistir Anúncio (${count+1}/${CONFIG.VOTE_ADS_REQUIRED})`}else{dom.councilWatchAdButton.textContent='Completou! Redirecionando...'}}
+    function handleCouncilAdClick(){let count=parseInt(localStorage.getItem('councilAdCount')||'0');if(count>=CONFIG.VOTE_ADS_REQUIRED)return;count++;localStorage.setItem('councilAdCount',count);updateCouncilProgress();window.open(CONFIG.AD_LINK,'_blank');if(count>=CONFIG.VOTE_ADS_REQUIRED){dom.councilWatchAdButton.disabled=true;setTimeout(()=>{const message=encodeURIComponent('Olá Jennison! Cumpri a missão dos 10 anúncios no Kaorr Games e estou pronto para ver o catálogo e ajudar a escolher o próximo jogo! 🏆');window.location.href=`https://wa.me/${CONFIG.WHATSAPP_NUMBER}?text=${message}`;localStorage.setItem('councilAdCount',0);dom.councilModal.style.display='none';dom.councilWatchAdButton.disabled=false},1500)}}
 
     document.addEventListener('DOMContentLoaded', init);
   </script>
