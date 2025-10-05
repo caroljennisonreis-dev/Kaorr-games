@@ -164,7 +164,23 @@
     
     footer { padding: 25px 15px; background: rgba(0,0,0,0.8); font-size: 14px; border-top: 2px solid var(--primary-color); }
     
-    .modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background-color:rgba(0,0,0,.9);z-index:2000;justify-content:center;align-items:center;padding:10px;box-sizing:border-box;backdrop-filter:blur(5px)}.modal-content{background:var(--background-dark);padding:30px;border-radius:15px;border:2px solid var(--primary-color);max-width:500px;width:100%;box-shadow:0 0 25px var(--primary-color)}.modal-content h3{font-family:'Press Start 2P',cursive;margin-top:0}#game-player-modal{padding:0;background:none}#game-player-content{width:100%;max-width:95vw;height:90vh;padding:0;background:#000;border:2px solid var(--primary-color);display:flex;flex-direction:column;box-shadow:0 0 30px var(--primary-color)}#game-player-header{display:flex;justify-content:space-between;align-items:center;padding:10px;background:rgba(0,0,0,.8)}#game-player-title{font-family:'Press Start 2P',cursive;color:var(--primary-color);font-size:clamp(12px,3vw,16px)}#game-player-close{font-size:30px;color:#fff;cursor:pointer;background:none;border:none;padding:0 10px;line-height:1}#game-player-iframe-container{flex-grow:1;background:#000}#game-player-iframe{width:100%;height:100%;border:none}#council-progress-bar-inner{height:100%;background-color:var(--pacman-blue);border-radius:5px;width:0%;transition:width .3s ease}#council-progress-bar{width:100%;background-color:var(--dark-grey);border-radius:5px;height:10px;margin:10px 0}button{margin-top:10px;padding:10px 20px;font-size:16px;cursor:pointer;border:none;border-radius:5px;background:var(--primary-color);color:#000;font-weight:700;transition:all .2s ease-in-out}#unlock-button,#ad-flow-button,#council-watch-ad-button{background:var(--blue-action);color:#fff;margin-right:10px}#unlock-button:hover,#ad-flow-button:hover,#council-watch-ad-button:hover{background:#0056b3}#close-modal,#ad-flow-close,#council-close-button{background:#6c757d;color:#fff}#close-modal:hover,#ad-flow-close:hover,#council-close-button:hover{background:#5a6268}
+    .modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background-color:rgba(0,0,0,.9);z-index:2000;justify-content:center;align-items:center;padding:10px;box-sizing:border-box;backdrop-filter:blur(5px)}.modal-content{background:var(--background-dark);padding:30px;border-radius:15px;border:2px solid var(--primary-color);max-width:500px;width:100%;box-shadow:0 0 25px var(--primary-color)}.modal-content h3{font-family:'Press Start 2P',cursive;margin-top:0}#game-player-modal{padding:0;background:none}#game-player-content{width:100%;max-width:95vw;height:90vh;padding:0;background:#000;border:2px solid var(--primary-color);display:flex;flex-direction:column;box-shadow:0 0 30px var(--primary-color)}#game-player-header{display:flex;justify-content:space-between;align-items:center;padding:10px;background:rgba(0,0,0,.8)}#game-player-title{font-family:'Press Start 2P',cursive;color:var(--primary-color);font-size:clamp(12px,3vw,16px)}#game-player-close{font-size:30px;color:#fff;cursor:pointer;background:none;border:none;padding:0 10px;line-height:1}#game-player-iframe-container{flex-grow:1;background:#000;position:relative}#game-player-iframe{width:100%;height:100%;border:none;visibility:hidden}#council-progress-bar-inner{height:100%;background-color:var(--pacman-blue);border-radius:5px;width:0%;transition:width .3s ease}#council-progress-bar{width:100%;background-color:var(--dark-grey);border-radius:5px;height:10px;margin:10px 0}button{margin-top:10px;padding:10px 20px;font-size:16px;cursor:pointer;border:none;border-radius:5px;background:var(--primary-color);color:#000;font-weight:700;transition:all .2s ease-in-out}#unlock-button,#ad-flow-button,#council-watch-ad-button{background:var(--blue-action);color:#fff;margin-right:10px}#unlock-button:hover,#ad-flow-button:hover,#council-watch-ad-button:hover{background:#0056b3}#close-modal,#ad-flow-close,#council-close-button{background:#6c757d;color:#fff}#close-modal:hover,#ad-flow-close:hover,#council-close-button:hover{background:#5a6268}
+
+    #loader {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 60px;
+        height: 60px;
+        border: 8px solid var(--dark-grey);
+        border-top-color: var(--primary-color);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        display: none;
+    }
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
   </style>
 </head>
 <body>
@@ -198,6 +214,7 @@
               <button id="game-player-close">&times;</button>
           </div>
           <div id="game-player-iframe-container">
+              <div id="loader"></div>
               <iframe id="game-player-iframe"></iframe>
           </div>
       </div>
@@ -281,6 +298,7 @@
             gamePlayerTitle: document.getElementById('game-player-title'),
             gamePlayerIframe: document.getElementById('game-player-iframe'),
             gamePlayerClose: document.getElementById('game-player-close'),
+            loader: document.getElementById('loader'),
             vipModal: document.getElementById('vip-modal-overlay'),
             unlockVipBtn: document.getElementById('unlock-button'),
             closeModalBtn: document.getElementById('close-modal'),
@@ -300,6 +318,11 @@
             if (CONFIG.ALL_GAMES[key].isVip) state.vipUnlockStatus[key] = false;
         });
         
+        dom.gamePlayerIframe.addEventListener('load', () => {
+            dom.loader.style.display = 'none';
+            dom.gamePlayerIframe.style.visibility = 'visible';
+        });
+
         dom.gamePlayerClose.addEventListener('click', closeGamePlayer);
         dom.dailyVipButton.addEventListener('click', startDailyVipFlow);
         dom.councilButton.addEventListener('click', openCouncilModal);
@@ -391,9 +414,27 @@
         renderGameGrid();
     }
     
-    function openGamePlayer(gameKey){const game=CONFIG.ALL_GAMES[gameKey];if(!game.isVip){resetIndividualUnlocks()}
-    const isUnlocked=state.isVipPassActive||state.vipUnlockStatus[gameKey];if(game.isVip&&!isUnlocked){state.currentGameToUnlock=gameKey;dom.vipModal.style.display='flex'}else{dom.gamePlayerTitle.textContent=game.title;dom.gamePlayerIframe.src=game.src;dom.gamePlayerModal.style.display='flex'}}
-    function closeGamePlayer(){dom.gamePlayerModal.style.display='none';dom.gamePlayerIframe.src='about:blank';resetIndividualUnlocks()}
+    function openGamePlayer(gameKey){
+        const game=CONFIG.ALL_GAMES[gameKey];
+        if(!game.isVip){resetIndividualUnlocks()}
+        const isUnlocked=state.isVipPassActive||state.vipUnlockStatus[gameKey];
+        if(game.isVip&&!isUnlocked){
+            state.currentGameToUnlock=gameKey;
+            dom.vipModal.style.display='flex'
+        } else {
+            dom.loader.style.display = 'block';
+            dom.gamePlayerIframe.style.visibility = 'hidden';
+            dom.gamePlayerTitle.textContent = game.title;
+            dom.gamePlayerIframe.src = game.src;
+            dom.gamePlayerModal.style.display = 'flex';
+        }
+    }
+    function closeGamePlayer(){
+        dom.gamePlayerModal.style.display='none';
+        dom.gamePlayerIframe.src='about:blank';
+        dom.loader.style.display = 'none';
+        resetIndividualUnlocks();
+    }
     function unlockVipGame(){if(state.currentGameToUnlock){resetIndividualUnlocks();window.open(CONFIG.AD_LINK,'_blank');state.vipUnlockStatus[state.currentGameToUnlock]=true;closeVipModal();renderGameGrid();openGamePlayer(state.currentGameToUnlock)}}
     function closeVipModal(){dom.vipModal.style.display='none';state.currentGameToUnlock=null}
     function resetIndividualUnlocks(){let statusChanged=false;for(const key in state.vipUnlockStatus){if(state.vipUnlockStatus[key]){state.vipUnlockStatus[key]=false;statusChanged=true}}
