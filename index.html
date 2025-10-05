@@ -164,23 +164,8 @@
     
     footer { padding: 25px 15px; background: rgba(0,0,0,0.8); font-size: 14px; border-top: 2px solid var(--primary-color); }
     
-    .modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background-color:rgba(0,0,0,.9);z-index:2000;justify-content:center;align-items:center;padding:10px;box-sizing:border-box;backdrop-filter:blur(5px)}.modal-content{background:var(--background-dark);padding:30px;border-radius:15px;border:2px solid var(--primary-color);max-width:500px;width:100%;box-shadow:0 0 25px var(--primary-color)}.modal-content h3{font-family:'Press Start 2P',cursive;margin-top:0}#game-player-modal{padding:0;background:none}#game-player-content{width:100%;max-width:95vw;height:90vh;padding:0;background:#000;border:2px solid var(--primary-color);display:flex;flex-direction:column;box-shadow:0 0 30px var(--primary-color)}#game-player-header{display:flex;justify-content:space-between;align-items:center;padding:10px;background:rgba(0,0,0,.8)}#game-player-title{font-family:'Press Start 2P',cursive;color:var(--primary-color);font-size:clamp(12px,3vw,16px)}#game-player-close{font-size:30px;color:#fff;cursor:pointer;background:none;border:none;padding:0 10px;line-height:1}#game-player-iframe-container{flex-grow:1;background:#000;position:relative}#game-player-iframe{width:100%;height:100%;border:none;visibility:hidden}#council-progress-bar-inner{height:100%;background-color:var(--pacman-blue);border-radius:5px;width:0%;transition:width .3s ease}#council-progress-bar{width:100%;background-color:var(--dark-grey);border-radius:5px;height:10px;margin:10px 0}button{margin-top:10px;padding:10px 20px;font-size:16px;cursor:pointer;border:none;border-radius:5px;background:var(--primary-color);color:#000;font-weight:700;transition:all .2s ease-in-out}#unlock-button,#ad-flow-button,#council-watch-ad-button{background:var(--blue-action);color:#fff;margin-right:10px}#unlock-button:hover,#ad-flow-button:hover,#council-watch-ad-button:hover{background:#0056b3}#close-modal,#ad-flow-close,#council-close-button{background:#6c757d;color:#fff}#close-modal:hover,#ad-flow-close:hover,#council-close-button:hover{background:#5a6268}
-
-    #loader {
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        width: 60px;
-        height: 60px;
-        border: 8px solid var(--dark-grey);
-        border-top-color: var(--primary-color);
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-        display: none;
-    }
-    @keyframes spin {
-        to { transform: rotate(360deg); }
-    }
+    .modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background-color:rgba(0,0,0,.9);z-index:2000;justify-content:center;align-items:center;padding:10px;box-sizing:border-box;backdrop-filter:blur(5px)}.modal-content{background:var(--background-dark);padding:30px;border-radius:15px;border:2px solid var(--primary-color);max-width:500px;width:100%;box-shadow:0 0 25px var(--primary-color)}.modal-content h3{font-family:'Press Start 2P',cursive;margin-top:0}#game-player-modal{padding:0;background:none}#game-player-content{width:100%;max-width:95vw;height:90vh;padding:0;background:#000;border:2px solid var(--primary-color);display:flex;flex-direction:column;box-shadow:0 0 30px var(--primary-color)}#game-player-header{display:flex;justify-content:space-between;align-items:center;padding:10px;background:rgba(0,0,0,.8)}#game-player-title{font-family:'Press Start 2P',cursive;color:var(--primary-color);font-size:clamp(12px,3vw,16px)}#game-player-close{font-size:30px;color:#fff;cursor:pointer;background:none;border:none;padding:0 10px;line-height:1}#game-player-iframe-container{position:relative;flex-grow:1;background:#000}#game-player-iframe{width:100%;height:100%;border:none;visibility:hidden}#council-progress-bar-inner{height:100%;background-color:var(--pacman-blue);border-radius:5px;width:0%;transition:width .3s ease}#council-progress-bar{width:100%;background-color:var(--dark-grey);border-radius:5px;height:10px;margin:10px 0}button{margin-top:10px;padding:10px 20px;font-size:16px;cursor:pointer;border:none;border-radius:5px;background:var(--primary-color);color:#000;font-weight:700;transition:all .2s ease-in-out}#unlock-button,#ad-flow-button,#council-watch-ad-button{background:var(--blue-action);color:#fff;margin-right:10px}#unlock-button:hover,#ad-flow-button:hover,#council-watch-ad-button:hover{background:#0056b3}#close-modal,#ad-flow-close,#council-close-button{background:#6c757d;color:#fff}#close-modal:hover,#ad-flow-close:hover,#council-close-button:hover{background:#5a6268}
+    #loader{position:absolute;left:50%;top:50%;width:60px;height:60px;border:8px solid var(--dark-grey);border-top-color:var(--primary-color);border-radius:50%;animation:spin 1s linear infinite;display:none}@keyframes spin{to{transform:rotate(360deg)}}
   </style>
 </head>
 <body>
@@ -266,6 +251,13 @@
             mazeblox: { title: 'Mazeblox', src: 'https://funhtml5games.com?embed=mazeblox', image: 'https://i.ibb.co/4gtS9QST/images.jpg', category: 'Puzzle', isVip: false },
             omnomrun: { title: 'Om Nom Run', src: 'https://play.famobi.com/om-nom-run', image: 'https://i.ibb.co/3mVvnVbn/91-Wkd9n-OACL.png', category: 'Aventura', isVip: false },
             giantrush: { title: 'Giant Rush', src: 'https://play.famobi.com/giant-rush', image: 'https://i.ibb.co/49Rbvzg/7086518e78b57e20417f0ab7e13a65fdf04d80ebff466d505a0a998d817598d7.jpg', category: 'Ação', isVip: false },
+            elementblocks: { 
+                title: 'Element Blocks', 
+                src: 'https://play.famobi.com/element-blocks',
+                image: 'https://i.ibb.co/7dp7v1jQ/element-blocks-big.webp',
+                category: 'Puzzle',
+                isVip: false 
+            },
             westernsniper: { title: 'Western Sniper', src: 'https://play.famobi.com/western-sniper', image: 'https://i.ibb.co/R4y1bb4W/become-the-ultimate-bandit-hunter-with-a-sniper-rifle.jpg', category: 'Ação', isVip: true },
             outcome: { title: 'Outcome', src: 'https://play.famobi.com/outcome', image: 'https://i.ibb.co/VWzvRZtP/virtual-reality-headset-controllers-gaming-260nw-2065808501.jpg', category: 'Aventura', isVip: true },
             speedmaster: { title: 'Speed Master', src: 'https://play.famobi.com/speed-master', image: 'https://i.ibb.co/4ns87HDG/speed-master.jpg', category: 'Corrida', isVip: true },
@@ -275,54 +267,32 @@
     };
 
     const state = {
-      isVipPassActive: false,
-      vipUnlockStatus: {},
-      currentGameToUnlock: null,
-      countdownInterval: null,
-      adFlowCounter: 0,
-      activeFilter: 'Todos',
-      favorites: [],
-      searchTerm: ''
+      isVipPassActive: false, vipUnlockStatus: {}, currentGameToUnlock: null,
+      countdownInterval: null, adFlowCounter: 0, activeFilter: 'Todos',
+      favorites: [], searchTerm: ''
     };
 
     const dom = {};
 
     function init() {
         Object.assign(dom, {
-            dailyVipButton: document.getElementById('daily-vip-button'),
-            councilButton: document.getElementById('council-button'),
-            filterBar: document.getElementById('filter-bar'),
-            searchBar: document.getElementById('search-bar'),
-            gameGrid: document.getElementById('game-grid'),
-            gamePlayerModal: document.getElementById('game-player-modal'),
-            gamePlayerTitle: document.getElementById('game-player-title'),
-            gamePlayerIframe: document.getElementById('game-player-iframe'),
-            gamePlayerClose: document.getElementById('game-player-close'),
-            loader: document.getElementById('loader'),
-            vipModal: document.getElementById('vip-modal-overlay'),
-            unlockVipBtn: document.getElementById('unlock-button'),
-            closeModalBtn: document.getElementById('close-modal'),
-            adFlowModal: document.getElementById('ad-flow-modal'),
-            adFlowButton: document.getElementById('ad-flow-button'),
-            adFlowClose: document.getElementById('ad-flow-close'),
-            councilModal: document.getElementById('council-modal'),
-            councilProgressText: document.getElementById('council-progress-text'),
+            dailyVipButton: document.getElementById('daily-vip-button'), councilButton: document.getElementById('council-button'),
+            filterBar: document.getElementById('filter-bar'), searchBar: document.getElementById('search-bar'),
+            gameGrid: document.getElementById('game-grid'), gamePlayerModal: document.getElementById('game-player-modal'),
+            gamePlayerTitle: document.getElementById('game-player-title'), gamePlayerIframe: document.getElementById('game-player-iframe'),
+            gamePlayerClose: document.getElementById('game-player-close'), loader: document.getElementById('loader'),
+            vipModal: document.getElementById('vip-modal-overlay'), unlockVipBtn: document.getElementById('unlock-button'),
+            closeModalBtn: document.getElementById('close-modal'), adFlowModal: document.getElementById('ad-flow-modal'),
+            adFlowButton: document.getElementById('ad-flow-button'), adFlowClose: document.getElementById('ad-flow-close'),
+            councilModal: document.getElementById('council-modal'), councilProgressText: document.getElementById('council-progress-text'),
             councilProgressBarInner: document.getElementById('council-progress-bar-inner'),
-            councilWatchAdButton: document.getElementById('council-watch-ad-button'),
-            councilCloseButton: document.getElementById('council-close-button'),
+            councilWatchAdButton: document.getElementById('council-watch-ad-button'), councilCloseButton: document.getElementById('council-close-button'),
         });
 
         state.favorites = JSON.parse(localStorage.getItem('kaorrFavorites')) || [];
-
-        Object.keys(CONFIG.ALL_GAMES).forEach(key => {
-            if (CONFIG.ALL_GAMES[key].isVip) state.vipUnlockStatus[key] = false;
-        });
+        Object.keys(CONFIG.ALL_GAMES).forEach(key => { if (CONFIG.ALL_GAMES[key].isVip) state.vipUnlockStatus[key] = false; });
         
-        dom.gamePlayerIframe.addEventListener('load', () => {
-            dom.loader.style.display = 'none';
-            dom.gamePlayerIframe.style.visibility = 'visible';
-        });
-
+        dom.gamePlayerIframe.addEventListener('load', () => { dom.loader.style.display = 'none'; dom.gamePlayerIframe.style.visibility = 'visible'; });
         dom.gamePlayerClose.addEventListener('click', closeGamePlayer);
         dom.dailyVipButton.addEventListener('click', startDailyVipFlow);
         dom.councilButton.addEventListener('click', openCouncilModal);
@@ -332,109 +302,26 @@
         dom.adFlowClose.addEventListener('click', () => dom.adFlowModal.style.display = 'none');
         dom.councilWatchAdButton.addEventListener('click', handleCouncilAdClick);
         dom.councilCloseButton.addEventListener('click', () => dom.councilModal.style.display = 'none');
-        dom.searchBar.addEventListener('input', (event) => {
-            state.searchTerm = event.target.value;
-            renderGameGrid();
-        });
+        dom.searchBar.addEventListener('input', (event) => { state.searchTerm = event.target.value; renderGameGrid(); });
 
         updateCountdown();
-        if (!state.countdownInterval) {
-            state.countdownInterval = setInterval(updateCountdown, 1000);
-        }
-
+        if (!state.countdownInterval) { state.countdownInterval = setInterval(updateCountdown, 1000); }
         renderFilterBar();
         renderGameGrid();
     }
     
-    function renderFilterBar() {
-        const categories = ['Todos', '⭐ Favoritos', ...new Set(Object.values(CONFIG.ALL_GAMES).map(game => game.category))];
-        dom.filterBar.innerHTML = '';
-        categories.forEach(category => {
-            const button = document.createElement('button');
-            button.className = 'filter-button';
-            if (category === state.activeFilter) button.classList.add('active');
-            button.textContent = category;
-            button.onclick = () => {
-                state.activeFilter = category;
-                renderFilterBar();
-                renderGameGrid();
-            };
-            dom.filterBar.appendChild(button);
-        });
-    }
-
-    function renderGameGrid() {
-        dom.gameGrid.innerHTML = '';
-        let filteredGames = Object.entries(CONFIG.ALL_GAMES);
-        if (state.activeFilter === '⭐ Favoritos') {
-            if (state.favorites.length === 0) {
-                dom.gameGrid.innerHTML = `<p style="color: var(--primary-color); grid-column: 1 / -1;">Você ainda não favoritou nenhum jogo. Clique na ⭐ de um jogo para adicioná-lo aqui!</p>`;
-                return;
-            }
-            filteredGames = filteredGames.filter(([gameKey]) => state.favorites.includes(gameKey));
-        } else if (state.activeFilter !== 'Todos') {
-            filteredGames = filteredGames.filter(([, game]) => game.category === state.activeFilter);
-        }
-        if (state.searchTerm) {
-            const lowerCaseSearch = state.searchTerm.toLowerCase();
-            filteredGames = filteredGames.filter(([, game]) => game.title.toLowerCase().includes(lowerCaseSearch));
-        }
-        if (filteredGames.length === 0) {
-            dom.gameGrid.innerHTML = `<p style="color: var(--primary-color); grid-column: 1 / -1;">Nenhum jogo encontrado com esses filtros.</p>`;
-            return;
-        }
-        filteredGames.forEach(([gameKey, game]) => {
-            const card = document.createElement('div');
-            card.className = 'game-card';
-            const isFavorite = state.favorites.includes(gameKey);
-            let vipIconHTML = '';
-            const isUnlocked = state.isVipPassActive || state.vipUnlockStatus[gameKey];
-            if (game.isVip) { vipIconHTML = `<div class="game-card-icon vip-icon">${isUnlocked ? '👑' : '🔒'}</div>`; }
-            card.innerHTML = `
-                <div class="game-card-image-container" onclick="openGamePlayer('${gameKey}')">
-                    <img src="${game.image}" alt="${game.title}">
-                </div>
-                <div class="game-card-title">${game.title}</div>
-                <div class="game-card-icon favorite-icon ${isFavorite ? 'is-favorite' : ''}" onclick="toggleFavorite('${gameKey}')">⭐</div>
-                ${vipIconHTML}
-            `;
-            dom.gameGrid.appendChild(card);
-        });
-    }
-
-    function toggleFavorite(gameKey) {
-        event.stopPropagation();
-        const index = state.favorites.indexOf(gameKey);
-        if (index > -1) {
-            state.favorites.splice(index, 1);
-        } else {
-            state.favorites.push(gameKey);
-        }
-        localStorage.setItem('kaorrFavorites', JSON.stringify(state.favorites));
-        renderGameGrid();
-    }
-    
-    function openGamePlayer(gameKey){
-        const game=CONFIG.ALL_GAMES[gameKey];
-        if(!game.isVip){resetIndividualUnlocks()}
-        const isUnlocked=state.isVipPassActive||state.vipUnlockStatus[gameKey];
-        if(game.isVip&&!isUnlocked){
-            state.currentGameToUnlock=gameKey;
-            dom.vipModal.style.display='flex'
-        } else {
-            dom.loader.style.display = 'block';
-            dom.gamePlayerIframe.style.visibility = 'hidden';
-            dom.gamePlayerTitle.textContent = game.title;
-            dom.gamePlayerIframe.src = game.src;
-            dom.gamePlayerModal.style.display = 'flex';
-        }
-    }
-    function closeGamePlayer(){
-        dom.gamePlayerModal.style.display='none';
-        dom.gamePlayerIframe.src='about:blank';
-        dom.loader.style.display = 'none';
-        resetIndividualUnlocks();
-    }
+    function renderFilterBar(){const categories=['Todos','⭐ Favoritos',...new Set(Object.values(CONFIG.ALL_GAMES).map(game=>game.category))];dom.filterBar.innerHTML='';categories.forEach(category=>{const button=document.createElement('button');button.className='filter-button';if(category===state.activeFilter)button.classList.add('active');button.textContent=category;button.onclick=()=>{state.activeFilter=category;renderFilterBar();renderGameGrid()};dom.filterBar.appendChild(button)})}
+    function renderGameGrid(){dom.gameGrid.innerHTML='';let filteredGames=Object.entries(CONFIG.ALL_GAMES);if(state.activeFilter==='⭐ Favoritos'){if(state.favorites.length===0){dom.gameGrid.innerHTML=`<p style="color: var(--primary-color); grid-column: 1 / -1;">Você ainda não favoritou nenhum jogo. Clique na ⭐ de um jogo para adicioná-lo aqui!</p>`;return}
+    filteredGames=filteredGames.filter(([gameKey])=>state.favorites.includes(gameKey))}else if(state.activeFilter!=='Todos'){filteredGames=filteredGames.filter(([,game])=>game.category===state.activeFilter)}
+    if(state.searchTerm){const lowerCaseSearch=state.searchTerm.toLowerCase();filteredGames=filteredGames.filter(([,game])=>game.title.toLowerCase().includes(lowerCaseSearch))}
+    if(filteredGames.length===0){dom.gameGrid.innerHTML=`<p style="color: var(--primary-color); grid-column: 1 / -1;">Nenhum jogo encontrado com esses filtros.</p>`;return}
+    filteredGames.forEach(([gameKey,game])=>{const card=document.createElement('div');card.className='game-card';const isFavorite=state.favorites.includes(gameKey);let vipIconHTML='';const isUnlocked=state.isVipPassActive||state.vipUnlockStatus[gameKey];if(game.isVip){vipIconHTML=`<div class="game-card-icon vip-icon">${isUnlocked?'👑':'🔒'}</div>`}
+    card.innerHTML=`<div class="game-card-image-container" onclick="openGamePlayer('${gameKey}')"><img src="${game.image}" alt="${game.title}"></div><div class="game-card-title">${game.title}</div><div class="game-card-icon favorite-icon ${isFavorite?'is-favorite':''}" onclick="toggleFavorite('${gameKey}')">⭐</div>${vipIconHTML}`;dom.gameGrid.appendChild(card)})}
+    function toggleFavorite(gameKey){event.stopPropagation();const index=state.favorites.indexOf(gameKey);if(index>-1){state.favorites.splice(index,1)}else{state.favorites.push(gameKey)}
+    localStorage.setItem('kaorrFavorites',JSON.stringify(state.favorites));renderGameGrid()}
+    function openGamePlayer(gameKey){const game=CONFIG.ALL_GAMES[gameKey];if(!game.isVip){resetIndividualUnlocks()}
+    const isUnlocked=state.isVipPassActive||state.vipUnlockStatus[gameKey];if(game.isVip&&!isUnlocked){state.currentGameToUnlock=gameKey;dom.vipModal.style.display='flex'}else{dom.loader.style.display='block';dom.gamePlayerIframe.style.visibility='hidden';dom.gamePlayerTitle.textContent=game.title;dom.gamePlayerIframe.src=game.src;dom.gamePlayerModal.style.display='flex'}}
+    function closeGamePlayer(){dom.gamePlayerModal.style.display='none';dom.gamePlayerIframe.src='about:blank';dom.loader.style.display='none';resetIndividualUnlocks()}
     function unlockVipGame(){if(state.currentGameToUnlock){resetIndividualUnlocks();window.open(CONFIG.AD_LINK,'_blank');state.vipUnlockStatus[state.currentGameToUnlock]=true;closeVipModal();renderGameGrid();openGamePlayer(state.currentGameToUnlock)}}
     function closeVipModal(){dom.vipModal.style.display='none';state.currentGameToUnlock=null}
     function resetIndividualUnlocks(){let statusChanged=false;for(const key in state.vipUnlockStatus){if(state.vipUnlockStatus[key]){state.vipUnlockStatus[key]=false;statusChanged=true}}
