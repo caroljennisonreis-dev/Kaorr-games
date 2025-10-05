@@ -75,7 +75,6 @@
     #daily-vip-button:hover:not(:disabled), #council-button:hover:not(:disabled) { transform: scale(1.05); }
     #daily-vip-button:disabled { background: var(--dark-grey); border-color: #777; color: #aaa; cursor: not-allowed; box-shadow: none; }
     
-    /* --- FILTROS --- */
     #filter-bar {
         display: flex;
         flex-wrap: wrap;
@@ -110,11 +109,15 @@
     }
     .game-card {
         background: rgba(0,0,0,0.5); border-radius: 10px; overflow: hidden;
-        cursor: pointer; transition: all 0.3s ease; border: 2px solid transparent;
+        transition: all 0.3s ease; border: 2px solid transparent;
         position: relative; display: flex; flex-direction: column;
     }
-    .game-card:hover { transform: scale(1.05); border-color: var(--primary-color); box-shadow: 0 0 20px var(--primary-color); }
-    .game-card-image-container { width: 100%; padding-top: 75%; position: relative; background-color: #000; }
+    .game-card:hover {
+        transform: scale(1.05);
+        border-color: var(--primary-color);
+        box-shadow: 0 0 20px var(--primary-color);
+    }
+    .game-card-image-container { width: 100%; padding-top: 75%; position: relative; background-color: #000; cursor: pointer; }
     .game-card img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
     .game-card-title {
         padding: 10px; font-weight: bold; font-size: 16px;
@@ -138,113 +141,165 @@
     
     footer { padding: 25px 15px; background: rgba(0,0,0,0.8); font-size: 14px; border-top: 2px solid var(--primary-color); }
     
-    .modal-overlay { /* Estilos dos modais aqui */ }
-    /* ... (resto do seu CSS para modais, etc.) ... */
+    .modal-overlay { /* ... */ }
+    /* (O resto do CSS dos modais e outros elementos permanece o mesmo) */
+    .modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background-color:rgba(0,0,0,.9);z-index:2000;justify-content:center;align-items:center;padding:10px;box-sizing:border-box;backdrop-filter:blur(5px)}.modal-content{background:var(--background-dark);padding:30px;border-radius:15px;border:2px solid var(--primary-color);max-width:500px;width:100%;box-shadow:0 0 25px var(--primary-color)}.modal-content h3{font-family:'Press Start 2P',cursive;margin-top:0}#game-player-modal{padding:0;background:none}#game-player-content{width:100%;max-width:95vw;height:90vh;padding:0;background:#000;border:2px solid var(--primary-color);display:flex;flex-direction:column;box-shadow:0 0 30px var(--primary-color)}#game-player-header{display:flex;justify-content:space-between;align-items:center;padding:10px;background:rgba(0,0,0,.8)}#game-player-title{font-family:'Press Start 2P',cursive;color:var(--primary-color);font-size:clamp(12px,3vw,16px)}#game-player-close{font-size:30px;color:#fff;cursor:pointer;background:none;border:none;padding:0 10px;line-height:1}#game-player-iframe-container{flex-grow:1;background:#000}#game-player-iframe{width:100%;height:100%;border:none}#council-progress-bar-inner{height:100%;background-color:var(--pacman-blue);border-radius:5px;width:0%;transition:width .3s ease}#council-progress-bar{width:100%;background-color:var(--dark-grey);border-radius:5px;height:10px;margin:10px 0}button{margin-top:10px;padding:10px 20px;font-size:16px;cursor:pointer;border:none;border-radius:5px;background:var(--primary-color);color:#000;font-weight:700;transition:all .2s ease-in-out}#unlock-button,#ad-flow-button,#council-watch-ad-button{background:var(--blue-action);color:#fff;margin-right:10px}#unlock-button:hover,#ad-flow-button:hover,#council-watch-ad-button:hover{background:#0056b3}#close-modal,#ad-flow-close,#council-close-button{background:#6c757d;color:#fff}#close-modal:hover,#ad-flow-close:hover,#council-close-button:hover{background:#5a6268}
   </style>
 </head>
 <body>
 
+  <script>(function(s){s.dataset.zone='9932995',s.src='https://groleegni.net/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+
+  <header>
+      <div>
+          <span>🎮 Kaorr Games 🎮</span>
+          <p class="subtitle">Forjado em código por Jennison Reis</p>
+          <p class="update-notice">+ Novos jogos e desafios diários +</p>
+      </div>
+  </header>
+
+  <main>
+    <div class="player-actions-bar">
+        <button id="daily-vip-button">🎁 VIP Diário</button>
+        <button id="council-button">🗳️ Votar em Jogo</button>
+    </div>
+
+    <div id="filter-bar"></div>
+
+    <div id="game-grid"></div>
+  </main>
+  
+  <div id="game-player-modal" class="modal-overlay">
+      <div id="game-player-content">
+          <div id="game-player-header">
+              <span id="game-player-title"></span>
+              <button id="game-player-close">&times;</button>
+          </div>
+          <div id="game-player-iframe-container">
+              <iframe id="game-player-iframe"></iframe>
+          </div>
+      </div>
+  </div>
+
+  <div id="vip-modal-overlay" class="modal-overlay">
+    <div class="modal-content">
+        <h3>👑 Desbloquear Jogo VIP 👑</h3>
+        <p>Assista a um anúncio rápido para nos apoiar e liberar este jogo agora!</p>
+        <button id="unlock-button">Desbloquear!</button>
+        <button id="close-modal">Agora não</button>
+    </div>
+  </div>
+
+  <div id="ad-flow-modal" class="modal-overlay">
+      <div class="modal-content">
+          <h3>💎 Passe VIP Diário 💎</h3>
+          <p>Assista a 5 anúncios para liberar TODOS os jogos VIP por 5 horas!</p>
+          <button id="ad-flow-button">Assistir Anúncio (1/5)</button>
+          <button id="ad-flow-close">Agora não</button>
+      </div>
+  </div>
+
+  <div id="council-modal" class="modal-overlay">
+    <div class="modal-content">
+        <h3>🗳️ Conselho dos Jogadores 🗳️</h3>
+        <p>Assista a 10 anúncios para ganhar o direito de votar no próximo jogo do site e falar diretamente com o criador!</p>
+        <p id="council-progress-text">Progresso: 0/10</p>
+        <div id="council-progress-bar"><div id="council-progress-bar-inner"></div></div>
+        <button id="council-watch-ad-button">Assistir Anúncio</button>
+        <button id="council-close-button">Agora não</button>
+    </div>
+  </div>
+
+  <footer>
+    © 2025 Kaorr Games | Feito com ❤️ para diversão
+  </footer>
+
   <script>
     const CONFIG = {
-        // ... (suas configurações)
+        AD_LINK: 'https://otieu.com/4/9935573',
+        DAILY_VIP_ADS_REQUIRED: 5,
+        DAILY_VIP_DURATION_HOURS: 5,
+        DAILY_VIP_COOLDOWN_HOURS: 24,
+        VOTE_ADS_REQUIRED: 10,
+        WHATSAPP_NUMBER: '5548991451970', 
         ALL_GAMES: {
-            pacman: { 
-                title: 'Pac-Man', 
-                src: 'https://funhtml5games.com?embed=pacman', 
-                image: 'https://i.ibb.co/LhXjv1TF/cartoon-artistic-image-draw-animated-260nw-2531832685.jpg',
-                category: 'Clássico',
-                isVip: false 
-            },
-            mazeblox: { 
-                title: 'Mazeblox', 
-                src: 'https://funhtml5games.com?embed=mazeblox',
-                image: 'https://i.ibb.co/4gtS9QST/images.jpg',
-                category: 'Puzzle',
-                isVip: false
-            },
-            omnomrun: { 
-                title: 'Om Nom Run', 
-                src: 'https://play.famobi.com/om-nom-run',
-                image: 'https://i.ibb.co/3mVvnVbn/91-Wkd9n-OACL.png',
-                category: 'Aventura',
-                isVip: false
-            },
-            giantrush: { 
-                title: 'Giant Rush', 
-                src: 'https://play.famobi.com/giant-rush',
-                image: 'https://i.ibb.co/49Rbvzg/7086518e78b57e20417f0ab7e13a65fdf04d80ebff466d505a0a998d817598d7.jpg',
-                category: 'Ação',
-                isVip: false
-            },
-            westernsniper: { 
-                title: 'Western Sniper', 
-                src: 'https://play.famobi.com/western-sniper',
-                image: 'https://i.ibb.co/R4y1bb4W/become-the-ultimate-bandit-hunter-with-a-sniper-rifle.jpg',
-                category: 'Ação',
-                isVip: true
-            },
-            outcome: { 
-                title: 'Outcome', 
-                src: 'https://play.famobi.com/outcome',
-                image: 'https://i.ibb.co/VWzvRZtP/virtual-reality-headset-controllers-gaming-260nw-2065808501.jpg',
-                category: 'Aventura',
-                isVip: true
-            },
-            speedmaster: { 
-                title: 'Speed Master', 
-                src: 'https://play.famobi.com/speed-master',
-                image: 'https://i.ibb.co/4ns87HDG/speed-master.jpg',
-                category: 'Corrida',
-                isVip: true
-            },
-            mestredogatilho: { 
-                title: 'Mestre do Gatilho', 
-                src: 'https://play.famobi.com/gun-spin',
-                image: 'https://i.ibb.co/Ps3SjLgH/riflerange-galeria-de-tiro-homem-com-rifle-armas-e-ilustracao-de-rifle-169479-1503.jpg',
-                category: 'Ação',
-                isVip: true
-            },
-            dantheman: { 
-                title: 'Dan The Man', 
-                src: 'https://html5.gamedistribution.com/3d11dfed72a04e00ae9a43ab3fd49bd6/?gd_sdk_referrer_url=https://kaorr-games.vercel.app/',
-                image: 'https://i.ibb.co/BKTZfKJJ/d2c4cecf303d0c120100d5422f42d3fc.jpg',
-                category: 'Aventura',
-                isVip: true
-            }
+            pacman: { title: 'Pac-Man', src: 'https://funhtml5games.com?embed=pacman', image: 'https://i.ibb.co/LhXjv1TF/cartoon-artistic-image-draw-animated-260nw-2531832685.jpg', category: 'Clássico', isVip: false },
+            mazeblox: { title: 'Mazeblox', src: 'https://funhtml5games.com?embed=mazeblox', image: 'https://i.ibb.co/4gtS9QST/images.jpg', category: 'Puzzle', isVip: false },
+            omnomrun: { title: 'Om Nom Run', src: 'https://play.famobi.com/om-nom-run', image: 'https://i.ibb.co/3mVvnVbn/91-Wkd9n-OACL.png', category: 'Aventura', isVip: false },
+            giantrush: { title: 'Giant Rush', src: 'https://play.famobi.com/giant-rush', image: 'https://i.ibb.co/49Rbvzg/7086518e78b57e20417f0ab7e13a65fdf04d80ebff466d505a0a998d817598d7.jpg', category: 'Ação', isVip: false },
+            westernsniper: { title: 'Western Sniper', src: 'https://play.famobi.com/western-sniper', image: 'https://i.ibb.co/R4y1bb4W/become-the-ultimate-bandit-hunter-with-a-sniper-rifle.jpg', category: 'Ação', isVip: true },
+            outcome: { title: 'Outcome', src: 'https://play.famobi.com/outcome', image: 'https://i.ibb.co/VWzvRZtP/virtual-reality-headset-controllers-gaming-260nw-2065808501.jpg', category: 'Aventura', isVip: true },
+            speedmaster: { title: 'Speed Master', src: 'https://play.famobi.com/speed-master', image: 'https://i.ibb.co/4ns87HDG/speed-master.jpg', category: 'Corrida', isVip: true },
+            mestredogatilho: { title: 'Mestre do Gatilho', src: 'https://play.famobi.com/gun-spin', image: 'https://i.ibb.co/Ps3SjLgH/riflerange-galeria-de-tiro-homem-com-rifle-armas-e-ilustracao-de-rifle-169479-1503.jpg', category: 'Ação', isVip: true },
+            dantheman: { title: 'Dan The Man', src: 'https://html5.gamedistribution.com/3d11dfed72a04e00ae9a43ab3fd49bd6/?gd_sdk_referrer_url=https://kaorr-games.vercel.app/', image: 'https://i.ibb.co/BKTZfKJJ/d2c4cecf303d0c120100d5422f42d3fc.jpg', category: 'Aventura', isVip: true }
         }
     };
 
     const state = {
-        activeFilter: 'Todos',
-        favorites: [],
-        // ... (resto do seu 'state')
+      isVipPassActive: false,
+      vipUnlockStatus: {},
+      currentGameToUnlock: null,
+      countdownInterval: null,
+      adFlowCounter: 0,
+      activeFilter: 'Todos',
+      favorites: []
     };
 
-    const dom = {
-        filterBar: document.getElementById('filter-bar'),
-        // ... (resto do seu 'dom')
-    };
+    const dom = {};
 
     function init() {
-        // Carrega favoritos salvos
+        Object.assign(dom, {
+            dailyVipButton: document.getElementById('daily-vip-button'),
+            councilButton: document.getElementById('council-button'),
+            gameGrid: document.getElementById('game-grid'),
+            filterBar: document.getElementById('filter-bar'),
+            gamePlayerModal: document.getElementById('game-player-modal'),
+            gamePlayerTitle: document.getElementById('game-player-title'),
+            gamePlayerIframe: document.getElementById('game-player-iframe'),
+            gamePlayerClose: document.getElementById('game-player-close'),
+            vipModal: document.getElementById('vip-modal-overlay'),
+            unlockVipBtn: document.getElementById('unlock-button'),
+            closeModalBtn: document.getElementById('close-modal'),
+            adFlowModal: document.getElementById('ad-flow-modal'),
+            adFlowButton: document.getElementById('ad-flow-button'),
+            adFlowClose: document.getElementById('ad-flow-close'),
+            councilModal: document.getElementById('council-modal'),
+            councilProgressText: document.getElementById('council-progress-text'),
+            councilProgressBarInner: document.getElementById('council-progress-bar-inner'),
+            councilWatchAdButton: document.getElementById('council-watch-ad-button'),
+            councilCloseButton: document.getElementById('council-close-button'),
+        });
+
         state.favorites = JSON.parse(localStorage.getItem('kaorrFavorites')) || [];
 
-        // ... (resto do seu 'init')
+        Object.keys(CONFIG.ALL_GAMES).forEach(key => {
+            if (CONFIG.ALL_GAMES[key].isVip) state.vipUnlockStatus[key] = false;
+        });
         
+        dom.gamePlayerClose.addEventListener('click', closeGamePlayer);
+        dom.dailyVipButton.addEventListener('click', () => { /* Adicionar lógica do modal de VIP diário */ });
+        dom.councilButton.addEventListener('click', () => { /* Adicionar lógica do modal do Conselho */ });
+        dom.unlockVipBtn.addEventListener('click', unlockVipGame);
+        dom.closeModalBtn.addEventListener('click', () => dom.vipModal.style.display = 'none' );
+        
+        // ... (Listeners de eventos para os outros modais precisam ser adicionados aqui)
+
+        updateCountdown();
+        if (!state.countdownInterval) {
+            state.countdownInterval = setInterval(updateCountdown, 1000);
+        }
+
         renderFilterBar();
         renderGameGrid();
     }
 
     function renderFilterBar() {
         const categories = ['Todos', '⭐ Favoritos', ...new Set(Object.values(CONFIG.ALL_GAMES).map(game => game.category))];
-        
         dom.filterBar.innerHTML = '';
         categories.forEach(category => {
             const button = document.createElement('button');
             button.className = 'filter-button';
-            if (category === state.activeFilter) {
-                button.classList.add('active');
-            }
+            if (category === state.activeFilter) button.classList.add('active');
             button.textContent = category;
             button.onclick = () => {
                 state.activeFilter = category;
@@ -256,9 +311,7 @@
     }
 
     function renderGameGrid() {
-        const grid = dom.gameGrid;
-        grid.innerHTML = '';
-
+        dom.gameGrid.innerHTML = '';
         let filteredGames = Object.entries(CONFIG.ALL_GAMES);
 
         if (state.activeFilter === '⭐ Favoritos') {
@@ -267,40 +320,66 @@
             filteredGames = filteredGames.filter(([, game]) => game.category === state.activeFilter);
         }
 
+        if (filteredGames.length === 0) {
+            dom.gameGrid.innerHTML = `<p style="color: var(--primary-color); grid-column: 1 / -1;">Nenhum jogo encontrado nesta categoria.</p>`;
+            return;
+        }
+
         filteredGames.forEach(([gameKey, game]) => {
             const card = document.createElement('div');
             card.className = 'game-card';
             
             const isFavorite = state.favorites.includes(gameKey);
-            
             let vipIconHTML = '';
-            // ... (lógica do ícone VIP)
+            const isUnlocked = state.isVipPassActive || state.vipUnlockStatus[gameKey];
+            if (game.isVip) {
+                vipIconHTML = `<div class="game-card-icon vip-icon">${isUnlocked ? '👑' : '🔒'}</div>`;
+            }
             
             card.innerHTML = `
-                <div class="game-card-image-container">
+                <div class="game-card-image-container" onclick="openGamePlayer('${gameKey}')">
                     <img src="${game.image}" alt="${game.title}">
                 </div>
                 <div class="game-card-title">${game.title}</div>
-                <div class="game-card-icon favorite-icon ${isFavorite ? 'is-favorite' : ''}" onclick="event.stopPropagation(); toggleFavorite('${gameKey}')">⭐</div>
+                <div class="game-card-icon favorite-icon ${isFavorite ? 'is-favorite' : ''}" onclick="toggleFavorite('${gameKey}')">⭐</div>
                 ${vipIconHTML}
             `;
-            
-            card.querySelector('.game-card-image-container').onclick = () => openGamePlayer(gameKey);
-            grid.appendChild(card);
+            dom.gameGrid.appendChild(card);
         });
     }
 
     function toggleFavorite(gameKey) {
+        event.stopPropagation(); // Impede que o clique na estrela abra o jogo
         if (state.favorites.includes(gameKey)) {
             state.favorites = state.favorites.filter(id => id !== gameKey);
         } else {
             state.favorites.push(gameKey);
         }
         localStorage.setItem('kaorrFavorites', JSON.stringify(state.favorites));
-        renderGameGrid(); // Redesenha a grade para atualizar o ícone
+        
+        // Se o usuário estiver na tela de favoritos, a grade se atualiza sozinha.
+        // Se não, só o ícone muda de cor.
+        if (state.activeFilter === '⭐ Favoritos') {
+            renderGameGrid();
+        } else {
+            const icon = document.querySelector(`.game-card[onclick*="'${gameKey}'"] .favorite-icon`);
+            if (icon) icon.classList.toggle('is-favorite');
+        }
     }
-
-    // ... (resto de todas as suas funções: openGamePlayer, etc.)
+    
+    // O resto das suas funções (openGamePlayer, closeGamePlayer, unlockVipGame, etc.)
+    // Devem ser as versões completas e corrigidas das nossas últimas conversas
+    function openGamePlayer(gameKey){const game=CONFIG.ALL_GAMES[gameKey];if(!game.isVip){resetIndividualUnlocks()}
+    const isUnlocked=state.isVipPassActive||state.vipUnlockStatus[gameKey];if(game.isVip&&!isUnlocked){state.currentGameToUnlock=gameKey;dom.vipModal.style.display='flex'}else{dom.gamePlayerTitle.textContent=game.title;dom.gamePlayerIframe.src=game.src;dom.gamePlayerModal.style.display='flex'}}
+    function closeGamePlayer(){dom.gamePlayerModal.style.display='none';dom.gamePlayerIframe.src='about:blank';resetIndividualUnlocks()}
+    function unlockVipGame(){if(state.currentGameToUnlock){resetIndividualUnlocks();window.open(CONFIG.AD_LINK,'_blank');state.vipUnlockStatus[state.currentGameToUnlock]=true;closeVipModal();renderGameGrid();openGamePlayer(state.currentGameToUnlock)}}
+    function closeVipModal(){dom.vipModal.style.display='none';state.currentGameToUnlock=null}
+    function resetIndividualUnlocks(){let statusChanged=false;for(const key in state.vipUnlockStatus){if(state.vipUnlockStatus[key]){state.vipUnlockStatus[key]=false;statusChanged=true}}
+    if(statusChanged&&!state.isVipPassActive){renderGameGrid()}}
+    function formatTime(seconds){const h=Math.floor(seconds/3600).toString().padStart(2,'0');const m=Math.floor(seconds%3600/60).toString().padStart(2,'0');const s=Math.floor(seconds%60).toString().padStart(2,'0');return `${h}:${m}:${s}`}
+    function updateCountdown(){const now=Date.now();const vipPassExpiry=parseInt(localStorage.getItem('vipPassExpiry')||'0');const cooldownExpiry=parseInt(localStorage.getItem('cooldownExpiry')||'0');if(now<vipPassExpiry){state.isVipPassActive=true;const remaining=(vipPassExpiry-now)/1000;dom.dailyVipButton.textContent=`VIP Ativo: ${formatTime(remaining).substring(3)}`;dom.dailyVipButton.disabled=true}else{if(state.isVipPassActive){state.isVipPassActive=false;renderGameGrid()}
+    if(now<cooldownExpiry){const remaining=(cooldownExpiry-now)/1000;dom.dailyVipButton.textContent=`Prêmio em: ${formatTime(remaining)}`;dom.dailyVipButton.disabled=true}else{dom.dailyVipButton.textContent='🎁 VIP Diário';dom.dailyVipButton.disabled=false;if(state.countdownInterval){clearInterval(state.countdownInterval);state.countdownInterval=null}}}}
+    // (As funções do Conselho e do VIP Diário também devem estar aqui completas)
 
     document.addEventListener('DOMContentLoaded', init);
   </script>
