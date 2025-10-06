@@ -251,13 +251,7 @@
             mazeblox: { title: 'Mazeblox', src: 'https://funhtml5games.com?embed=mazeblox', image: 'https://i.ibb.co/4gtS9QST/images.jpg', category: 'Puzzle', isVip: false },
             omnomrun: { title: 'Om Nom Run', src: 'https://play.famobi.com/om-nom-run', image: 'https://i.ibb.co/3mVvnVbn/91-Wkd9n-OACL.png', category: 'Aventura', isVip: false },
             giantrush: { title: 'Giant Rush', src: 'https://play.famobi.com/giant-rush', image: 'https://i.ibb.co/49Rbvzg/7086518e78b57e20417f0ab7e13a65fdf04d80ebff466d505a0a998d817598d7.jpg', category: 'Ação', isVip: false },
-            adventuredrivers: { 
-                title: 'Adventure Drivers', 
-                src: 'https://play.famobi.com/adventure-drivers',
-                image: 'https://i.ibb.co/9kJgvVDG/images.jpg',
-                category: 'Corrida',
-                isVip: false 
-            },
+            elementblocks: { title: 'Element Blocks', src: 'https://play.famobi.com/element-blocks', image: 'https://i.ibb.co/7dp7v1jQ/element-blocks-big.webp', category: 'Puzzle', isVip: false },
             westernsniper: { title: 'Western Sniper', src: 'https://play.famobi.com/western-sniper', image: 'https://i.ibb.co/R4y1bb4W/become-the-ultimate-bandit-hunter-with-a-sniper-rifle.jpg', category: 'Ação', isVip: true },
             outcome: { title: 'Outcome', src: 'https://play.famobi.com/outcome', image: 'https://i.ibb.co/VWzvRZtP/virtual-reality-headset-controllers-gaming-260nw-2065808501.jpg', category: 'Aventura', isVip: true },
             speedmaster: { title: 'Speed Master', src: 'https://play.famobi.com/speed-master', image: 'https://i.ibb.co/4ns87HDG/speed-master.jpg', category: 'Corrida', isVip: true },
@@ -310,13 +304,51 @@
         renderGameGrid();
     }
     
-    function renderFilterBar(){const categories=['Todos','⭐ Favoritos',...new Set(Object.values(CONFIG.ALL_GAMES).map(game=>game.category))].filter(Boolean);dom.filterBar.innerHTML='';categories.forEach(category=>{const button=document.createElement('button');button.className='filter-button';if(category===state.activeFilter)button.classList.add('active');button.textContent=category;button.onclick=()=>{state.activeFilter=category;renderFilterBar();renderGameGrid()};dom.filterBar.appendChild(button)})}
-    function renderGameGrid(){dom.gameGrid.innerHTML='';let filteredGames=Object.entries(CONFIG.ALL_GAMES);if(state.activeFilter==='⭐ Favoritos'){if(state.favorites.length===0){dom.gameGrid.innerHTML=`<p style="color: var(--primary-color); grid-column: 1 / -1;">Você ainda não favoritou nenhum jogo. Clique na ⭐ de um jogo para adicioná-lo aqui!</p>`;return}
-    filteredGames=filteredGames.filter(([gameKey])=>state.favorites.includes(gameKey))}else if(state.activeFilter!=='Todos'){filteredGames=filteredGames.filter(([,game])=>game.category===state.activeFilter)}
-    if(state.searchTerm){const lowerCaseSearch=state.searchTerm.toLowerCase();filteredGames=filteredGames.filter(([,game])=>game.title.toLowerCase().includes(lowerCaseSearch))}
-    if(filteredGames.length===0){dom.gameGrid.innerHTML=`<p style="color: var(--primary-color); grid-column: 1 / -1;">Nenhum jogo encontrado com esses filtros.</p>`;return}
-    filteredGames.forEach(([gameKey,game])=>{const card=document.createElement('div');card.className='game-card';const isFavorite=state.favorites.includes(gameKey);let vipIconHTML='';const isUnlocked=state.isVipPassActive||state.vipUnlockStatus[gameKey];if(game.isVip){vipIconHTML=`<div class="game-card-icon vip-icon">${isUnlocked?'👑':'🔒'}</div>`}
-    card.innerHTML=`<div class="game-card-image-container" onclick="openGamePlayer('${gameKey}')"><img src="${game.image}" alt="${game.title}"></div><div class="game-card-title">${game.title}</div><div class="game-card-icon favorite-icon ${isFavorite?'is-favorite':''}" onclick="toggleFavorite('${gameKey}')">⭐</div>${vipIconHTML}`;dom.gameGrid.appendChild(card)})}
+    function renderFilterBar(){
+        const categories = ['Todos', '⭐ Favoritos', '🎮 Gratuitos', '👑 VIPs', ...new Set(Object.values(CONFIG.ALL_GAMES).map(game => game.category))].filter(Boolean);
+        dom.filterBar.innerHTML='';
+        categories.forEach(category => {
+            const button=document.createElement('button');
+            button.className='filter-button';
+            if(category===state.activeFilter)button.classList.add('active');
+            button.textContent=category;
+            button.onclick=()=>{state.activeFilter=category;renderFilterBar();renderGameGrid()};
+            dom.filterBar.appendChild(button);
+        });
+    }
+
+    function renderGameGrid(){
+        dom.gameGrid.innerHTML='';
+        let filteredGames=Object.entries(CONFIG.ALL_GAMES);
+        
+        if(state.activeFilter==='⭐ Favoritos'){
+            if(state.favorites.length===0){dom.gameGrid.innerHTML=`<p style="color: var(--primary-color); grid-column: 1 / -1;">Você ainda não favoritou nenhum jogo. Clique na ⭐ de um jogo para adicioná-lo aqui!</p>`;return}
+            filteredGames=filteredGames.filter(([gameKey])=>state.favorites.includes(gameKey));
+        } else if (state.activeFilter==='🎮 Gratuitos'){
+            filteredGames = filteredGames.filter(([, game]) => !game.isVip);
+        } else if (state.activeFilter==='👑 VIPs'){
+            filteredGames = filteredGames.filter(([, game]) => game.isVip);
+        } else if(state.activeFilter!=='Todos'){
+            filteredGames=filteredGames.filter(([,game])=>game.category===state.activeFilter);
+        }
+
+        if(state.searchTerm){
+            const lowerCaseSearch=state.searchTerm.toLowerCase();
+            filteredGames=filteredGames.filter(([,game])=>game.title.toLowerCase().includes(lowerCaseSearch));
+        }
+
+        if(filteredGames.length===0){dom.gameGrid.innerHTML=`<p style="color: var(--primary-color); grid-column: 1 / -1;">Nenhum jogo encontrado com esses filtros.</p>`;return}
+        
+        filteredGames.forEach(([gameKey,game])=>{
+            const card=document.createElement('div');card.className='game-card';
+            const isFavorite=state.favorites.includes(gameKey);let vipIconHTML='';
+            const isUnlocked=state.isVipPassActive||state.vipUnlockStatus[gameKey];
+            if(game.isVip){vipIconHTML=`<div class="game-card-icon vip-icon">${isUnlocked?'👑':'🔒'}</div>`}
+            card.innerHTML=`<div class="game-card-image-container" onclick="openGamePlayer('${gameKey}')"><img src="${game.image}" alt="${game.title}"></div><div class="game-card-title">${game.title}</div><div class="game-card-icon favorite-icon ${isFavorite?'is-favorite':''}" onclick="toggleFavorite('${gameKey}')">⭐</div>${vipIconHTML}`;
+            dom.gameGrid.appendChild(card);
+        });
+    }
+
     function toggleFavorite(gameKey){event.stopPropagation();const index=state.favorites.indexOf(gameKey);if(index>-1){state.favorites.splice(index,1)}else{state.favorites.push(gameKey)}
     localStorage.setItem('kaorrFavorites',JSON.stringify(state.favorites));renderGameGrid()}
     function openGamePlayer(gameKey){const game=CONFIG.ALL_GAMES[gameKey];if(!game.isVip){resetIndividualUnlocks()}
