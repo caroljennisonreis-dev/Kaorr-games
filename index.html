@@ -251,11 +251,11 @@
             mazeblox: { title: 'Mazeblox', src: 'https://funhtml5games.com?embed=mazeblox', image: 'https://i.ibb.co/4gtS9QST/images.jpg', category: 'Puzzle', isVip: false },
             omnomrun: { title: 'Om Nom Run', src: 'https://play.famobi.com/om-nom-run', image: 'https://i.ibb.co/3mVvnVbn/91-Wkd9n-OACL.png', category: 'Aventura', isVip: false },
             giantrush: { title: 'Giant Rush', src: 'https://play.famobi.com/giant-rush', image: 'https://i.ibb.co/49Rbvzg/7086518e78b57e20417f0ab7e13a65fdf04d80ebff466d505a0a998d817598d7.jpg', category: 'Ação', isVip: false },
-            elementblocks: { 
-                title: 'Element Blocks', 
-                src: 'https://play.famobi.com/element-blocks',
-                image: 'https://i.ibb.co/7dp7v1jQ/element-blocks-big.webp',
-                category: 'Puzzle',
+            adventuredrivers: { 
+                title: 'Adventure Drivers', 
+                src: 'https://play.famobi.com/adventure-drivers',
+                image: 'https://i.ibb.co/9kJgvVDG/images.jpg',
+                category: 'Corrida',
                 isVip: false 
             },
             westernsniper: { title: 'Western Sniper', src: 'https://play.famobi.com/western-sniper', image: 'https://i.ibb.co/R4y1bb4W/become-the-ultimate-bandit-hunter-with-a-sniper-rifle.jpg', category: 'Ação', isVip: true },
@@ -310,7 +310,7 @@
         renderGameGrid();
     }
     
-    function renderFilterBar(){const categories=['Todos','⭐ Favoritos',...new Set(Object.values(CONFIG.ALL_GAMES).map(game=>game.category))];dom.filterBar.innerHTML='';categories.forEach(category=>{const button=document.createElement('button');button.className='filter-button';if(category===state.activeFilter)button.classList.add('active');button.textContent=category;button.onclick=()=>{state.activeFilter=category;renderFilterBar();renderGameGrid()};dom.filterBar.appendChild(button)})}
+    function renderFilterBar(){const categories=['Todos','⭐ Favoritos',...new Set(Object.values(CONFIG.ALL_GAMES).map(game=>game.category))].filter(Boolean);dom.filterBar.innerHTML='';categories.forEach(category=>{const button=document.createElement('button');button.className='filter-button';if(category===state.activeFilter)button.classList.add('active');button.textContent=category;button.onclick=()=>{state.activeFilter=category;renderFilterBar();renderGameGrid()};dom.filterBar.appendChild(button)})}
     function renderGameGrid(){dom.gameGrid.innerHTML='';let filteredGames=Object.entries(CONFIG.ALL_GAMES);if(state.activeFilter==='⭐ Favoritos'){if(state.favorites.length===0){dom.gameGrid.innerHTML=`<p style="color: var(--primary-color); grid-column: 1 / -1;">Você ainda não favoritou nenhum jogo. Clique na ⭐ de um jogo para adicioná-lo aqui!</p>`;return}
     filteredGames=filteredGames.filter(([gameKey])=>state.favorites.includes(gameKey))}else if(state.activeFilter!=='Todos'){filteredGames=filteredGames.filter(([,game])=>game.category===state.activeFilter)}
     if(state.searchTerm){const lowerCaseSearch=state.searchTerm.toLowerCase();filteredGames=filteredGames.filter(([,game])=>game.title.toLowerCase().includes(lowerCaseSearch))}
