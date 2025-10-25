@@ -10,7 +10,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎮</text></svg>">
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   
   <title>🎮 Kaorr Games</title>
@@ -169,6 +169,27 @@
     
     .modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background-color:rgba(0,0,0,.9);z-index:2000;justify-content:center;align-items:center;padding:10px;box-sizing:border-box;backdrop-filter:blur(5px)}.modal-content{background:var(--background-dark);padding:30px;border-radius:15px;border:2px solid var(--primary-color);max-width:500px;width:100%;box-shadow:0 0 25px var(--primary-color)}.modal-content h3{font-family:'Press Start 2P',cursive;margin-top:0}#game-player-modal{padding:0;background:none}#game-player-content{width:100%;max-width:95vw;height:90vh;padding:0;background:#000;border:2px solid var(--primary-color);display:flex;flex-direction:column;box-shadow:0 0 30px var(--primary-color)}#game-player-header{display:flex;justify-content:space-between;align-items:center;padding:10px;background:rgba(0,0,0,.8)}#game-player-title{font-family:'Press Start 2P',cursive;color:var(--primary-color);font-size:clamp(12px,3vw,16px)}#game-player-close{font-size:30px;color:#fff;cursor:pointer;background:none;border:none;padding:0 10px;line-height:1}#game-player-iframe-container{position:relative;flex-grow:1;background:#000}#game-player-iframe{width:100%;height:100%;border:none;visibility:hidden}#council-progress-bar-inner{height:100%;background-color:var(--pacman-blue);border-radius:5px;width:0%;transition:width .3s ease}#council-progress-bar{width:100%;background-color:var(--dark-grey);border-radius:5px;height:10px;margin:10px 0}button{margin-top:10px;padding:10px 20px;font-size:16px;cursor:pointer;border:none;border-radius:5px;background:var(--primary-color);color:#000;font-weight:700;transition:all .2s ease-in-out}#unlock-button,#ad-flow-button,#council-watch-ad-button{background:var(--blue-action);color:#fff;margin-right:10px}#unlock-button:hover,#ad-flow-button:hover,#council-watch-ad-button:hover{background:#0056b3}#close-modal,#ad-flow-close,#council-close-button{background:#6c757d;color:#fff}#close-modal:hover,#ad-flow-close:hover,#council-close-button:hover{background:#5a6268}
     #loader{position:absolute;left:50%;top:50%;width:60px;height:60px;border:8px solid var(--dark-grey);border-top-color:var(--primary-color);border-radius:50%;animation:spin 1s linear infinite;display:none}@keyframes spin{to{transform:rotate(360deg)}}
+
+    /* === CÓDIGO CSS ADICIONADO PARA O JOGO EMBUTIDO === */
+    .kaorr-game-embed {
+      width: 100%;                  
+      max-width: 980px;  /* Largura máxima do layout do jogo */
+      height: 760px;     /* Altura para caber o jogo + placar */           
+      display: block;
+      margin: 30px auto; /* 30px de espaço em cima/baixo, centralizado */
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+      background-color: #081029; /* Cor de fundo do jogo */
+    }
+
+    @media (max-width: 720px) {
+      .kaorr-game-embed {
+        height: 820px; /* Mais alto no mobile para os botões de toque */
+      }
+    }
+    /* === FIM DO CÓDIGO CSS ADICIONADO === */
+
   </style>
 </head>
 <body>
@@ -188,6 +209,19 @@
         <button id="daily-vip-button">🎁 VIP Diário</button>
         <button id="council-button">🗳️ Votar em Jogo</button>
     </div>
+
+    <h2 style="font-family: 'Press Start 2P', cursive; color: var(--primary-color); margin-top: 40px;">Fragmentos de Kaorr</h2>
+    <p style="font-size: 16px; margin-top: -10px; margin-bottom: 25px;">Um novo desafio te espera! Colete os cristais e desvie dos obstáculos.</p>
+    <iframe 
+      src="/fragmentos.html" 
+      class="kaorr-game-embed"
+      title="Jogo Fragmentos de Kaorr"
+      loading="lazy"
+    ></iframe>
+    
+    <hr style="border: 0; border-top: 2px solid var(--primary-color); max-width: 80%; margin: 40px auto; opacity: 0.5;">
+    
+    <h3 style="font-family: 'Press Start 2P', cursive; font-size: 18px;">Mais Jogos</h3>
     <div id="filter-bar"></div>
     <div class="search-container">
         <input type="text" id="search-bar" placeholder="Pesquisar jogo...">
