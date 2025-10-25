@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Fragmentos de Kaorr — Kaorr Games</title>
+<style>
+  :root{--bg:#081029;--panel:#0f1724;--accent:#2dd4bf;--accent2:#60a5fa;--gold:#f6c85f;--muted:#94a3b8;font-family: Inter, system-ui, sans-serif;}
+  html,body{height:100%;margin:0;background: linear-gradient(180deg,var(--bg), #041122); color:#e6eef8}
+  .wrap{display:flex;flex-direction:column;align-items:center;gap:12px;padding:16px;min-height:100%}
+  header{display:flex;align-items:center;gap:12px;width:100%;max-width:980px}
+  .logo{display:flex;flex-direction:column}
+  h1{margin:0;font-size:20px;letter-spacing:0.6px}
+  p.lead{margin:0;color:var(--muted);font-size:13px}
+  .game-card{background:rgba(255,255,255,0.03);border-radius:12px;padding:12px;width:100%;max-width:980px;box-shadow:0 6px 30px rgba(2,6,23,0.6)}
+  #gameCanvas{display:block;background:linear-gradient(180deg,#071429 0%, #052034 100%);width:100%;height:420px;border-radius:8px}
+  .hud{display:flex;justify-content:space-between;align-items:center;margin-top:8px;gap:8px;flex-wrap:wrap}
+  .scoreBox{background:rgba(255,255,255,0.03);padding:8px 12px;border-radius:10px;min-width:160px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+  .controls{display:flex;gap:8px;align-items:center}
+  button.btn{background:linear-gradient(90deg,var(--accent),var(--accent2));border:none;padding:8px 12px;border-radius:8px;color:#041022;font-weight:600;cursor:pointer}
+  .small{padding:6px 8px;font-size:13px}
+  .center{display:flex;justify-content:center;align-items:center}
+  .mobile-controls{display:none;margin-top:8px;gap:8px}
+  .mobile-controls button{min-width:56px}
+  .panel{background:rgba(255,255,255,0.02);padding:10px;border-radius:8px}
+  @media (max-width:720px){
+    #gameCanvas{height:360px}
+    .mobile-controls{display:flex}
+  }
+  .tip{font-size:12px;color:var(--muted)}
+  .leaderboard{margin-top:10px;display:flex;gap:10px;flex-wrap:wrap}
+  .leadCard{flex:1;min-width:220px;background:rgba(255,255,255,0.02);padding:10px;border-radius:8px}
+  ol{padding-left:18px;margin:6px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="logo">
+      <h1>Fragmentos de Kaorr</h1>
+      <p class="lead">Recupera os cristais, sobe no ranking e torna-te lenda.</p>
+    </div>
+  </header>
+  <div class="game-card">
+    <canvas id="gameCanvas"></canvas>
+    <div class="hud">
+      <div class="scoreBox">
+        <div>
+          <div style="font-size:12px;color:var(--muted)">Pontuação</div>
+          <div id="score" style="font-size:20px;font-weight:700">0</div>
+        </div>
+        <div style="text-align:right">
+          <div style-="font-size:12px;color:var(--muted)">Melhor</div>
+          <div id="best" style="font-size:16px;font-weight:700">0</div>
+        </div>
+      </div>
+      <div class="controls">
+        <button class="btn small" id="restartBtn">Reiniciar</button>
+        <button class="btn small" id="shareBtn">Compartilhar</button>
+      </div>
+    </div>
+    <div class="mobile-controls center">
+      <button class="btn small" id="leftBtn">◀</button>
+      <button class="btn small" id="jumpBtn">▲</button>
+      <button class="btn small" id="rightBtn">▶</button>
+    </div>
+    <div style="display:flex;justify-content:space-between;gap:12px;margin-top:12px;flex-wrap:wrap">
+      <div class="panel" style="flex:1;min-width:220px">
+        <div style="font-weight:700">Objetivo</div>
+        <div class="tip">Coleciona cristais e evita obstáculos. Cada cristal aumenta tua pontuação. Sobrevive o máximo possível.</div>
+      </div>
+      <div class="panel" style="min-width:220px">
+        <div style="font-weight:700">Controles</div>
+        <div class="tip">Teclado: ← → | Espaço = pular. Em mobile usa os botões abaixo.</div>
+      </div>
+    </div>
+    <div class="leaderboard">
+      <div class="leadCard">
+        <div style="font-weight:700">Ranking Local</div>
+        <ol id="leaderboard"></ol>
+      </div>
+      <div class="leadCard">
+        <div style="font-weight:700">Dicas de Kaorr</div>
+        <ul style="margin:8px 0;color:var(--muted);font-size:13px">
+          <li>Adiciona som para aumentar imersão (arquivo <code>.mp3</code>).</li>
+          <li>Integra Firebase para um ranking global (comentado no final do código).</li>
+          <li>Personaliza sprites trocando os desenhos por imagens.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <footer style="max-width:980px;width:100%;text-align:center;margin-top:8px;color:var(--muted);font-size:13px">
+    Criado por Aethron — Oráculo Tecnológico (template rápido para Kaorr-Games)
+  </footer>
+</div>
+<script>
+const CONFIG = {gravity: 0.6,spawnInterval: 1200,crystalPoints: 10,canvasWidthRatio: 0.98,};
+const canvas = document.getElementById('gameCanvas'); const ctx = canvas.getContext('2d');
+function resize(){const rect = canvas.getBoundingClientRect(); const dpr = Math.min(window.devicePixelRatio || 1, 2); canvas.width = Math.floor((rect.width) * dpr); canvas.height = Math.floor((rect.height) * dpr); ctx.setTransform(dpr,0,0,dpr,0,0);}
+function initCanvas(){canvas.style.width = '100%'; canvas.style.height = '420px'; resize();}
+window.addEventListener('resize', resize); initCanvas();
+let score = 0; let best = Number(localStorage.getItem('kaorr_best') || 0); document.getElementById('best').textContent = best; let running = true;
+const player = {x: 60, y: 0, w: 34, h: 46,vy: 0, onGround: false,color: '#9be7ff'};
+let lastSpawn = 0; const obstacles = []; const crystals = []; let lastTime = 0;
+const keys = {}; window.addEventListener('keydown', e=>{ keys[e.key]=true; if([" ", "Spacebar"].includes(e.key)) e.preventDefault();}); window.addEventListener('keyup', e=>{ keys[e.key]=false;});
+document.getElementById('leftBtn').addEventListener('pointerdown',()=>keys['ArrowLeft']=true); document.getElementById('leftBtn').addEventListener('pointerup',()=>keys['ArrowLeft']=false); document.getElementById('rightBtn').addEventListener('pointerdown',()=>keys['ArrowRight']=true); document.getElementById('rightBtn').addEventListener('pointerup',()=>keys['ArrowRight']=false); document.getElementById('jumpBtn').addEventListener('pointerdown',()=>keys[' ']=true); document.getElementById('jumpBtn').addEventListener('pointerup',()=>keys[' ']=false);
+document.getElementById('restartBtn').addEventListener('click', resetGame); document.getElementById('shareBtn').addEventListener('click', shareScore);
+function rand(min,max){ return Math.random()*(max-min)+min; }
+function spawn(){const w = canvas.width / (window.devicePixelRatio || 1); const obsH = rand(18, 60); obstacles.push({x:w + 40, y: (canvas.height/ (window.devicePixelRatio||1)) - obsH - 8, w: rand(20,70), h:obsH, speed: rand(2.0,3.7)}); if(Math.random() < 0.7){crystals.push({x:w + 40 + rand(0,40), y: (canvas.height/ (window.devicePixelRatio||1)) - 120 - rand(0,80), r:10, wobble:Math.random()*10, speed:2.2});}}
+function resetGame(){score = 0; obstacles.length = 0; crystals.length = 0; player.x = 60; player.y = 0; player.vy = 0; player.onGround = false; lastSpawn = 0; running = true;}
+function rectCircleCollide(rx,ry,rw,rh,cx,cy,cr){const closestX = Math.max(rx, Math.min(cx, rx+rw)); const closestY = Math.max(ry, Math.min(cy, ry+rh)); const dx = cx - closestX; const dy = cy - closestY; return (dx*dx + dy*dy) < cr*cr;}
+function update(dt){if(!running) return; const speed = 3.2; if(keys['ArrowLeft'] || keys['a']) player.x -= speed; if(keys['ArrowRight'] || keys['d']) player.x += speed; if((keys[' '] || keys['Spacebar'] || keys['w'] || keys['ArrowUp']) && player.onGround){player.vy = -10.5; player.onGround = false;} player.vy += CONFIG.gravity; player.y += player.vy; const floorY = (canvas.height/(window.devicePixelRatio||1)) - 8 - player.h; if(player.y >= floorY){ player.y = floorY; player.vy = 0; player.onGround = true; } player.x = Math.max(6, Math.min(player.x, (canvas.width/(window.devicePixelRatio||1)) - player.w - 6)); lastSpawn += dt; if(lastSpawn > CONFIG.spawnInterval){ spawn(); lastSpawn = 0; } for(let i = obstacles.length-1; i>=0; i--){const o = obstacles[i]; o.x -= o.speed; if(!(player.x + player.w < o.x || player.x > o.x + o.w || player.y + player.h < o.y || player.y > o.y + o.h)){running = false; saveScore();} if(o.x + o.w < -50) obstacles.splice(i,1);} for(let i = crystals.length-1; i>=0; i--){const c = crystals[i]; c.x -= c.speed; c.wobble += 0.06; c.y += Math.sin(c.wobble) * 0.02; if(rectCircleCollide(player.x, player.y, player.w, player.h, c.x, c.y, c.r)){score += CONFIG.crystalPoints; crystals.splice(i,1); updateScore();} else if(c.x + c.r < -50) crystals.splice(i,1);} if(score > 0 && score % 100 === 0){CONFIG.spawnInterval = Math.max(700, CONFIG.spawnInterval - 0.5);}}
+function updateScore(){document.getElementById('score').textContent = score;}
+function saveScore(){let bestLocal = Number(localStorage.getItem('kaorr_best') || 0); if(score > bestLocal){ localStorage.setItem('kaorr_best', String(score)); document.getElementById('best').textContent = score; } addToLeaderboard({name: prompt("Nome para o ranking (curto):","Jogador"), score}); renderLeaderboard();}
+function addToLeaderboard(entry){const raw = localStorage.getItem('kaorr_leaderboard'); const list = raw ? JSON.parse(raw) : []; list.push(entry); list.sort((a,b)=>b.score-a.score); list.splice(10); localStorage.setItem('kaorr_leaderboard', JSON.stringify(list));}
+function renderLeaderboard(){const raw = localStorage.getItem('kaorr_leaderboard'); const list = raw ? JSON.parse(raw) : []; const el = document.getElementById('leaderboard'); el.innerHTML = ''; if(list.length === 0){ el.innerHTML = '<li style="color:var(--muted)">Sem entradas ainda</li>'; return; } list.forEach(item=>{const li = document.createElement('li'); li.textContent = `${item.name || 'Anônimo'} — ${item.score}`; el.appendChild(li);});}
+renderLeaderboard();
+function shareScore(){const text = `Recuperei ${score} cristais em Fragmentos de Kaorr! Entra no Kaorr-Games e tenta superar.`; if(navigator.share){navigator.share({title:'Fragmentos de Kaorr', text, url: location.href}).catch(()=>{});} else {prompt('Copia e partilha com teus amigos:', text + ' — ' + location.href);}}
+function draw(){const w = canvas.width/(window.devicePixelRatio||1); const h = canvas.height/(window.devicePixelRatio||1); ctx.clearRect(0,0,w,h); ctx.fillStyle = '#021827'; ctx.fillRect(0,0,w,h); ctx.fillStyle = '#052634'; ctx.fillRect(0, h-8, w, 8); crystals.forEach(c=>{ctx.save(); ctx.translate(c.x, c.y); ctx.beginPath(); for(let i=0;i<8;i++){const ang = i * Math.PI/4; const r = (i%2===0)? c.r : c.r*0.5; ctx.lineTo(Math.cos(ang)*r, Math.sin(ang)*r);} ctx.closePath(); ctx.fillStyle = 'rgba(45,212,191,0.95)'; ctx.fill(); ctx.restore();}); obstacles.forEach(o=>{ctx.fillStyle = '#8b5e34'; ctx.fillRect(o.x, o.y, o.w, o.h);}); ctx.save(); ctx.fillStyle = 'rgba(0,0,0,0.2)'; ctx.fillRect(player.x-2, player.y+player.h-2, player.w+4, 6); const rad = 6; roundRect(ctx, player.x, player.y, player.w, player.h, rad); ctx.fillStyle = player.color; ctx.fill(); ctx.fillStyle = '#052634'; ctx.fillRect(player.x + 8, player.y + 14, 6, 6); ctx.fillRect(player.x + 20, player.y + 14, 6, 6); ctx.restore(); if(!running){ctx.fillStyle = 'rgba(0,0,0,0.5)'; ctx.fillRect(0,0,w,h); ctx.fillStyle = 'white'; ctx.font = 'bold 26px Inter, sans-serif'; ctx.textAlign = 'center'; ctx.fillText('Fim de Jogo', w/2, h/2 - 10); ctx.font = '14px Inter, sans-serif'; ctx.fillStyle = '#cfeffc'; ctx.fillText(`Pontuação final: ${score}`, w/2, h/2 + 18); ctx.textAlign = 'left';}}
+function roundRect(ctx,x,y,w,h,r){ctx.beginPath(); ctx.moveTo(x+r,y); ctx.lineTo(x+w-r,y); ctx.quadraticCurveTo(x+w,y,x+w,y+r); ctx.lineTo(x+w,y+h-r); ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h); ctx.lineTo(x+r,y+h); ctx.quadraticCurveTo(x,y+h,x,y+h-r); ctx.lineTo(x,y+r); ctx.quadraticCurveTo(x,y,x+r,y); ctx.closePath();}
+function loop(t){if(!lastTime) lastTime = t; const dt = t - lastTime; lastTime = t; update(dt); draw(); requestAnimationFrame(loop);}
+updateScore(); requestAnimationFrame(loop);
+player.y = (canvas.height/(window.devicePixelRatio||1)) - player.h - 8;
+['leftBtn','rightBtn','jumpBtn'].forEach(id=>{const el = document.getElementById(id); el.addEventListener('touchstart', e=>e.preventDefault(), {passive:false});});
+</script>
+</body>
+</html>
